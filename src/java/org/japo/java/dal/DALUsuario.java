@@ -1,0 +1,358 @@
+/* 
+ * Copyright 2021 José A. Pacheco Ondoño - japolabs@gmail.com.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.japo.java.dal;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesServlet;
+
+/**
+ *
+ * @author José A. Pacheco Ondoño - japolabs@gmail.com
+ */
+public final class DALUsuario {
+
+    // Nombre de la Base de datos
+    private static final String BD = "proto";
+
+    public DALUsuario(HttpSession sesion) {
+        // ---
+    }
+
+    public List<Usuario> obtenerUsuarios() {
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "* "
+                + "FROM "
+                + "usuarios";
+
+        // Lista Vacía
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // BD > Lista de Entidades
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        // Fila Actual > Campos 
+                        int id = rs.getInt("id");
+                        String user = rs.getString("user");
+                        String pass = rs.getString("pass");
+                        int perfil = rs.getInt("perfil");
+
+                        // Campos > Entidad
+                        Usuario usuario = new Usuario(id, user, pass, perfil);
+
+                        // Entidad > Lista
+                        usuarios.add(usuario);
+                    }
+                }
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno Lista
+        return usuarios;
+    }
+
+    public Usuario obtenerUsuario(int id) {
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "* "
+                + "FROM "
+                + "usuarios "
+                + "WHERE "
+                + "id=?";
+
+        // Entidad
+        Usuario usuario = null;
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setInt(1, id);
+
+                // BD > Lista de Entidades
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        // Fila Actual > Campos 
+                        String user = rs.getString("user");
+                        String pass = rs.getString("pass");
+                        int perfil = rs.getInt("perfil");
+
+                        // Campos > Entidad
+                        usuario = new Usuario(id, user, pass, perfil);
+                    }
+                }
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno Entidad
+        return usuario;
+    }
+
+    public Usuario obtenerUsuario(String user) {
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "* "
+                + "FROM "
+                + "usuarios "
+                + "WHERE "
+                + "user=?";
+
+        // Entidad
+        Usuario usuario = null;
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setString(1, user);
+
+                // BD > Lista de Entidades
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        // Fila Actual > Campos 
+                        int id = rs.getInt("id");
+                        String pass = rs.getString("pass");
+                        int perfil = rs.getInt("perfil");
+
+                        // Campos > Entidad
+                        usuario = new Usuario(id, user, pass, perfil);
+                    }
+                }
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno Entidad
+        return usuario;
+    }
+
+    public boolean insertarUsuario(Usuario usuario) {
+        // SQL
+        String sql = ""
+                + "INSERT INTO "
+                + "usuarios "
+                + "("
+                + "user, pass, perfil"
+                + ") "
+                + "VALUES (?, ?, ?)";
+
+        // Número de registros afectados
+        int numReg = 0;
+
+        // Obtención del Contexto
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setString(1, usuario.getUser());
+                ps.setString(2, usuario.getPass());
+                ps.setInt(3, usuario.getPerfil());
+
+                // Ejecutar Sentencia
+                numReg = ps.executeUpdate();
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno: true | false
+        return numReg == 1;
+    }
+
+    public boolean borrarUsuario(int id) {
+        // SQL
+        String sql = ""
+                + "DELETE FROM "
+                + "usuarios "
+                + "WHERE id=?";
+
+        // Número de registros afectados
+        int numReg = 0;
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setInt(1, id);
+
+                // Ejecutar Sentencia
+                numReg = ps.executeUpdate();
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno: true | false
+        return numReg == 1;
+    }
+
+    public boolean modificarUsuario(Usuario usuario) {
+        // SQL
+        String sql = ""
+                + "UPDATE "
+                + "usuarios "
+                + "SET "
+                + "user=?, pass=?, perfil=? "
+                + "WHERE "
+                + "id=?";
+
+        // Número de Registros Afectados
+        int numReg = 0;
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setString(1, usuario.getUser());
+                ps.setString(2, usuario.getPass());
+                ps.setInt(3, usuario.getPerfil());
+                ps.setInt(4, usuario.getId());
+
+                // Ejecutar Sentencia
+                numReg = ps.executeUpdate();
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno: true | false
+        return numReg == 1;
+    }
+
+    public Long contarUsuarios() {
+        // Número de Filas
+        long filas = 0;
+
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "COUNT(*) "
+                + "FROM "
+                + "usuarios";
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        filas = rs.getLong(1);
+                    }
+                }
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno: Filas Contadas
+        return filas;
+    }
+
+    public List<Usuario> obtenerPaginaUsuarios(long indice, int longitud) {
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "* "
+                + "FROM "
+                + "usuarios "
+                + "LIMIT ?, ?";
+
+        // Lista Vacía
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            // Contexto Inicial > DataSource
+            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+
+            try (
+                    Connection conn = ds.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setLong(1, indice);
+                ps.setLong(2, longitud);
+
+                // BD > Lista de Entidades
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        // Fila Actual > Campos 
+                        int id = rs.getInt("id");
+                        String user = rs.getString("user");
+                        String pass = rs.getString("pass");
+                        int perfil = rs.getInt("perfil");
+
+                        // Campos > Entidad
+                        Usuario usuario = new Usuario(id, user, pass, perfil);
+
+                        // Entidad > Lista
+                        usuarios.add(usuario);
+                    }
+                }
+            }
+        } catch (NamingException | SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+
+        // Retorno Lista
+        return usuarios;
+    }
+}
