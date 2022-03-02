@@ -49,12 +49,12 @@ public final class CommandPerfilModificacion extends Command {
             page = "messages/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation adminBLL = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil perfilDAL = new DALPerfil(sesion);
 
-            if (adminBLL.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -64,7 +64,7 @@ public final class CommandPerfilModificacion extends Command {
                 // Entidad > JSP
                 if (op == null || op.equals("captura")) {
                     // BD > Entidades
-                    perfil = perfilDAL.obtenerPerfil(id);
+                    perfil = perfilDAL.consultar(id);
 
                     // Inyectar Datos > JSP
                     request.setAttribute("perfil", perfil);
@@ -73,7 +73,7 @@ public final class CommandPerfilModificacion extends Command {
                     page = PAGINA_PROCESO;
                 } else if (op.equals("proceso")) {
                     // ID Entidad > Registro BD > Entidad
-                    perfil = perfilDAL.obtenerPerfil(id);
+                    perfil = perfilDAL.consultar(id);
 
                     // Request > Parámetros
                     String nombre = request.getParameter("nombre").trim();
@@ -83,7 +83,7 @@ public final class CommandPerfilModificacion extends Command {
                     perfil = new Perfil(perfil.getId(), nombre, info);
 
                     // Ejecutar Operación
-                    boolean checkOK = perfilDAL.modificarPerfil(perfil);
+                    boolean checkOK = perfilDAL.modificar(perfil);
 
                     // Validar Operación
                     if (checkOK) {

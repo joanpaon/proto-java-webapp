@@ -42,17 +42,17 @@ public final class CommandPermisoPerfilConsulta extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Request > ID EntityPerfil
                 int id = Integer.parseInt(request.getParameter("id"));
 
                 // ID Entidad + BD > Entidad
-                PermisoPerfil permiso = dalPermiso.obtenerPermiso(id);
+                PermisoPerfil permiso = dalPermiso.consultar(id);
 
                 // Enlaza Datos > JSP
                 request.setAttribute("permiso", permiso);

@@ -46,12 +46,12 @@ public final class CommandProcesoModificacion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -61,13 +61,13 @@ public final class CommandProcesoModificacion extends Command {
                 // Entidad > JSP
                 if (op == null || op.equals("captura")) {
                     // ID Entidad > Registro BD > Entidad
-                    proceso = dalProceso.obtenerProceso(id);
+                    proceso = dalProceso.consultar(id);
 
                     // Inyección de Datos
                     request.setAttribute("proceso", proceso);
                 } else if (op.equals("proceso")) {
                     // ID Entidad > Registro BD > Entidad
-                    proceso = dalProceso.obtenerProceso(id);
+                    proceso = dalProceso.consultar(id);
 
                     // Request > Parámetros
                     String nombre = request.getParameter("nombre").trim();
@@ -77,7 +77,7 @@ public final class CommandProcesoModificacion extends Command {
                     proceso = new Proceso(proceso.getId(), nombre, info);
 
                     // Ejecutar Operación
-                    boolean checkOK = dalProceso.modificarProceso(proceso);
+                    boolean checkOK = dalProceso.modificar(proceso);
 
                     // Validar Operación
                     if (checkOK) {

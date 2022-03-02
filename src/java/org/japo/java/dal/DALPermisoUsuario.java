@@ -30,7 +30,7 @@ public final class DALPermisoUsuario {
         bd = (String) sesion.getAttribute("bd");
     }
 
-    public List<PermisoUsuario> obtenerPermisos() {
+    public List<PermisoUsuario> listar() {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -45,9 +45,9 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -71,7 +71,7 @@ public final class DALPermisoUsuario {
         return permisos;
     }
 
-    public PermisoUsuario obtenerPermiso(int id) {
+    public PermisoUsuario consultar(int id) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -89,12 +89,12 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         int proceso = rs.getInt("proceso");
@@ -114,7 +114,7 @@ public final class DALPermisoUsuario {
         return permiso;
     }
 
-    public List<PermisoUsuario> obtenerPermisos(int usuario) {
+    public List<PermisoUsuario> listar(int usuario) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -132,12 +132,12 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, usuario);
 
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -160,7 +160,7 @@ public final class DALPermisoUsuario {
         return permisos;
     }
 
-    public boolean insertarPermiso(PermisoUsuario permiso) {
+    public boolean insertar(PermisoUsuario permiso) {
         // SQL
         final String SQL = ""
                 + "INSERT INTO "
@@ -179,7 +179,7 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, permiso.getProceso());
                 ps.setInt(2, permiso.getUsuario());
@@ -196,7 +196,7 @@ public final class DALPermisoUsuario {
         return numReg == 1;
     }
 
-    public boolean borrarPermiso(int id) {
+    public boolean borrar(int id) {
         // SQL
         final String SQL = ""
                 + "DELETE FROM "
@@ -211,7 +211,7 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -228,7 +228,7 @@ public final class DALPermisoUsuario {
 
     // Este método se utiliza cuando no se conoce la Id
     // pero si el proceso y el usuario 
-    public boolean borrarPermiso(PermisoUsuario permiso) {
+    public boolean borrar(PermisoUsuario permiso) {
         // SQL
         final String SQL
                 = "DELETE FROM "
@@ -244,7 +244,7 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, permiso.getProceso());
                 ps.setInt(2, permiso.getUsuario());
@@ -260,7 +260,7 @@ public final class DALPermisoUsuario {
         return numReg == 1;
     }
 
-    public boolean modificarPermiso(PermisoUsuario permiso) {
+    public boolean modificar(PermisoUsuario permiso) {
         // SQL
         final String SQL = ""
                 + "UPDATE "
@@ -278,7 +278,7 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, permiso.getProceso());
                 ps.setInt(2, permiso.getUsuario());
@@ -296,7 +296,7 @@ public final class DALPermisoUsuario {
         return numReg == 1;
     }
 
-    public Long contarPermisos() {
+    public Long contar() {
         // Número de Filas
         long filas = 0;
 
@@ -312,8 +312,8 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
-                try ( ResultSet rs = ps.executeQuery()) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
@@ -327,7 +327,7 @@ public final class DALPermisoUsuario {
         return filas;
     }
 
-    public List<PermisoUsuario> obtenerPaginaPermisos(long indice, int longitud) {
+    public List<PermisoUsuario> paginar(long indice, int longitud) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -345,13 +345,13 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");

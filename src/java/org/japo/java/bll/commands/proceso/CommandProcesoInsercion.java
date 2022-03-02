@@ -43,12 +43,12 @@ public final class CommandProcesoInsercion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Obtener Operación
                 String op = request.getParameter("op");
 
@@ -64,7 +64,7 @@ public final class CommandProcesoInsercion extends Command {
                     Proceso proceso = new Proceso(nombre, info);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalProceso.insertarProceso(proceso);
+                    boolean checkOK = dalProceso.insertar(proceso);
 
                     // Validar Operación
                     if (checkOK) {

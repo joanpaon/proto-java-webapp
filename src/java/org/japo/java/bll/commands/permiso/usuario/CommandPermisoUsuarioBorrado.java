@@ -43,12 +43,12 @@ public final class CommandPermisoUsuarioBorrado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPermisoUsuario dalPermiso = new DALPermisoUsuario(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -58,13 +58,13 @@ public final class CommandPermisoUsuarioBorrado extends Command {
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
                     // ID Entidad + BD > Entidad
-                    PermisoUsuario permiso = dalPermiso.obtenerPermiso(id);
+                    PermisoUsuario permiso = dalPermiso.consultar(id);
 
                     // Enlaza Datos > JSP
                     request.setAttribute("permiso", permiso);
                 } else if (op.equals("proceso")) {
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalPermiso.borrarPermiso(id);
+                    boolean checkOK = dalPermiso.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {

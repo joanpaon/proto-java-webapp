@@ -51,12 +51,13 @@ public final class CommandSignup extends Command {
             // Request > Parámetros
             String user = request.getParameter("user").trim();
             String pass = request.getParameter("pass").trim();
+            int avatar = Integer.parseInt(request.getParameter("avatar"));
 
             // Parámetros > Entidad
-            Usuario usuario = new Usuario(0, user, pass, Perfil.BASIC);
+            Usuario usuario = new Usuario(0, user, pass, avatar, Perfil.BASIC);
 
             // Entidad > Inserción BD - true | false
-            boolean operacionOK = dalUsuario.insertarUsuario(usuario);
+            boolean operacionOK = dalUsuario.insertar(usuario);
 
             // Validar Inserción BD
             if (operacionOK) {

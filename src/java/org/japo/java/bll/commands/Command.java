@@ -28,6 +28,7 @@ import javax.servlet.http.HttpSession;
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
 public abstract class Command implements ICommand {
+    private static final String VIEWS_PATH = "/WEB-INF/views";
 
     // Referencias
     protected ServletContext context;
@@ -56,7 +57,7 @@ public abstract class Command implements ICommand {
             response.sendRedirect(out);
         } else {
             // Nombre Comando ( Petición ) > Nombre Vista ( Respuesta )
-            out = String.format("/WEB-INF/views/%s.jsp", out);
+            out = String.format("%s/%s.jsp", VIEWS_PATH, out);
 
             // Contexto + Nombre Vista > Despachador
             RequestDispatcher dispatcher = context.getRequestDispatcher(out);

@@ -42,17 +42,17 @@ public final class CommandUsuarioConsulta extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALUsuario dalUsuario = new DALUsuario(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
                 // ID Entidad > Entidad
-                Usuario usuario = dalUsuario.obtenerUsuario(id);
+                Usuario usuario = dalUsuario.consultar(id);
 
                 // Enlaza Datos > JSP
                 request.setAttribute("usuario", usuario);

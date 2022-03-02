@@ -49,13 +49,13 @@ public final class CommandUsuarioModificacion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil dalPerfil = new DALPerfil(sesion);
             DALUsuario dalUsuario = new DALUsuario(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -65,28 +65,29 @@ public final class CommandUsuarioModificacion extends Command {
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
                     // ID Entidad > Objeto Entidad
-                    usuario = dalUsuario.obtenerUsuario(id);
+                    usuario = dalUsuario.consultar(id);
 
                     // BD > Lista de Abonos
-                    List<Perfil> perfiles = dalPerfil.obtenerPerfiles();
+                    List<Perfil> perfiles = dalPerfil.listar();
 
                     // Inyectar Datos > JSP
                     request.setAttribute("usuario", usuario);
                     request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
                     // ID > Entidad a Modificar
-                    usuario = dalUsuario.obtenerUsuario(id);
+                    usuario = dalUsuario.consultar(id);
 
                     // Request > Parámetros
                     String user = request.getParameter("user").trim();
                     String pass = request.getParameter("pass").trim();
-                    int perfil = Integer.parseInt(request.getParameter("perfil").trim());
+                    int avatar = Integer.parseInt(request.getParameter("avatar"));
+                    int perfil = Integer.parseInt(request.getParameter("perfil"));
 
                     // Parámetros > Entidad
-                    usuario = new Usuario(usuario.getId(), user, pass, perfil);
+                    usuario = new Usuario(usuario.getId(), user, pass, avatar, perfil);
 
                     // Ejecutar Operación
-                    boolean checkOK = dalUsuario.modificarUsuario(usuario);
+                    boolean checkOK = dalUsuario.modificar(usuario);
 
                     // Validar Operación
                     if (checkOK) {

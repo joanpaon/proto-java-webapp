@@ -42,17 +42,17 @@ public final class CommandProcesoConsulta extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
                 // ID Entidad > Entidad
-                Proceso proceso = dalProceso.obtenerProceso(id);
+                Proceso proceso = dalProceso.consultar(id);
 
                 // Inyecta Datos > JSP
                 request.setAttribute("proceso", proceso);

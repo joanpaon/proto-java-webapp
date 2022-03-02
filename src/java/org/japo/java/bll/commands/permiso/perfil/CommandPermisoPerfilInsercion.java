@@ -48,24 +48,24 @@ public final class CommandPermisoPerfilInsercion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil dalPerfil = new DALPerfil(sesion);
             DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Obtener Operación
                 String op = request.getParameter("op");
 
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
                     // BD > Lista de Procesos
-                    List<Proceso> procesos = dalProceso.obtenerProcesos();
+                    List<Proceso> procesos = dalProceso.listar();
 
                     // BD > Lista de Perfiles
-                    List<Perfil> perfiles = dalPerfil.obtenerPerfiles();
+                    List<Perfil> perfiles = dalPerfil.listar();
 
                     // Inyecta Datos > JSP
                     request.setAttribute("procesos", procesos);
@@ -80,7 +80,7 @@ public final class CommandPermisoPerfilInsercion extends Command {
                     PermisoPerfil permiso = new PermisoPerfil(proceso, perfil, info);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalPermiso.insertarPermiso(permiso);
+                    boolean checkOK = dalPermiso.insertar(permiso);
 
                     // Validar Operación
                     if (checkOK) {

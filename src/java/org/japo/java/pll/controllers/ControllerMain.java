@@ -43,6 +43,10 @@ public final class ControllerMain extends HttpServlet {
     private static final String COMMAND_PKG = "org.japo.java.bll.commands";
     private static final String SERVICE_PKG = "org.japo.java.bll.services";
 
+    // Prefijos
+    private static final String COMMAND_PRE = "Command";
+    private static final String SERVICE_PRE = "Service";
+
     protected void processRequest(
             HttpServletRequest request,
             HttpServletResponse response)
@@ -155,21 +159,28 @@ public final class ControllerMain extends HttpServlet {
     }
 
     private String obtenerNombreServicio(String cmd) {
-        // Prefijo
-        final String PRE = "Service";
-
         // Subpaquete
         String sub;
 
-        // Parámetro Comando > Subpaquete
+        // Parámetro > Subpaquete
         if (cmd == null) {
             sub = "admin";
             cmd = "unknown";
         } else if (false
                 || cmd.equals("landing")
                 || cmd.equals("login")
+                || cmd.equals("profile")
+                || cmd.equals("validation")
+                || cmd.equals("signup")
+                || cmd.equals("message")
                 || cmd.equals("logout")) {
             sub = "admin";
+        } else if (false
+                || cmd.equals("sample")
+                || cmd.equals("token")
+                || cmd.equals("piece")
+                || cmd.equals("clue")) {
+            sub = "helper";
         } else if (cmd.contains("-")) {
             // Eliminar Operacion Final
             sub = cmd.substring(0, cmd.lastIndexOf("-"));
@@ -177,14 +188,14 @@ public final class ControllerMain extends HttpServlet {
             // Notacion paquete: - > .
             sub = sub.replace("-", ".");
         } else {
-            sub = "cmd";
+            sub = cmd;
         }
 
         // Kebab Case > Camel Case
         cmd = cambiarKebab2Camel(cmd);
 
         // Retorno: Nombre Cualificado Clase Servicio
-        return String.format("%s.%s.%s%s", SERVICE_PKG, sub, PRE, cmd);
+        return String.format("%s.%s.%s%s", SERVICE_PKG, sub, SERVICE_PRE, cmd);
     }
 
     private ICommand obtenerComando(String cmd) {
@@ -216,21 +227,27 @@ public final class ControllerMain extends HttpServlet {
     }
 
     private String obtenerNombreComando(String cmd) {
-        // Prefijo
-        final String PRE = "Command";
-
         // Subpaquete
         String sub;
 
-        // Parámetro Comando > Subpaquete
+        // Parámetro > Subpaquete
         if (cmd == null) {
             sub = "admin";
             cmd = "unknown";
         } else if (false
                 || cmd.equals("landing")
                 || cmd.equals("login")
+                || cmd.equals("profile")
+                || cmd.equals("validation")
+                || cmd.equals("signup")
+                || cmd.equals("message")
                 || cmd.equals("logout")) {
             sub = "admin";
+        } else if (false
+                || cmd.equals("xxx")
+                || cmd.equals("yyy")
+                || cmd.equals("zzz")) {
+            sub = "kkk";
         } else if (cmd.contains("-")) {
             // Eliminar Operacion Final
             sub = cmd.substring(0, cmd.lastIndexOf("-"));
@@ -238,14 +255,14 @@ public final class ControllerMain extends HttpServlet {
             // Notacion paquete: - > .
             sub = sub.replace("-", ".");
         } else {
-            sub = "cmd";
+            sub = cmd;
         }
 
         // Kebab Case > Camel Case
         cmd = cambiarKebab2Camel(cmd);
 
         // Retorno: Nombre Cualificado Clase Comando
-        return String.format("%s.%s.%s%s", COMMAND_PKG, sub, PRE, cmd);
+        return String.format("%s.%s.%s%s", COMMAND_PKG, sub, COMMAND_PRE, cmd);
     }
 
     private String cambiarKebab2Camel(String cmd) {
@@ -312,7 +329,7 @@ public final class ControllerMain extends HttpServlet {
 
             // Origen > Destino
             try (
-                     FileInputStream origen = new FileInputStream(recurso);  ServletOutputStream destino = response.getOutputStream()) {
+                    FileInputStream origen = new FileInputStream(recurso); ServletOutputStream destino = response.getOutputStream()) {
                 // Origen > Buffer
                 origen.read(buffer);
 

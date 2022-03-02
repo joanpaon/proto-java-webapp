@@ -46,20 +46,20 @@ public final class CommandUsuarioInsercion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil dalPperfil = new DALPerfil(sesion);
             DALUsuario dalUsuario = new DALUsuario(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Obtener Operación
                 String op = request.getParameter("op");
 
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
                     // BD > Lista de Perfiles
-                    List<Perfil> perfiles = dalPperfil.obtenerPerfiles();
+                    List<Perfil> perfiles = dalPperfil.listar();
 
                     // Inyección Datos
                     request.setAttribute("perfiles", perfiles);
@@ -67,13 +67,14 @@ public final class CommandUsuarioInsercion extends Command {
                     // Request > Parámetros
                     String user = request.getParameter("user").trim();
                     String pass = request.getParameter("pass").trim();
-                    int perfil = Integer.parseInt(request.getParameter("perfil").trim());
+                    int avatar = Integer.parseInt(request.getParameter("avatar"));
+                    int perfil = Integer.parseInt(request.getParameter("perfil"));
 
                     // Parámetros > Entidad
-                    Usuario usuario = new Usuario(0, user, pass, perfil);
+                    Usuario usuario = new Usuario(0, user, pass, avatar, perfil);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalUsuario.insertarUsuario(usuario);
+                    boolean checkOK = dalUsuario.insertar(usuario);
 
                     // Validar Operación
                     if (checkOK) {

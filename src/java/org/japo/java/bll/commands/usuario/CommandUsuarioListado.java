@@ -45,12 +45,12 @@ public final class CommandUsuarioListado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALUsuario dalUsuario = new DALUsuario(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Sesión > Usuario
                 Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
@@ -61,11 +61,11 @@ public final class CommandUsuarioListado extends Command {
                 switch (usuario.getPerfil()) {
                     case Perfil.DEVEL:
                         // BD > Lista de Usuarios
-                        usuarios = dalUsuario.obtenerUsuarios();
+                        usuarios = dalUsuario.listar();
                         break;
                     case Perfil.ADMIN:
                         // BD > Lista de Usuarios
-                        usuarios = dalUsuario.obtenerUsuarios();
+                        usuarios = dalUsuario.listar();
                         break;
                     case Perfil.BASIC:
                     default:

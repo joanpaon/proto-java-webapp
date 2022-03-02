@@ -30,7 +30,7 @@ public final class DALPerfil {
         bd = (String) sesion.getAttribute("bd");
     }
 
-    public List<Perfil> obtenerPerfiles() {
+    public List<Perfil> listar() {
         // SQL 
         String sql = ""
                 + "SELECT "
@@ -71,7 +71,7 @@ public final class DALPerfil {
         return perfiles;
     }
 
-    public Perfil obtenerPerfil(int id) {
+    public Perfil consultar(int id) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -110,7 +110,7 @@ public final class DALPerfil {
         return perfil;
     }
 
-    public boolean insertarPerfil(Perfil perfil) {
+    public boolean insertar(Perfil perfil) {
         // SQL
         String sql = ""
                 + "INSERT INTO "
@@ -145,7 +145,7 @@ public final class DALPerfil {
         return numReg == 1;
     }
 
-    public boolean borrarPerfil(int id) {
+    public boolean borrar(int id) {
         // SQL
         final String SQL = ""
                 + "DELETE FROM "
@@ -176,7 +176,7 @@ public final class DALPerfil {
         return numReg == 1;
     }
 
-    public boolean modificarPerfil(Perfil perfil) {
+    public boolean modificar(Perfil perfil) {
         // SQL
         final String SQL = ""
                 + "UPDATE "
@@ -210,7 +210,7 @@ public final class DALPerfil {
         return numReg == 1;
     }
 
-    public Long contarPerfiles() {
+    public Long contar() {
         // Número de Filas
         long filas = 0;
 
@@ -243,7 +243,7 @@ public final class DALPerfil {
         return filas;
     }
 
-    public List<Perfil> obtenerPaginaPerfiles(long indice, long longitud) {
+    public List<Perfil> paginar(long indice, long longitud) {
         // SQL
         String sql = ""
                 + "SELECT "

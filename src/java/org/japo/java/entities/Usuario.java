@@ -17,15 +17,17 @@ public final class Usuario implements Serializable {
     private int id;
     private String user;
     private String pass;
+    private int avatar;
     private int perfil;
 
     public Usuario() {
     }
 
-    public Usuario(int id, String user, String pass, int perfil) {
+    public Usuario(int id, String user, String pass, int avatar, int perfil) {
         this.id = id;
         this.user = user;
         this.pass = pass;
+        this.avatar = avatar;
         this.perfil = perfil;
     }
 
@@ -51,6 +53,14 @@ public final class Usuario implements Serializable {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
     }
 
     public int getPerfil() {

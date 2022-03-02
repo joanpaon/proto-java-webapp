@@ -85,7 +85,7 @@ public final class CommandLogin extends Command {
                 DALUsuario dalUsuario = new DALUsuario(sesion);
 
                 // Nombre Usuario + BD > Objeto Usuario
-                Usuario usuario = dalUsuario.obtenerUsuario(user);
+                Usuario usuario = dalUsuario.consultar(user);
 
                 // Validar Objeto Usuario
                 if (usuario == null) {

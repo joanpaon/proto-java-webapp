@@ -43,12 +43,12 @@ public final class CommandPerfilBorrado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil dalPerfil = new DALPerfil(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -58,13 +58,13 @@ public final class CommandPerfilBorrado extends Command {
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
                     // ID Entidad + BD > Entidad
-                    Perfil perfil = dalPerfil.obtenerPerfil(id);
+                    Perfil perfil = dalPerfil.consultar(id);
 
                     // Inyecta Datos > JSP
                     request.setAttribute("perfil", perfil);
                 } else if (op.equals("proceso")) {
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalPerfil.borrarPerfil(id);
+                    boolean checkOK = dalPerfil.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {

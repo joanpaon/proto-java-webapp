@@ -43,14 +43,14 @@ public final class CommandPermisoUsuarioListado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPermisoUsuario dalPermiso = new DALPermisoUsuario(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // BD > Lista de Permisos de Usuario
-                List<PermisoUsuario> permisos = dalPermiso.obtenerPermisos();
+                List<PermisoUsuario> permisos = dalPermiso.listar();
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("permisos", permisos);

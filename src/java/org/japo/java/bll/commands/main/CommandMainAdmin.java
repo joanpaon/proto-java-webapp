@@ -35,11 +35,10 @@ public final class CommandMainAdmin extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
-            // Página Principal del Perfil
+        if (validarSesion(sesion)) {
             out = "main/main-admin";
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

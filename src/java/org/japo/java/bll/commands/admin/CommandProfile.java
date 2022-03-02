@@ -56,13 +56,14 @@ public final class CommandProfile extends Command {
                 // Request > Parámetros
                 String user = request.getParameter("user").trim();
                 String pass = request.getParameter("pass").trim();
-                int perfil = Integer.parseInt(request.getParameter("perfil").trim());
+                int avatar = Integer.parseInt(request.getParameter("avatar"));
+                int perfil = Integer.parseInt(request.getParameter("perfil"));
 
                 // Parámetros > Entidad
-                usuario = new Usuario(usuario.getId(), user, pass, perfil);
+                usuario = new Usuario(usuario.getId(), user, pass, avatar, perfil);
 
                 // Ejecutar Operación
-                boolean checkOK = usuarioDAL.modificarUsuario(usuario);
+                boolean checkOK = usuarioDAL.modificar(usuario);
 
                 // Validar Operación
                 if (checkOK) {

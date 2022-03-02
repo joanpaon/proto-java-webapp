@@ -35,10 +35,10 @@ public final class CommandMainBasic extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             out = "main/main-basic";
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

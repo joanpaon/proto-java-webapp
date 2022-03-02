@@ -17,9 +17,11 @@ package org.japo.java.bll.commands.admin;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import org.japo.java.dal.DALPermisoPerfil;
 import org.japo.java.dal.DALPermisoUsuario;
 import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.Perfil;
+import org.japo.java.entities.PermisoPerfil;
 import org.japo.java.entities.PermisoUsuario;
 import org.japo.java.entities.Proceso;
 import org.japo.java.entities.Usuario;
@@ -34,12 +36,14 @@ public final class CommandValidation {
     HttpSession sesion;
 
     // Capas de Datos
+    private final DALPermisoPerfil dalPermisoPerfil;
     private final DALPermisoUsuario dalPermisoUsuario;
     private final DALProceso dalProceso;
 
     public CommandValidation(HttpSession sesion) {
         this.sesion = sesion;
 
+        dalPermisoPerfil = new DALPermisoPerfil(sesion);
         dalPermisoUsuario = new DALPermisoUsuario(sesion);
         dalProceso = new DALProceso(sesion);
     }
@@ -49,7 +53,7 @@ public final class CommandValidation {
         boolean checkOK;
 
         try {
-            // Sesion > Usuario
+            // Sesión > Usuario
             Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
             // Usuario > Perfil
@@ -59,14 +63,22 @@ public final class CommandValidation {
             if (perfil >= Perfil.DEVEL) {
                 checkOK = true;
             } else {
-                // Usuario + BD > Lista de Permisos
-                List<PermisoUsuario> permisos = dalPermisoUsuario.obtenerPermisos(usuario.getId());
+                // Perfil + BD > Lista de Permisos del Perfil
+                List<PermisoPerfil> permPerfil = dalPermisoPerfil.listar(perfil);
 
-                // Nombre Comando > Entidad Comando
-                Proceso proceso = dalProceso.obtenerProceso(comando);
+                // Nombre Comando > Entidad Proceso
+                Proceso proceso = dalProceso.consultar(comando);
 
                 // Semaforo: true | false
-                checkOK = validarPermisoProceso(permisos, proceso);
+                checkOK = validarProcesoPermisoPerfil(permPerfil, proceso);
+
+                if (!checkOK) {
+                    // Usuario + BD > Lista de Permisos del Usuario
+                    List<PermisoUsuario> permUsuario = dalPermisoUsuario.listar(usuario.getId());
+
+                    // Semaforo: true | false
+                    checkOK = validarProcesoPermisoUsuario(permUsuario, proceso);
+                }
             }
         } catch (Exception e) {
             checkOK = false;
@@ -80,11 +92,31 @@ public final class CommandValidation {
         return true;
     }
 
-    private boolean validarPermisoProceso(List<PermisoUsuario> permisos, Proceso proceso) {
-        return buscarProcesoPermisos(permisos, proceso) > -1;
+    private boolean validarProcesoPermisoPerfil(List<PermisoPerfil> permisos, Proceso proceso) {
+        return buscarProcesoPermisosPerfil(permisos, proceso) > -1;
     }
 
-    private int buscarProcesoPermisos(List<PermisoUsuario> permisos, Proceso proceso) {
+    private int buscarProcesoPermisosPerfil(List<PermisoPerfil> permisos, Proceso proceso) {
+        // Posicion del proceso en la lista de permisos
+        int posicion = -1;
+
+        // Bucle de Búsqueda
+        for (int i = 0; i < permisos.size(); i++) {
+            if (permisos.get(i).getProceso() == proceso.getId()) {
+                posicion = i;
+                i = permisos.size();
+            }
+        }
+
+        // Retorno: Posición
+        return posicion;
+    }
+
+    private boolean validarProcesoPermisoUsuario(List<PermisoUsuario> permisos, Proceso proceso) {
+        return buscarProcesoPermisosUsuario(permisos, proceso) > -1;
+    }
+
+    private int buscarProcesoPermisosUsuario(List<PermisoUsuario> permisos, Proceso proceso) {
         // Posicion del proceso en la lista de permisos
         int posicion = -1;
 

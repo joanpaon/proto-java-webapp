@@ -43,14 +43,14 @@ public final class CommandProcesoListado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // BD > Lista de Procesos
-                List<Proceso> procesos = dalProceso.obtenerProcesos();
+                List<Proceso> procesos = dalProceso.listar();
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("procesos", procesos);

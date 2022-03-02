@@ -3,37 +3,61 @@
 <!doctype html>
 <html lang="es">
 
-  <head>
-    <!-- These lines go in the first 1024 bytes -->
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Proto Web App</title>
+    <head>
+        <!-- These lines go in the first 1024 bytes -->
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>JAPOLabs Java Framework</title>
 
-    <!-- References -->
-    <meta name="author" content="2022 - José A. Pacheco Ondoño - japolabs@gmail.com" />
-    <meta name="description" content="Proto Web App" />
+        <!-- References -->
+        <meta name="author" content="2022 - José A. Pacheco Ondoño - japolabs@gmail.com" />
+        <meta name="description" content="JAPOLabs Java Framework" />
 
-    <!-- Configuration -->
-    <meta name="keywords" content="" />
-    <meta name="robots" content="noindex, nofollow" />
+        <!-- Configuration -->
+        <meta name="keywords" content="" />
+        <meta name="robots" content="noindex, nofollow" />
 
-    <!-- Viewport Setup for mobile devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Viewport Setup for mobile devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Favicon -->
-    <link href="public/img/favicon.png" rel="icon" type="image/x-icon" />
+        <!-- Favicon -->
+        <link href="public/img/logo.png" rel="icon" type="image/x-icon" />
 
-    <!-- Style Sheet Links -->
-    <link rel="stylesheet" href="public/css/message/message.css" />
-  </head>
-  <body>
-    <!-- Contenido Web -->
-    <div id="container">
-      <h2>Sesión Inválida</h2>
-      <a class="btn" href="?cmd=login">Continuar</a>
-    </div>
+        <!-- Style Sheet Links -->
+        <link rel="stylesheet" href="public/css/messages/message.css" />
+        <link rel="stylesheet" href="public/css/partials/header.css" />
+        <link rel="stylesheet" href="public/css/partials/footer.css" />
+        <link rel="stylesheet" href="public/css/partials/button-login.css" />
+    </head>
 
-    <!-- Scripts -->
-    <script src="public/js/message/message.js"></script>
-  </body> 
+    <body>
+        <!-- Contenido Web -->
+        <div id="container">
+            <%@include file="../partials/header.jspf" %>
+
+            <main>
+                
+                <img src="public/img/logo01.png" alt="Logo" />
+
+                <h2>Sesión NO Válida</h2>
+
+                <p>
+                    Identifíquese para continuar
+                </p>
+
+                <div class="controles">
+                    <%@include file="../partials/button-login.jspf" %>
+                </div>
+
+            </main>
+
+            <%@include file="../partials/footer.jspf" %>
+        </div>
+
+        <!-- Scripts -->
+        <script src="public/js/messages/message.js"></script>
+        <script src="public/js/partials/header.js"></script>
+        <script src="public/js/partials/footer.js"></script>
+        <script src="public/js/partials/button-login.js"></script>
+    </body> 
 </html>

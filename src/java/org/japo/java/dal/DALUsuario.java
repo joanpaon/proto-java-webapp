@@ -41,11 +41,11 @@ public final class DALUsuario {
 
     public DALUsuario(HttpSession sesion) {
         this.sesion = sesion;
-        
+
         bd = (String) sesion.getAttribute("bd");
     }
 
-    public List<Usuario> obtenerUsuarios() {
+    public List<Usuario> listar() {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -61,18 +61,19 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
+                        int avatar = rs.getInt("avatar");
                         int perfil = rs.getInt("perfil");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, perfil);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil);
 
                         // Entidad > Lista
                         usuarios.add(usuario);
@@ -87,7 +88,7 @@ public final class DALUsuario {
         return usuarios;
     }
 
-    public Usuario obtenerUsuario(int id) {
+    public Usuario consultar(int id) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -105,20 +106,21 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
+                        int avatar = rs.getInt("avatar");
                         int perfil = rs.getInt("perfil");
 
                         // Campos > Entidad
-                        usuario = new Usuario(id, user, pass, perfil);
+                        usuario = new Usuario(id, user, pass, avatar, perfil);
                     }
                 }
             }
@@ -130,7 +132,7 @@ public final class DALUsuario {
         return usuario;
     }
 
-    public Usuario obtenerUsuario(String user) {
+    public Usuario consultar(String user) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -148,20 +150,21 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, user);
 
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String pass = rs.getString("pass");
+                        int avatar = rs.getInt("avatar");
                         int perfil = rs.getInt("perfil");
 
                         // Campos > Entidad
-                        usuario = new Usuario(id, user, pass, perfil);
+                        usuario = new Usuario(id, user, pass, avatar, perfil);
                     }
                 }
             }
@@ -173,15 +176,15 @@ public final class DALUsuario {
         return usuario;
     }
 
-    public boolean insertarUsuario(Usuario usuario) {
+    public boolean insertar(Usuario usuario) {
         // SQL
         String sql = ""
                 + "INSERT INTO "
                 + "usuarios "
                 + "("
-                + "user, pass, perfil"
+                + "user, pass, avatar, perfil"
                 + ") "
-                + "VALUES (?, ?, ?)";
+                + "VALUES (?, ?, ?, ?)";
 
         // Número de registros afectados
         int numReg = 0;
@@ -192,11 +195,12 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
-                ps.setInt(3, usuario.getPerfil());
+                ps.setInt(3, usuario.getAvatar());
+                ps.setInt(4, usuario.getPerfil());
 
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
@@ -209,7 +213,7 @@ public final class DALUsuario {
         return numReg == 1;
     }
 
-    public boolean borrarUsuario(int id) {
+    public boolean borrar(int id) {
         // SQL
         String sql = ""
                 + "DELETE FROM "
@@ -224,7 +228,7 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -239,13 +243,13 @@ public final class DALUsuario {
         return numReg == 1;
     }
 
-    public boolean modificarUsuario(Usuario usuario) {
+    public boolean modificar(Usuario usuario) {
         // SQL
         String sql = ""
                 + "UPDATE "
                 + "usuarios "
                 + "SET "
-                + "user=?, pass=?, perfil=? "
+                + "user=?, pass=?, avatar=?, perfil=? "
                 + "WHERE "
                 + "id=?";
 
@@ -257,12 +261,13 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
-                ps.setInt(3, usuario.getPerfil());
-                ps.setInt(4, usuario.getId());
+                ps.setInt(3, usuario.getAvatar());
+                ps.setInt(4, usuario.getPerfil());
+                ps.setInt(5, usuario.getId());
 
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
@@ -275,7 +280,7 @@ public final class DALUsuario {
         return numReg == 1;
     }
 
-    public Long contarUsuarios() {
+    public Long contar() {
         // Número de Filas
         long filas = 0;
 
@@ -291,8 +296,8 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
-                try ( ResultSet rs = ps.executeQuery()) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
@@ -306,7 +311,7 @@ public final class DALUsuario {
         return filas;
     }
 
-    public List<Usuario> obtenerPaginaUsuarios(long indice, int longitud) {
+    public List<Usuario> paginar(long indice, int longitud) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -323,22 +328,23 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try ( ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
+                        int avatar = rs.getInt("avatar");
                         int perfil = rs.getInt("perfil");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, perfil);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil);
 
                         // Entidad > Lista
                         usuarios.add(usuario);

@@ -28,6 +28,7 @@ public class ServiceUnknown extends Service {
     @Override
     public void process() throws ServletException, IOException {
         // Recurso NO Disponible
-        forward("page404");
+        // TODO: Definir mejor esta respuesta en JSON
+        forward("{'ok'=false,'message'='Servicio desconocido'}");
     }
 }

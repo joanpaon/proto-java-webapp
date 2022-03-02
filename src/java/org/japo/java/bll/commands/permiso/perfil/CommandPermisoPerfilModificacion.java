@@ -51,14 +51,14 @@ public final class CommandPermisoPerfilModificacion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil dalPerfil = new DALPerfil(sesion);
             DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -68,13 +68,13 @@ public final class CommandPermisoPerfilModificacion extends Command {
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
                     // ID Entidad > Objeto Entidad
-                    permiso = dalPermiso.obtenerPermiso(id);
+                    permiso = dalPermiso.consultar(id);
 
                     // BD > Lista de Procesos
-                    List<Proceso> procesos = dalProceso.obtenerProcesos();
+                    List<Proceso> procesos = dalProceso.listar();
 
                     // BD > Lista de Perfiles            
-                    List<Perfil> perfiles = dalPerfil.obtenerPerfiles();
+                    List<Perfil> perfiles = dalPerfil.listar();
 
                     // Inyectar Datos > JSP
                     request.setAttribute("permiso", permiso);
@@ -82,7 +82,7 @@ public final class CommandPermisoPerfilModificacion extends Command {
                     request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
                     // ID Permiso Perfil > Objeto Entidad
-                    permiso = dalPermiso.obtenerPermiso(id);
+                    permiso = dalPermiso.consultar(id);
 
                     // Request > Parámetros
                     int proceso = Integer.parseInt(request.getParameter("proceso"));
@@ -93,7 +93,7 @@ public final class CommandPermisoPerfilModificacion extends Command {
                     permiso = new PermisoPerfil(permiso.getId(), proceso, perfil, info);
 
                     // Entidad > Modificación Registro BD
-                    boolean checkOK = dalPermiso.modificarPermiso(permiso);
+                    boolean checkOK = dalPermiso.modificar(permiso);
 
                     // Validar Operación
                     if (checkOK) {

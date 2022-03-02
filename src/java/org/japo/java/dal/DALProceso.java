@@ -30,7 +30,7 @@ public final class DALProceso {
         bd = (String) sesion.getAttribute("bd");
     }
 
-    public List<Proceso> obtenerProcesos() {
+    public List<Proceso> listar() {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -71,7 +71,7 @@ public final class DALProceso {
         return procesos;
     }
 
-    public Proceso obtenerProceso(int id) {
+    public Proceso consultar(int id) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -112,7 +112,7 @@ public final class DALProceso {
         return proceso;
     }
 
-    public Proceso obtenerProceso(String nombre) {
+    public Proceso consultar(String nombre) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -153,7 +153,7 @@ public final class DALProceso {
         return proceso;
     }
 
-    public boolean insertarProceso(Proceso proceso) {
+    public boolean insertar(Proceso proceso) {
         // SQL
         final String SQL = ""
                 + "INSERT INTO "
@@ -188,7 +188,7 @@ public final class DALProceso {
         return numReg == 1;
     }
 
-    public boolean borrarProceso(int id) {
+    public boolean borrar(int id) {
         // SQL
         final String SQL = ""
                 + "DELETE FROM "
@@ -218,7 +218,7 @@ public final class DALProceso {
         return numReg == 1;
     }
 
-    public boolean modificarProceso(Proceso proceso) {
+    public boolean modificar(Proceso proceso) {
         // SQL
         final String SQL = ""
                 + "UPDATE "
@@ -253,7 +253,7 @@ public final class DALProceso {
         return numReg == 1;
     }
 
-    public Long contarProcesos() {
+    public Long contar() {
         // Número de Filas
         long filas = 0;
 
@@ -284,7 +284,7 @@ public final class DALProceso {
         return filas;
     }
 
-    public List<Proceso> obtenerPaginaProcesos(long indice, int longitud) {
+    public List<Proceso> paginar(long indice, int longitud) {
         // SQL
         String sql = ""
                 + "SELECT "

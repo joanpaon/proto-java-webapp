@@ -43,12 +43,12 @@ public final class CommandPerfilInsercion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALPerfil dalPerfil = new DALPerfil(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Obtener Operación
                 String op = request.getParameter("op");
 
@@ -64,7 +64,7 @@ public final class CommandPerfilInsercion extends Command {
                     Perfil perfil = new Perfil(nombre, info);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalPerfil.insertarPerfil(perfil);
+                    boolean checkOK = dalPerfil.insertar(perfil);
 
                     // Validar Operación
                     if (checkOK) {

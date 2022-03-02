@@ -43,12 +43,12 @@ public final class CommandProcesoBorrado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation bllAdmin = new CommandValidation(sesion);
+            CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
             DALProceso dalProceso = new DALProceso(sesion);
 
-            if (bllAdmin.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -58,13 +58,13 @@ public final class CommandProcesoBorrado extends Command {
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
                     // ID Entidad + BD > Entidad
-                    Proceso proceso = dalProceso.obtenerProceso(id);
+                    Proceso proceso = dalProceso.consultar(id);
 
                     // Enlaza Datos > JSP
                     request.setAttribute("proceso", proceso);
                 } else if (op.equals("proceso")) {
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalProceso.borrarProceso(id);
+                    boolean checkOK = dalProceso.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {
