@@ -19,13 +19,14 @@ import org.japo.java.libraries.UtilesServlet;
 public final class DALPerfil {
 
     // Campos
-//    private final HttpSession sesion;
+    private final HttpSession sesion;
+
+    // Nombre de la Base de datos
     private final String bd;
 
     public DALPerfil(HttpSession sesion) {
-//        this.sesion = sesion;
+        this.sesion = sesion;
 
-        // Sesión > Nombre Base de Datos
         bd = (String) sesion.getAttribute("bd");
     }
 

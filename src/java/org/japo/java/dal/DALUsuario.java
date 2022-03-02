@@ -33,11 +33,16 @@ import org.japo.java.libraries.UtilesServlet;
  */
 public final class DALUsuario {
 
+    // Campos
+    private final HttpSession sesion;
+
     // Nombre de la Base de datos
-    private static final String BD = "proto";
+    private final String bd;
 
     public DALUsuario(HttpSession sesion) {
-        // ---
+        this.sesion = sesion;
+        
+        bd = (String) sesion.getAttribute("bd");
     }
 
     public List<Usuario> obtenerUsuarios() {
@@ -53,13 +58,12 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -98,16 +102,15 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         String user = rs.getString("user");
@@ -142,16 +145,15 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, user);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -187,11 +189,10 @@ public final class DALUsuario {
         // Obtención del Contexto
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
@@ -220,11 +221,10 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -254,11 +254,10 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
@@ -289,12 +288,11 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
-                try (ResultSet rs = ps.executeQuery()) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
@@ -322,17 +320,16 @@ public final class DALUsuario {
 
         try {
             // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(BD);
+            DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");

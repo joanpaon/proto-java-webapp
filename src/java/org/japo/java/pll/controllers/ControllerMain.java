@@ -27,10 +27,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.japo.java.pll.commands.ICommand;
-import org.japo.java.pll.commands.admin.CommandUnknown;
-import org.japo.java.pll.services.IService;
-import org.japo.java.pll.services.admin.ServiceUnknown;
+import org.japo.java.bll.commands.ICommand;
+import org.japo.java.bll.commands.admin.CommandUnknown;
+import org.japo.java.bll.services.IService;
+import org.japo.java.bll.services.admin.ServiceUnknown;
 
 /**
  *
@@ -38,6 +38,10 @@ import org.japo.java.pll.services.admin.ServiceUnknown;
  */
 @WebServlet(name = "ControllerMain", urlPatterns = {"", "/public/*"})
 public final class ControllerMain extends HttpServlet {
+
+    // Nombres de Paquetes
+    private static final String COMMAND_PKG = "org.japo.java.bll.commands";
+    private static final String SERVICE_PKG = "org.japo.java.bll.services";
 
     protected void processRequest(
             HttpServletRequest request,
@@ -151,9 +155,6 @@ public final class ControllerMain extends HttpServlet {
     }
 
     private String obtenerNombreServicio(String cmd) {
-        // Paquete
-        final String PKG = "org.japo.java.pll.services";
-
         // Prefijo
         final String PRE = "Service";
 
@@ -182,8 +183,8 @@ public final class ControllerMain extends HttpServlet {
         // Kebab Case > Camel Case
         cmd = cambiarKebab2Camel(cmd);
 
-        // Retorno: Nombre Cualificado Clase Comando
-        return String.format("%s.%s.%s%s", PKG, sub, PRE, cmd);
+        // Retorno: Nombre Cualificado Clase Servicio
+        return String.format("%s.%s.%s%s", SERVICE_PKG, sub, PRE, cmd);
     }
 
     private ICommand obtenerComando(String cmd) {
@@ -215,9 +216,6 @@ public final class ControllerMain extends HttpServlet {
     }
 
     private String obtenerNombreComando(String cmd) {
-        // Paquete
-        final String PKG = "org.japo.java.pll.commands";
-
         // Prefijo
         final String PRE = "Command";
 
@@ -247,7 +245,7 @@ public final class ControllerMain extends HttpServlet {
         cmd = cambiarKebab2Camel(cmd);
 
         // Retorno: Nombre Cualificado Clase Comando
-        return String.format("%s.%s.%s%s", PKG, sub, PRE, cmd);
+        return String.format("%s.%s.%s%s", COMMAND_PKG, sub, PRE, cmd);
     }
 
     private String cambiarKebab2Camel(String cmd) {
@@ -314,8 +312,7 @@ public final class ControllerMain extends HttpServlet {
 
             // Origen > Destino
             try (
-                    FileInputStream origen = new FileInputStream(recurso);
-                    ServletOutputStream destino = response.getOutputStream()) {
+                     FileInputStream origen = new FileInputStream(recurso);  ServletOutputStream destino = response.getOutputStream()) {
                 // Origen > Buffer
                 origen.read(buffer);
 

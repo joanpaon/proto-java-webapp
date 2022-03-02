@@ -38,7 +38,7 @@
           <input type="text" name="user" placeholder="Usuario"
                  pattern="\w{3,30}" autocomplete="username" required />
           <input type="password" name="pass" placeholder="Contraseña" 
-                 pattern="\w{6,30}" autocomplete="current-password" required />
+                 pattern="\w{3,30}" autocomplete="current-password" required />
           <input type="submit" value="Validar" autofocus="autofocus" />
         </form>
       </main>

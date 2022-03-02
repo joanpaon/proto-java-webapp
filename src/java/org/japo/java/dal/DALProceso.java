@@ -19,9 +19,14 @@ import org.japo.java.libraries.UtilesServlet;
 public final class DALProceso {
 
     // Campos
+    private final HttpSession sesion;
+
+    // Nombre de la Base de datos
     private final String bd;
 
     public DALProceso(HttpSession sesion) {
+        this.sesion = sesion;
+
         bd = (String) sesion.getAttribute("bd");
     }
 
@@ -41,10 +46,9 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -84,13 +88,12 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Entidad
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         String nombre = rs.getString("nombre");
@@ -126,13 +129,12 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, nombre);
 
                 // BD > Entidad
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -170,8 +172,7 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setString(1, proceso.getNombre());
                 ps.setString(2, proceso.getInfo());
@@ -202,8 +203,7 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -236,8 +236,7 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setString(1, proceso.getNombre());
                 ps.setString(2, proceso.getInfo());
@@ -270,9 +269,8 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
-                try (ResultSet rs = ps.executeQuery()) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
@@ -304,14 +302,13 @@ public final class DALProceso {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");

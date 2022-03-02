@@ -11,7 +11,7 @@ public final class Usuario implements Serializable {
 
     // Expresiones regulares
     public static final String ER_USER = "[\\w]{3,30}";
-    public static final String ER_PASS = "[\\w]{6,30}";
+    public static final String ER_PASS = "[\\w]{3,30}";
 
     // Campos
     private int id;
