@@ -28,16 +28,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.japo.java.bll.commands.ICommand;
-import org.japo.java.bll.commands.admin.CommandUnknown;
 import org.japo.java.bll.services.IService;
-import org.japo.java.bll.services.admin.ServiceUnknown;
 
 /**
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-@WebServlet(name = "ControllerMain", urlPatterns = {"", "/public/*"})
-public final class ControllerMain extends HttpServlet {
+@WebServlet(name = "Controller", urlPatterns = {"", "/public/*"})
+public final class Controller extends HttpServlet {
+
+    // Tamaño Máximo Fichero Recurso ( Defecto: Ilimitado )
+    private static final long MAX_SIZE = -1;
 
     // Nombres de Paquetes
     private static final String COMMAND_PKG = "org.japo.java.bll.commands";
@@ -55,39 +56,15 @@ public final class ControllerMain extends HttpServlet {
         // Análisis de la Petición
         if (request.getPathInfo().equals("/")) {
             if (request.getParameter("svc") != null) {
-                // Petición > Nombre de Servicio
-                String svcName = request.getParameter("svc");
-
-                // Nombre de Servicio > Servicio ( Interfaz )
-                IService svc = obtenerServicio(svcName);
-
-                // ServletContext + Petición + Resuesta > Inicializar Servicio
-                svc.init(getServletContext(), request, response);
-
-                // Procesa Servicio
-                svc.process();
+                procesarServicio(request, response);
             } else if (request.getParameter("cmd") != null) {
-                // Petición > Nombre de Comando (Kebab Case)
-                String cmdName = request.getParameter("cmd");
-
-                // Nombre de Comando > Comando ( Interfaz )
-                ICommand cmd = obtenerComando(cmdName);
-
-                // ServletContext + Peticion + Resuesta > Inicializar Comando
-                cmd.init(getServletContext(), request, response);
-
-                // Procesa Comando
-                cmd.process();
+                procesarComando(request, response);
             } else {
-                // Comando de Ejecución por Defecto
+                // Redirección Comando por Defecto ( Bienvenida )
                 response.sendRedirect("?cmd=landing");
             }
         } else {
-            // Request > Recurso
-            File f = obtenerRecurso(request);
-
-            // Recurso > Salida
-            servirRecurso(f, response);
+            procesarRecurso(request, response);
         }
     }
 
@@ -130,110 +107,99 @@ public final class ControllerMain extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private IService obtenerServicio(String svc) {
+    private IService obtenerServicio(String svcName) throws ServletException {
         // Referencia Comando
-        IService instancia;
+        IService svc;
 
         try {
             // Parámetro cmd > Nombre Cualificado de Clase Comando
-            String nombreClase = obtenerNombreServicio(svc);
+            String svcClassName = obtenerNombreServicio(svcName);
 
-            // Nombre Clase > Clase Clase
-            Class<?> clase = Class.forName(nombreClase);
+            // Nombre Clase > Objeto Class
+            Class<?> svcClass = Class.forName(svcClassName);
 
-            // Clase Clase > Constructor Clase
-            Constructor<?> constructor = clase.getConstructor();
+            // Objeto Class > Constructor Clase
+            Constructor<?> svcConstructor = svcClass.getConstructor();
 
             // Constructor Clase > Instancia Clase
-            instancia = (IService) constructor.newInstance();
+            svc = (IService) svcConstructor.newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException
                 | SecurityException | InstantiationException
                 | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException ex) {
+                | InvocationTargetException e) {
             // Clase Indefinida | Desconocida
-            instancia = new ServiceUnknown();
+            throw new ServletException(e.getMessage());
         }
 
         // Retorno Comando
-        return instancia;
+        return svc;
     }
 
-    private String obtenerNombreServicio(String cmd) {
+    private String obtenerNombreServicio(String svcName) throws ServletException {
         // Subpaquete
         String sub;
 
         // Parámetro > Subpaquete
-        if (cmd == null) {
-            sub = "admin";
-            cmd = "unknown";
+        if (svcName == null) {
+            throw new ServletException("Servicio no especificado");
         } else if (false
-                || cmd.equals("landing")
-                || cmd.equals("login")
-                || cmd.equals("profile")
-                || cmd.equals("validation")
-                || cmd.equals("signup")
-                || cmd.equals("message")
-                || cmd.equals("logout")) {
-            sub = "admin";
-        } else if (false
-                || cmd.equals("sample")
-                || cmd.equals("token")
-                || cmd.equals("piece")
-                || cmd.equals("clue")) {
+                || svcName.equals("sample")
+                || svcName.equals("token")
+                || svcName.equals("check")
+                || svcName.equals("clue")) {
             sub = "helper";
-        } else if (cmd.contains("-")) {
+        } else if (svcName.contains("-")) {
             // Eliminar Operacion Final
-            sub = cmd.substring(0, cmd.lastIndexOf("-"));
+            sub = svcName.substring(0, svcName.lastIndexOf("-"));
 
-            // Notacion paquete: - > .
+            // Notación Kebab-Case > Notación Package: - > . 
             sub = sub.replace("-", ".");
         } else {
-            sub = cmd;
+            sub = svcName;
         }
 
         // Kebab Case > Camel Case
-        cmd = cambiarKebab2Camel(cmd);
+        svcName = cambiarKebab2Camel(svcName);
 
         // Retorno: Nombre Cualificado Clase Servicio
-        return String.format("%s.%s.%s%s", SERVICE_PKG, sub, SERVICE_PRE, cmd);
+        return String.format("%s.%s.%s%s", SERVICE_PKG, sub, SERVICE_PRE, svcName);
     }
 
-    private ICommand obtenerComando(String cmd) {
+    private ICommand obtenerComando(String cmdName) throws ServletException {
         // Referencia Comando
-        ICommand instancia;
+        ICommand cmd;
 
         try {
             // Parámetro cmd > Nombre Cualificado de Clase Comando
-            String nombreClase = obtenerNombreComando(cmd);
+            String cmdClassName = obtenerNombreComando(cmdName);
 
-            // Nombre Clase > Clase Clase
-            Class<?> clase = Class.forName(nombreClase);
+            // Nombre Clase > Objeto Class
+            Class<?> cmdClass = Class.forName(cmdClassName);
 
-            // Clase Clase > Constructor Clase
-            Constructor<?> constructor = clase.getConstructor();
+            // Objeto Class > Constructor Clase
+            Constructor<?> cmdConstructor = cmdClass.getConstructor();
 
             // Constructor Clase > Instancia Clase
-            instancia = (ICommand) constructor.newInstance();
+            cmd = (ICommand) cmdConstructor.newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException
                 | SecurityException | InstantiationException
                 | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException ex) {
+                | InvocationTargetException e) {
             // Clase Indefinida | Desconocida
-            instancia = new CommandUnknown();
+            throw new ServletException(e.getMessage());
         }
 
         // Retorno Comando
-        return instancia;
+        return cmd;
     }
 
-    private String obtenerNombreComando(String cmd) {
+    private String obtenerNombreComando(String cmd) throws ServletException {
         // Subpaquete
         String sub;
 
         // Parámetro > Subpaquete
         if (cmd == null) {
-            sub = "admin";
-            cmd = "unknown";
+            throw new ServletException("Comando no especificado");
         } else if (false
                 || cmd.equals("landing")
                 || cmd.equals("login")
@@ -243,16 +209,11 @@ public final class ControllerMain extends HttpServlet {
                 || cmd.equals("message")
                 || cmd.equals("logout")) {
             sub = "admin";
-        } else if (false
-                || cmd.equals("xxx")
-                || cmd.equals("yyy")
-                || cmd.equals("zzz")) {
-            sub = "kkk";
         } else if (cmd.contains("-")) {
             // Eliminar Operacion Final
             sub = cmd.substring(0, cmd.lastIndexOf("-"));
 
-            // Notacion paquete: - > .
+            // Notación Kebab-Case > Notación Package: - > . 
             sub = sub.replace("-", ".");
         } else {
             sub = cmd;
@@ -313,29 +274,84 @@ public final class ControllerMain extends HttpServlet {
         return new File(ruta);
     }
 
-    private void servirRecurso(File recurso, HttpServletResponse response)
+    private void servirRecurso(
+            File recurso, HttpServletResponse response)
             throws FileNotFoundException, IOException {
-        // Tamaño Máximo Recurso
-        final long MAX_SIZE = -1;
-
         // Analizar Recurso
         if (recurso == null) {
             // No hay recurso - No hacer nada
-        } else if (MAX_SIZE > -1 && recurso.length() <= MAX_SIZE) {
-            // Demasiado Grande - No hacer nada
+        } else if (MAX_SIZE <= -1) {
+            // No Limitación Tamaño - Servir Recurso
+            servirFichero(recurso, response);
+        } else if (recurso.length() <= MAX_SIZE) {
+            // Si Limitación Tamaño - Tamaño Aceptable - Servir Recurso
+            servirFichero(recurso, response);
         } else {
-            // Buffer Temporal
-            byte[] buffer = new byte[(int) recurso.length()];
+            // Si Limitación Tamaño - Tamaño Excesivo - No Hacer Nada
+        }
+    }
 
-            // Origen > Destino
-            try (
-                    FileInputStream origen = new FileInputStream(recurso); ServletOutputStream destino = response.getOutputStream()) {
-                // Origen > Buffer
-                origen.read(buffer);
+    private void procesarServicio(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        // Petición > Nombre de Servicio (Kebab Case)
+        String svcName = request.getParameter("svc");
 
-                // Buffer > Destino
-                destino.write(buffer);
-            }
+        // Nombre de Servicio > Servicio ( Referenciado por Interfaz )
+        IService svc = obtenerServicio(svcName);
+
+        // ServletContext + Petición + Resuesta > Inicializar Servicio
+        svc.init(getServletContext(), request, response);
+
+        // Procesa Servicio
+        svc.process();
+    }
+
+    private void procesarComando(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        // Petición > Nombre de Comando (Kebab Case)
+        String cmdName = request.getParameter("cmd");
+
+        // Nombre de Comando > Comando ( Referenciado por Interfaz )
+        ICommand cmd = obtenerComando(cmdName);
+
+        // ServletContext + Peticion + Resuesta > Inicializar Comando
+        cmd.init(getServletContext(), request, response);
+
+        // Procesa Comando
+        cmd.process();
+    }
+
+    private void procesarRecurso(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException {
+        // Request > Recurso Público ( CSS | JS | PNG | ... )
+        File f = obtenerRecurso(request);
+
+        // Recurso Público > Salida
+        servirRecurso(f, response);
+    }
+
+    private void servirFichero(
+            File recurso,
+            HttpServletResponse response)
+            throws IOException {
+        // Buffer Temporal
+        byte[] buffer = new byte[(int) recurso.length()];
+
+        // Origen > Destino
+        try (
+                FileInputStream origen = new FileInputStream(recurso);
+                ServletOutputStream destino = response.getOutputStream()) {
+            // Origen > Buffer
+            origen.read(buffer);
+
+            // Buffer > Destino
+            destino.write(buffer);
         }
     }
 }

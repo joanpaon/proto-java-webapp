@@ -56,6 +56,15 @@ main img {
 
 /* --- */
 
+main h2 {
+    margin-bottom: 2rem;
+
+    color: #333;
+    font-size: 4rem;
+}
+
+/* --- */
+
 main .btn {
     height: 3.4rem;
     width: 12rem;

@@ -24,7 +24,7 @@
         <link href="public/img/logo.png" rel="icon" type="image/x-icon" />
 
         <!-- Style Sheet Links -->
-        <link rel="stylesheet" href="public/css/messages/message.css" />
+        <link rel="stylesheet" href="public/css/message/message.css" />
         <link rel="stylesheet" href="public/css/partials/header.css" />
         <link rel="stylesheet" href="public/css/partials/footer.css" />
         <link rel="stylesheet" href="public/css/partials/button-login.css" />
@@ -54,7 +54,7 @@
         </div>
 
         <!-- Scripts -->
-        <script src="public/js/messages/message.js"></script>
+        <script src="public/js/message/message.js"></script>
         <script src="public/js/partials/header.js"></script>
         <script src="public/js/partials/footer.js"></script>
         <script src="public/js/partials/button-login.js"></script>

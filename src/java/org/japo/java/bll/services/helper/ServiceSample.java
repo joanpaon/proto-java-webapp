@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.admin;
+package org.japo.java.bll.services.helper;
 
-import org.japo.java.bll.commands.Command;
-import java.io.IOException;
 import javax.servlet.ServletException;
+import java.io.IOException;
+import org.japo.java.bll.services.Service;
 
 /**
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public class CommandUnknown extends Command {
+public final class ServiceSample extends Service {
 
     @Override
     public void process() throws ServletException, IOException {
-        forward("message/comando-desconocido");
+        forward("{'ok'=true, 'message'='Ejemplo de Servicio'}");
     }
 }
