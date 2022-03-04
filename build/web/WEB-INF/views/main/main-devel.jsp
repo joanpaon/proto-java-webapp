@@ -40,6 +40,14 @@
 
                 <h2>Página Principal del Desarrollador</h2>
 
+                <div class="controles">
+                    <a class="btn" href="?cmd=perfil-listado">Perfiles</a>
+                    <a class="btn" href="?cmd=permiso-perfil-listado">PermisosP</a>
+                    <a class="btn" href="?cmd=permiso-usuario-listado">PermisosU</a>
+                    <a class="btn" href="?cmd=proceso-listado">Procesos</a>
+                    <a class="btn" href="?cmd=usuario-listado">Usuarios</a>
+                </div>
+
             </main>
 
             <%@include file="../partials/footer.jspf" %>

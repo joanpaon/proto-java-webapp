@@ -5,23 +5,23 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    HttpSession sesion = request.getSession(false);
+    HttpSession _sesion = request.getSession(false);
 
-    String imagen = null;
+    String _imagen = null;
 
-    if (sesion != null && sesion.getAttribute("usuario") instanceof Usuario) {
+    if (_sesion != null && _sesion.getAttribute("usuario") instanceof Usuario) {
         // Sesión > Usuario
-        Usuario usuario = (Usuario) sesion.getAttribute("usuario");
+        Usuario _usuario = (Usuario) _sesion.getAttribute("usuario");
 
         // Sesion > DALAvatar
-        DALAvatar dalAvatar = new DALAvatar(sesion);
+        DALAvatar _dalAvatar = new DALAvatar(_sesion);
 
         // Usuario > Avatar
-        Avatar avatar = dalAvatar.consultar(usuario.getAvatar());
+        Avatar _avatar = _dalAvatar.consultar(_usuario.getAvatar());
 
         // Avatar > Imagen
-        if (avatar != null) {
-            imagen = avatar.getImagen();
+        if (_avatar != null) {
+            _imagen = _avatar.getImagen();
         }
     }
 %>
@@ -35,13 +35,13 @@
     </div>
 
     <div class="titulo">
-        <h1>JAPO Labs Java Framework</h1>
+        <h1>JAPOLabs Java Framework</h1>
     </div>
 
     <div class="user">
-        <% if (imagen != null) {%>
+        <% if (_imagen != null) {%>
         <a href="?cmd=logout">
-            <img src="<%= imagen%>" alt="Avatar"/>
+            <img src="<%= _imagen%>" alt="Avatar"/>
         </a>
         <% }%>
     </div>

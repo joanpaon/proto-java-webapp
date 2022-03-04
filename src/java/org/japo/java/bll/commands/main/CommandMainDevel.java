@@ -37,15 +37,6 @@ public final class CommandMainDevel extends Command {
         // Sesión
         HttpSession sesion = request.getSession(false);
 
-        // Sesión > Usuario
-        Usuario usuario = (Usuario) sesion.getAttribute("usuario");
-
-        // Sesion > DALAvatar
-        DALAvatar dalAvatar = new DALAvatar(sesion);
-
-        // Usuario > Avatar
-        Avatar avatar = dalAvatar.consultar(usuario.getId());
-
         // Validar Sesión
         if (validarSesion(sesion)) {
             out = "main/main-devel";

@@ -13,27 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.proceso;
+package org.japo.java.bll.commands.avatar;
 
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.admin.CommandValidation;
-import org.japo.java.dal.DALProceso;
-import org.japo.java.entities.Proceso;
+import org.japo.java.dal.DALAvatar;
+import org.japo.java.entities.Avatar;
+import org.japo.java.entities.Perfil;
+import org.japo.java.entities.Usuario;
 
 /**
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class CommandProcesoListado extends Command {
+public final class CommandAvatarListado extends Command {
 
     @Override
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "proceso/proceso-listado";
+        String out = "avatar/avatar-listado";
 
         // Sesión
         HttpSession sesion = request.getSession(false);
@@ -45,13 +48,12 @@ public final class CommandProcesoListado extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Validar Acceso Comando
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALProceso dalProceso = new DALProceso(sesion);
+                DALAvatar dalAvatar = new DALAvatar(sesion);
 
                 // BD > Parámetros Listado
-                long rowCount = dalProceso.contar();
+                long rowCount = dalAvatar.contar();
 
                 // Request > Índice de pagina            
                 long rowIndex;
@@ -91,11 +93,32 @@ public final class CommandProcesoListado extends Command {
                                 : rowCount % rowsPage == 0 ? (rowCount / rowsPage - 1) * rowsPage
                                         : rowCount / rowsPage * rowsPage;
 
-                // BD > Lista de Procesos
-                List<Proceso> procesos = dalProceso.paginar(rowIndex, rowsPage);
+                // Sesión > Usuario
+                Usuario usuario = (Usuario) sesion.getAttribute("usuario");
+
+                // BD > Lista de Avatares
+                List<Avatar> avatares;
+
+                // Determinar Avatar Usuario
+                switch (usuario.getPerfil()) {
+                    case Perfil.DEVEL:
+                        // BD > Lista de Pefiles
+                        avatares = dalAvatar.listar();
+                        break;
+                    case Perfil.ADMIN:
+                        // BD > Lista de Pefiles
+                        avatares = dalAvatar.listar();
+                        break;
+                    case Perfil.BASIC:
+                    default:
+                        // Usuario Actual (Únicamente) > Lista de Usuarios
+                        Avatar avatar = dalAvatar.consultar(usuario.getAvatar());
+                        avatares = new ArrayList<>();
+                        avatares.add(avatar);
+                }
 
                 // Inyecta Datos Listado > JSP
-                request.setAttribute("procesos", procesos);
+                request.setAttribute("avatares", avatares);
 
                 // Inyecta Parámetros Listado > JSP
                 request.setAttribute("row-index", rowIndex);

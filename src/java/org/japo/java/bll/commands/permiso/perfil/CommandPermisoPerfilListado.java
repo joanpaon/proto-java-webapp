@@ -45,15 +45,65 @@ public final class CommandPermisoPerfilListado extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);
-
+            // Validar Acceso Comando
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
+                // Capas de Datos
+                DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);
+
+                // BD > Parámetros Listado
+                long rowCount = dalPermiso.contar();
+
+                // Request > Índice de pagina            
+                long rowIndex;
+                try {
+                    // String > long
+                    rowIndex = Long.parseLong(request.getParameter("row-index"));
+                } catch (NumberFormatException e) {
+                    rowIndex = 0;
+                }
+
+                // Request > Líneas por Pagina            
+                int rowsPage;
+                try {
+                    // String > long
+                    rowsPage = Integer.parseInt(request.getParameter("rows-page"));
+
+                    // Validar Escalones
+                    rowsPage = rowsPage == 80
+                            || rowsPage == 40
+                            || rowsPage == 20 ? rowsPage : 10;
+                } catch (NumberFormatException e) {
+                    rowsPage = 10;
+                }
+
+                // Indice Navegación - Inicio
+                long rowIndexIni = 0;
+
+                // Indice Navegación - Anterior
+                long rowIndexAnt = rowIndex - rowsPage < 0 ? 0 : rowIndex - rowsPage;
+
+                // Indice Navegación - Siguiente
+                long rowIndexSig = rowIndex + rowsPage > rowCount - 1 ? rowIndex : rowIndex + rowsPage;
+
+                // Indice Navegación - Final
+                long rowIndexFin = rowCount == 0 ? 0
+                        : rowCount / rowsPage == 0 ? 0
+                                : rowCount % rowsPage == 0 ? (rowCount / rowsPage - 1) * rowsPage
+                                        : rowCount / rowsPage * rowsPage;
+
                 // BD > Lista de Permisos de Perfil
                 List<PermisoPerfil> permisos = dalPermiso.listar();
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("permisos", permisos);
+
+                // Inyecta Parámetros Listado > JSP
+                request.setAttribute("row-index", rowIndex);
+                request.setAttribute("row-index-ini", rowIndexIni);
+                request.setAttribute("row-index-ant", rowIndexAnt);
+                request.setAttribute("row-index-sig", rowIndexSig);
+                request.setAttribute("row-index-fin", rowIndexFin);
+                request.setAttribute("rows-page", rowsPage);
             } else {
                 out = "message/acceso-denegado";
             }

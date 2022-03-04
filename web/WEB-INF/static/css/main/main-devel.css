@@ -56,16 +56,30 @@ main img {
         brightness(.9)
         opacity(.15);
 
-    position: absolute;
+    position: fixed;
+    top: 2rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     z-index: -1;
 }
 
 /* --- */
 
 main h2 {
+    margin-bottom: 5rem;
+
     color: #333;
     font-size: 4rem;
     text-shadow: .2rem .2rem .4rem rgba(0, 0, 0, 0.5);
+}
+
+main .controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 
 main .btn {
