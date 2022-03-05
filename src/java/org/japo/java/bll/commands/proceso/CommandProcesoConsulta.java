@@ -44,14 +44,14 @@ public final class CommandProcesoConsulta extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALProceso dalProceso = new DALProceso(sesion);
-
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
-                // Request > ID Entidad
+                // Capas de Datos
+                DALProceso dalProceso = new DALProceso(sesion);
+
+                // Request > ID Proceso
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                // ID Entidad > Entidad
+                // ID Proceso > Proceso
                 Proceso proceso = dalProceso.consultar(id);
 
                 // Inyecta Datos > JSP

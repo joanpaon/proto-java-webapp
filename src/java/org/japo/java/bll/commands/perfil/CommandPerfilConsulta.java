@@ -44,14 +44,14 @@ public final class CommandPerfilConsulta extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALPerfil dalPerfil = new DALPerfil(sesion);
-
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
-                // Request > ID Entidad
+                // Capas de Datos
+                DALPerfil dalPerfil = new DALPerfil(sesion);
+
+                // Request > ID Perfil
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                // ID Entidad > Entidad
+                // ID Perfil > Perfil
                 Perfil perfil = dalPerfil.consultar(id);
 
                 // Inyecta Datos > JSP

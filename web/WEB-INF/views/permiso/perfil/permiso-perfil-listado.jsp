@@ -61,7 +61,7 @@
                 <img class="watermark" src="public/img/logo01.png" alt="Logo" />
 
                 <header>
-                    <h2>Listado de Permisos</h2>
+                    <h2>Listado de Permisos de Perfil</h2>
                     <% if (usuario.getPerfil() >= Perfil.DEVEL) { %>
                     <a class="btn btn-principal" href="?cmd=main-devel" title="Principal">Principal</a>
                     <% } else if (usuario.getPerfil() >= Perfil.ADMIN) { %>
@@ -88,9 +88,9 @@
                             <td><%= p.getPerfil()%></td>
                             <td><%= p.getProceso()%></td>
                             <td>
-                                <a class="btn btn-consultar" href="?cmd=permiso-consulta&id=<%= p.getId()%>" title="Consulta">C</a>
-                                <a class="btn btn-modificar" href="?cmd=permiso-modificacion&id=<%= p.getId()%>" title="Modificación">M</a>
-                                <a class="btn btn-borrar" href="?cmd=permiso-borrado&id=<%= p.getId()%>" title="Eliminación">B</a>
+                                <a class="btn btn-consultar" href="?cmd=permiso-perfil-consulta&id=<%= p.getId()%>" title="Consulta">C</a>
+                                <a class="btn btn-modificar" href="?cmd=permiso-perfil-modificacion&id=<%= p.getId()%>" title="Modificación">M</a>
+                                <a class="btn btn-borrar" href="?cmd=permiso-perfil-borrado&id=<%= p.getId()%>" title="Eliminación">B</a>
                             </td>
                         </tr>
 

@@ -139,5 +139,7 @@
 
         <!-- Application Scripts -->
         <script src="public/js/usuario/usuario-listado.js"></script>
+        <script src="public/js/partials/header.js"></script>
+        <script src="public/js/partials/footer.js"></script>
     </body>
 </html>

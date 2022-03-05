@@ -44,14 +44,14 @@ public final class CommandPermisoUsuarioConsulta extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALPermisoUsuario dalPermiso = new DALPermisoUsuario(sesion);
-
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
-                // Request > ID EntityUsuario
+                // Capas de Datos
+                DALPermisoUsuario dalPermiso = new DALPermisoUsuario(sesion);
+
+                // Request > ID Permiso Usuario
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                // ID Entidad + BD > Entidad
+                // ID Permiso Usuario + BD > Permiso Usuario
                 PermisoUsuario permiso = dalPermiso.consultar(id);
 
                 // Enlaza Datos > JSP

@@ -20,7 +20,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.admin.CommandValidation;
+import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALUsuario;
+import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Usuario;
 
 /**
@@ -44,18 +46,23 @@ public final class CommandUsuarioConsulta extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALUsuario dalUsuario = new DALUsuario(sesion);
-
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
-                // Request > ID Entidad
+                // Capas de Datos
+                DALUsuario dalUsuario = new DALUsuario(sesion);
+                DALAvatar dalAvatar = new DALAvatar(sesion);
+
+                // Request > ID Usuario
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                // ID Entidad > Entidad
+                // ID Usuario > Usuario
                 Usuario usuario = dalUsuario.consultar(id);
+
+                // ID Avatar > Avatar
+                Avatar avatar = dalAvatar.consultar(usuario.getAvatar());
 
                 // Enlaza Datos > JSP
                 request.setAttribute("usuario", usuario);
+                request.setAttribute("avatar", avatar);
             } else {
                 out = "message/acceso-denegado";
             }
