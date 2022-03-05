@@ -15,6 +15,7 @@
  */
 package org.japo.java.dal;
 
+import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,15 +34,13 @@ import org.japo.java.libraries.UtilesServlet;
  */
 public final class DALUsuario {
 
-    // Campos
-    private final HttpSession sesion;
+    // Logger
+    private static final Logger logger = Logger.getLogger(DALUsuario.class.getName());
 
     // Nombre de la Base de datos
     private final String bd;
 
     public DALUsuario(HttpSession sesion) {
-        this.sesion = sesion;
-
         bd = (String) sesion.getAttribute("bd");
     }
 
@@ -49,9 +48,19 @@ public final class DALUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "usuarios.id AS id, "
+                + "usuarios.user AS user, "
+                + "usuarios.pass AS pass, "
+                + "usuarios.avatar AS avatar, "
+                + "avatares.imagen AS avatar_img, "
+                + "usuarios.perfil AS perfil, "
+                + "perfiles.info AS perfil_info "
                 + "FROM "
-                + "usuarios";
+                + "usuarios "
+                + "INNER JOIN "
+                + "avatares ON avatares.id = usuarios.avatar "
+                + "INNER JOIN "
+                + "perfiles ON perfiles.id = usuarios.perfil ";
 
         // Lista Vacía
         List<Usuario> usuarios = new ArrayList<>();
@@ -61,19 +70,21 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
                         int avatar = rs.getInt("avatar");
+                        String avatarImg = rs.getString("avatar_img");
                         int perfil = rs.getInt("perfil");
+                        String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
 
                         // Entidad > Lista
                         usuarios.add(usuario);
@@ -81,7 +92,7 @@ public final class DALUsuario {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -92,11 +103,20 @@ public final class DALUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "usuarios.id AS id, "
+                + "usuarios.user AS user, "
+                + "usuarios.pass AS pass, "
+                + "usuarios.avatar AS avatar, "
+                + "avatares.imagen AS avatar_img, "
+                + "usuarios.perfil AS perfil, "
+                + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
-                + "WHERE "
-                + "id=?";
+                + "INNER JOIN "
+                + "avatares ON avatares.id = usuarios.avatar "
+                + "INNER JOIN "
+                + "perfiles ON perfiles.id = usuarios.perfil "
+                + "WHERE usuarios.id=?";
 
         // Entidad
         Usuario usuario = null;
@@ -105,27 +125,28 @@ public final class DALUsuario {
             // Contexto Inicial > DataSource
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
-            try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            try ( Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
                         int avatar = rs.getInt("avatar");
+                        String avatarImg = rs.getString("avatar_img");
                         int perfil = rs.getInt("perfil");
+                        String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        usuario = new Usuario(id, user, pass, avatar, perfil);
+                        usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
                     }
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
@@ -136,11 +157,21 @@ public final class DALUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "usuarios.id AS id, "
+                + "usuarios.user AS user, "
+                + "usuarios.pass AS pass, "
+                + "usuarios.avatar AS avatar, "
+                + "avatares.imagen AS avatar_img, "
+                + "usuarios.perfil AS perfil, "
+                + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
+                + "INNER JOIN "
+                + "avatares ON avatares.id = usuarios.avatar "
+                + "INNER JOIN "
+                + "perfiles ON perfiles.id = usuarios.perfil "
                 + "WHERE "
-                + "user=?";
+                + "usuarios.user=?";
 
         // Entidad
         Usuario usuario = null;
@@ -150,26 +181,28 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, user);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String pass = rs.getString("pass");
                         int avatar = rs.getInt("avatar");
+                        String avatarImg = rs.getString("avatar_img");
                         int perfil = rs.getInt("perfil");
+                        String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        usuario = new Usuario(id, user, pass, avatar, perfil);
+                        usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
                     }
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
@@ -195,7 +228,7 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
@@ -206,7 +239,7 @@ public final class DALUsuario {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -216,8 +249,7 @@ public final class DALUsuario {
     public boolean borrar(int id) {
         // SQL
         String sql = ""
-                + "DELETE FROM "
-                + "usuarios "
+                + "DELETE FROM usuarios "
                 + "WHERE id=?";
 
         // Número de registros afectados
@@ -228,7 +260,7 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -236,7 +268,7 @@ public final class DALUsuario {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -261,7 +293,7 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
@@ -273,7 +305,7 @@ public final class DALUsuario {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -296,15 +328,15 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-                try (ResultSet rs = ps.executeQuery()) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: Filas Contadas
@@ -315,9 +347,19 @@ public final class DALUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "usuarios.id AS id, "
+                + "usuarios.user AS user, "
+                + "usuarios.pass AS pass, "
+                + "usuarios.avatar AS avatar, "
+                + "avatares.imagen AS avatar_img, "
+                + "usuarios.perfil AS perfil, "
+                + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
+                + "INNER JOIN "
+                + "avatares ON avatares.id = usuarios.avatar "
+                + "INNER JOIN "
+                + "perfiles ON perfiles.id = usuarios.perfil "
                 + "LIMIT ?, ?";
 
         // Lista Vacía
@@ -328,23 +370,25 @@ public final class DALUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
                         int avatar = rs.getInt("avatar");
+                        String avatarImg = rs.getString("avatar_img");
                         int perfil = rs.getInt("perfil");
+                        String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
 
                         // Entidad > Lista
                         usuarios.add(usuario);
@@ -352,7 +396,7 @@ public final class DALUsuario {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista

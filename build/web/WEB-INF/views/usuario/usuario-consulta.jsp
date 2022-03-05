@@ -1,4 +1,3 @@
-<%@page import="org.japo.java.entities.Avatar"%>
 <%@page import="org.japo.java.entities.Usuario"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -6,7 +5,6 @@
 <%
     // Datos Inyectados
     Usuario usuario = (Usuario) request.getAttribute("usuario");
-    Avatar avatar = (Avatar) request.getAttribute("avatar");
 
 %>
 
@@ -73,14 +71,14 @@
                             </tr>
                             <tr>
                                 <td>Perfil</td>
-                                <td><%= usuario.getPerfil()%></td>
+                                <td><%= usuario.getPerfilInfo()%></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="imagen">
                         <div class="imagen-margen">
-                            <img src="<%= avatar.getImagen()%>" alt="<%= usuario.getUser()%>"/> 
+                            <img src="<%= usuario.getAvatarImg()%>" alt="<%= usuario.getUser()%>"/> 
                         </div>
                     </div>
                 </div>

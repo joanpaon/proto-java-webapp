@@ -77,7 +77,7 @@ public final class CommandPermisoPerfilInsercion extends Command {
                     String info = request.getParameter("info");
 
                     // Parámetros > Entidad
-                    PermisoPerfil permiso = new PermisoPerfil(proceso, perfil, info);
+                    PermisoPerfil permiso = new PermisoPerfil(0, proceso, "", perfil, "", info);
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalPermiso.insertar(permiso);

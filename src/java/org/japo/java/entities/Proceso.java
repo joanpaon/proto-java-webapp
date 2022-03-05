@@ -8,9 +8,20 @@ import java.io.Serializable;
  */
 public final class Proceso implements Serializable {
 
+    // Valores por Defecto
+    public static final int DEF_ID = 0;
+    public static final String DEF_NOMBRE = "ProcesoDesconocido";
+    public static final String DEF_INFO = "Proceso Desconocido";
+
     private int id;
     private String nombre;
     private String info;
+
+    public Proceso() {
+        id = DEF_ID;
+        nombre = DEF_NOMBRE;
+        info = DEF_INFO;
+    }
 
     public Proceso(int id, String nombre, String info) {
         this.id = id;

@@ -25,7 +25,10 @@ import java.util.Base64;
  *
  * @author JAPO Labs - japolabs@gmail.com
  */
-public class UtilesBase64 {
+public final class UtilesBase64 {
+
+    private UtilesBase64() {
+    }
 
     public static final boolean validarImagenBase64(String img) {
         boolean checkOK;

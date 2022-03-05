@@ -21,8 +21,10 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.admin.CommandValidation;
+import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
+import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 
@@ -48,21 +50,26 @@ public final class CommandUsuarioInsercion extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALPerfil dalPperfil = new DALPerfil(sesion);
-            DALUsuario dalUsuario = new DALUsuario(sesion);
-
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
+                // Capas de Datos
+                DALUsuario dalUsuario = new DALUsuario(sesion);
+                DALPerfil dalPerfil = new DALPerfil(sesion);
+                DALAvatar dalAvatar = new DALAvatar(sesion);
+
                 // Obtener Operación
                 String op = request.getParameter("op");
 
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
                     // BD > Lista de Perfiles
-                    List<Perfil> perfiles = dalPperfil.listar();
+                    List<Perfil> perfiles = dalPerfil.listar();
+
+                    // BD > Lista de Avatares
+                    List<Avatar> avatares = dalAvatar.listar();
 
                     // Inyección Datos
                     request.setAttribute("perfiles", perfiles);
+                    request.setAttribute("avatares", avatares);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
                     String user = request.getParameter("user").trim();
@@ -71,14 +78,14 @@ public final class CommandUsuarioInsercion extends Command {
                     int perfil = Integer.parseInt(request.getParameter("perfil"));
 
                     // Parámetros > Entidad
-                    Usuario usuario = new Usuario(0, user, pass, avatar, perfil);
+                    Usuario usuario = new Usuario(0, user, pass, avatar, "", perfil, "");
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalUsuario.insertar(usuario);
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=usuario-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }

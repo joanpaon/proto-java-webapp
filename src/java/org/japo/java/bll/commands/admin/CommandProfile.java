@@ -60,7 +60,7 @@ public final class CommandProfile extends Command {
                 int perfil = Integer.parseInt(request.getParameter("perfil"));
 
                 // Parámetros > Entidad
-                usuario = new Usuario(usuario.getId(), user, pass, avatar, perfil);
+                usuario = new Usuario(usuario.getId(), user, pass, avatar, "", perfil, "");
 
                 // Ejecutar Operación
                 boolean checkOK = usuarioDAL.modificar(usuario);

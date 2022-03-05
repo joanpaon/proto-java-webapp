@@ -85,8 +85,8 @@
 
                         <tr>
                             <td><%= p.getId()%></td>
-                            <td><%= p.getPerfil()%></td>
-                            <td><%= p.getProceso()%></td>
+                            <td><%= p.getPerfilInfo()%></td>
+                            <td><%= p.getProcesoInfo()%></td>
                             <td>
                                 <a class="btn btn-consultar" href="?cmd=permiso-perfil-consulta&id=<%= p.getId()%>" title="Consulta">C</a>
                                 <a class="btn btn-modificar" href="?cmd=permiso-perfil-modificacion&id=<%= p.getId()%>" title="Modificación">M</a>

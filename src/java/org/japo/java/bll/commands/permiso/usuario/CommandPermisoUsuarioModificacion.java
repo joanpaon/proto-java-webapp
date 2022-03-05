@@ -85,13 +85,12 @@ public final class CommandPermisoUsuarioModificacion extends Command {
                     permiso = dalPermiso.consultar(id);
 
                     // Request > Parámetros
-                    int proceso = Integer.parseInt(request.getParameter("proceso"));
                     int usuario = Integer.parseInt(request.getParameter("usuario"));
+                    int proceso = Integer.parseInt(request.getParameter("proceso"));
                     String info = request.getParameter("info");
 
                     // Entidad Final
-                    permiso = new PermisoUsuario(
-                            permiso.getId(), proceso, usuario, info);
+                    permiso = new PermisoUsuario(permiso.getId(), usuario, "", proceso, "", info);
 
                     // Entidad > Modificación Registro BD
                     boolean checkOK = dalPermiso.modificar(permiso);

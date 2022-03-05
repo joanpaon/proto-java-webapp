@@ -61,7 +61,7 @@ public final class CommandPerfilInsercion extends Command {
                     String info = request.getParameter("info").trim();
 
                     // Parámetros > Entidad
-                    Perfil perfil = new Perfil(nombre, info);
+                    Perfil perfil = new Perfil(0, nombre, info);
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalPerfil.insertar(perfil);

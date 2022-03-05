@@ -66,10 +66,14 @@
                             </tr>
                             <tr>
                                 <td>Perfil</td>
-                                <td><%= permiso.getPerfil()%></td>
+                                <td><%= permiso.getPerfilInfo()%></td>
                             </tr>
                             <tr>
                                 <td>Proceso</td>
+                                <td><%= permiso.getProcesoInfo()%></td>
+                            </tr>
+                            <tr>
+                                <td>Info</td>
                                 <td><%= permiso.getInfo()%></td>
                             </tr>
                         </tbody>

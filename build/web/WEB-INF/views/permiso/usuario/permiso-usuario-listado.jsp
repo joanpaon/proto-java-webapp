@@ -85,8 +85,8 @@
 
                         <tr>
                             <td><%= p.getId()%></td>
-                            <td><%= p.getUsuario()%></td>
-                            <td><%= p.getProceso()%></td>
+                            <td><%= p.getUsuarioName()%></td>
+                            <td><%= p.getProcesoInfo()%></td>
                             <td>
                                 <a class="btn btn-consultar" href="?cmd=permiso-usuario-consulta&id=<%= p.getId()%>" title="Consulta">C</a>
                                 <a class="btn btn-modificar" href="?cmd=permiso-usuario-modificacion&id=<%= p.getId()%>" title="Modificación">M</a>

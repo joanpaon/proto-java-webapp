@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -18,15 +19,13 @@ import org.japo.java.libraries.UtilesServlet;
  */
 public final class DALPermisoUsuario {
 
-    // Campos
-    private final HttpSession sesion;
+    // Logger
+    private static final Logger logger = Logger.getLogger(DALPermisoUsuario.class.getName());
 
     // Nombre de la Base de datos
     private final String bd;
 
     public DALPermisoUsuario(HttpSession sesion) {
-        this.sesion = sesion;
-
         bd = (String) sesion.getAttribute("bd");
     }
 
@@ -34,8 +33,18 @@ public final class DALPermisoUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
-                + "FROM permisos_usuario";
+                + "permisos_usuario.id AS id, "
+                + "permisos_usuario.usuario AS usuario, "
+                + "usuarios.user AS usuario_name, "
+                + "permisos_usuario.proceso AS proceso, "
+                + "procesos.info AS proceso_info, "
+                + "permisos_usuario.info AS info "
+                + "FROM "
+                + "permisos_usuario "
+                + "INNER JOIN "
+                + "usuarios ON usuarios.id = permisos_usuario.usuario "
+                + "INNER JOIN "
+                + "procesos ON procesos.id = permisos_usuario.proceso";
 
         // Lista Vacía
         List<PermisoUsuario> permisos = new ArrayList<>();
@@ -45,18 +54,20 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
-                        int proceso = rs.getInt("proceso");
                         int usuario = rs.getInt("usuario");
+                        String usuarioName = rs.getString("usuario_name");
+                        int proceso = rs.getInt("proceso");
+                        String procesoInfo = rs.getString("proceso_info");
                         String info = rs.getString("info");
 
                         // Campos > Entidad
-                        PermisoUsuario permiso = new PermisoUsuario(id, proceso, usuario, info);
+                        PermisoUsuario permiso = new PermisoUsuario(id, usuario, usuarioName, proceso, procesoInfo, info);
 
                         // Entidad > Lista
                         permisos.add(permiso);
@@ -64,7 +75,7 @@ public final class DALPermisoUsuario {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -75,11 +86,20 @@ public final class DALPermisoUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "permisos_usuario.id AS id, "
+                + "permisos_usuario.usuario AS usuario, "
+                + "usuarios.user AS usuario_name, "
+                + "permisos_usuario.proceso AS proceso, "
+                + "procesos.info AS proceso_info, "
+                + "permisos_usuario.info AS info "
                 + "FROM "
                 + "permisos_usuario "
+                + "INNER JOIN "
+                + "usuarios ON usuarios.id = permisos_usuario.usuario "
+                + "INNER JOIN "
+                + "procesos ON procesos.id = permisos_usuario.proceso "
                 + "WHERE "
-                + "id=?";
+                + "permisos_usuario.id=?";
 
         // Entidad
         PermisoUsuario permiso = null;
@@ -89,25 +109,27 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
-                        int proceso = rs.getInt("proceso");
                         int usuario = rs.getInt("usuario");
+                        String usuarioName = rs.getString("usuario_name");
+                        int proceso = rs.getInt("proceso");
+                        String procesoInfo = rs.getString("proceso_info");
                         String info = rs.getString("info");
 
                         // Campos > Entidad
-                        permiso = new PermisoUsuario(id, proceso, usuario, info);
+                        permiso = new PermisoUsuario(id, usuario, usuarioName, proceso, procesoInfo, info);
                     }
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
@@ -118,11 +140,20 @@ public final class DALPermisoUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "permisos_usuario.id AS id, "
+                + "permisos_usuario.usuario AS usuario, "
+                + "usuarios.user AS usuario_name, "
+                + "permisos_usuario.proceso AS proceso, "
+                + "procesos.info AS proceso_info, "
+                + "permisos_usuario.info AS info "
                 + "FROM "
                 + "permisos_usuario "
+                + "INNER JOIN "
+                + "usuarios ON usuarios.id = permisos_usuario.usuario "
+                + "INNER JOIN "
+                + "procesos ON procesos.id = permisos_usuario.proceso "
                 + "WHERE "
-                + "usuario=?";
+                + "permisos_usuario.usuario=?";
 
         // Lista Vacía
         List<PermisoUsuario> permisos = new ArrayList<>();
@@ -132,20 +163,22 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, usuario);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
+                        String usuarioName = rs.getString("usuario_name");
                         int proceso = rs.getInt("proceso");
+                        String procesoInfo = rs.getString("proceso_info");
                         String info = rs.getString("info");
 
                         // Campos > Entidad
-                        PermisoUsuario permiso = new PermisoUsuario(id, proceso, usuario, info);
+                        PermisoUsuario permiso = new PermisoUsuario(id, usuario, usuarioName, proceso, procesoInfo, info);
 
                         // Entidad > Lista
                         permisos.add(permiso);
@@ -153,7 +186,7 @@ public final class DALPermisoUsuario {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -166,7 +199,7 @@ public final class DALPermisoUsuario {
                 + "INSERT INTO "
                 + "permisos_usuario "
                 + "("
-                + "proceso, usuario, info"
+                + "usuario, proceso, info"
                 + ") "
                 + "VALUES (?, ?, ?)";
 
@@ -179,17 +212,17 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
-                ps.setInt(1, permiso.getProceso());
-                ps.setInt(2, permiso.getUsuario());
+                ps.setInt(1, permiso.getUsuario());
+                ps.setInt(2, permiso.getProceso());
                 ps.setString(3, permiso.getInfo());
 
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -211,7 +244,7 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -219,7 +252,7 @@ public final class DALPermisoUsuario {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -234,7 +267,7 @@ public final class DALPermisoUsuario {
                 = "DELETE FROM "
                 + "permisos_usuario "
                 + "WHERE "
-                + "proceso=? AND usuario=?";
+                + "usuario=? AND proceso=?";
 
         // Número de Registros Afectados
         int numReg = 0;
@@ -244,16 +277,16 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
-                ps.setInt(1, permiso.getProceso());
-                ps.setInt(2, permiso.getUsuario());
+                ps.setInt(1, permiso.getUsuario());
+                ps.setInt(2, permiso.getProceso());
 
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -266,7 +299,7 @@ public final class DALPermisoUsuario {
                 + "UPDATE "
                 + "permisos_usuario "
                 + "SET "
-                + "proceso=?, usuario=?, info=? "
+                + "usuario=?, proceso=?, info=? "
                 + "WHERE "
                 + "id=?";
 
@@ -278,10 +311,10 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
-                ps.setInt(1, permiso.getProceso());
-                ps.setInt(2, permiso.getUsuario());
+                ps.setInt(1, permiso.getUsuario());
+                ps.setInt(2, permiso.getProceso());
                 ps.setString(3, permiso.getInfo());
                 ps.setInt(4, permiso.getId());
 
@@ -289,7 +322,7 @@ public final class DALPermisoUsuario {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -312,15 +345,15 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-                try (ResultSet rs = ps.executeQuery()) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: Filas Contadas
@@ -331,9 +364,18 @@ public final class DALPermisoUsuario {
         // SQL
         String sql = ""
                 + "SELECT "
-                + "* "
+                + "permisos_usuario.id AS id, "
+                + "permisos_usuario.usuario AS usuario, "
+                + "usuarios.user AS usuario_name, "
+                + "permisos_usuario.proceso AS proceso, "
+                + "procesos.info AS proceso_info, "
+                + "permisos_usuario.info AS info "
                 + "FROM "
                 + "permisos_usuario "
+                + "INNER JOIN "
+                + "usuarios ON usuarios.id = permisos_usuario.usuario "
+                + "INNER JOIN "
+                + "procesos ON procesos.id = permisos_usuario.proceso "
                 + "LIMIT ?, ?";
 
         // Lista Vacía
@@ -345,22 +387,24 @@ public final class DALPermisoUsuario {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
-                        int proceso = rs.getInt("proceso");
                         int usuario = rs.getInt("usuario");
+                        String usuarioName = rs.getString("usuario_name");
+                        int proceso = rs.getInt("proceso");
+                        String procesoInfo = rs.getString("proceso_info");
                         String info = rs.getString("info");
 
                         // Campos > Entidad
-                        PermisoUsuario permiso = new PermisoUsuario(id, proceso, usuario, info);
+                        PermisoUsuario permiso = new PermisoUsuario(id, usuario, usuarioName, proceso, procesoInfo, info);
 
                         // Entidad > Lista
                         permisos.add(permiso);
@@ -368,7 +412,7 @@ public final class DALPermisoUsuario {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista

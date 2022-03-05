@@ -66,11 +66,15 @@
                             </tr>
                             <tr>
                                 <td>Usuario</td>
-                                <td><%= permiso.getUsuario()%></td>
+                                <td><%= permiso.getUsuarioName()%></td>
                             </tr>
                             <tr>
                                 <td>Proceso</td>
-                                <td><%= permiso.getProceso()%></td>
+                                <td><%= permiso.getProcesoInfo()%></td>
+                            </tr>
+                            <tr>
+                                <td>Info</td>
+                                <td><%= permiso.getInfo()%></td>
                             </tr>
                         </tbody>
                     </table>

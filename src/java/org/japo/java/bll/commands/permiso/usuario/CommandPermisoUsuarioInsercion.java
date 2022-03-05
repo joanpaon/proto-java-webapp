@@ -72,12 +72,12 @@ public final class CommandPermisoUsuarioInsercion extends Command {
                     request.setAttribute("usuarios", usuarios);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    int proceso = Integer.parseInt(request.getParameter("proceso"));
                     int usuario = Integer.parseInt(request.getParameter("usuario"));
+                    int proceso = Integer.parseInt(request.getParameter("proceso"));
                     String info = request.getParameter("info");
 
                     // Parámetros > Entidad
-                    PermisoUsuario permiso = new PermisoUsuario(proceso, usuario, info);
+                    PermisoUsuario permiso = new PermisoUsuario(0, usuario, "", proceso, "", info);
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalPermiso.insertar(permiso);

@@ -90,7 +90,7 @@ public final class CommandPermisoPerfilModificacion extends Command {
                     String info = request.getParameter("info");
 
                     // Parámetros > Entidad
-                    permiso = new PermisoPerfil(permiso.getId(), proceso, perfil, info);
+                    permiso = new PermisoPerfil(permiso.getId(), proceso, "", perfil, "", info);
 
                     // Entidad > Modificación Registro BD
                     boolean checkOK = dalPermiso.modificar(permiso);

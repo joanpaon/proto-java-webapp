@@ -85,7 +85,7 @@
                         <tr>
                             <td><%= u.getId()%></td>
                             <td><%= u.getUser()%></td>
-                            <td><%= u.getPerfil()%></td>
+                            <td><%= u.getPerfilInfo()%></td>
                             <td>
                                 <a class="btn btn-consultar" href="?cmd=usuario-consulta&id=<%= u.getId()%>" title="Consulta">C</a>
                                 <a class="btn btn-modificar" href="?cmd=usuario-modificacion&id=<%= u.getId()%>" title="Modificación">M</a>
