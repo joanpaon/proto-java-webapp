@@ -19,7 +19,10 @@ package org.japo.java.libraries;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesDNI {
+public final class UtilesDNI {
+
+    private UtilesDNI() {
+    }
 
     // Secuencia letras DNI
     public static final String LETRAS = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -97,7 +100,7 @@ public class UtilesDNI {
         } catch (Exception e) {
             System.out.println("ERROR: Formato DNI incorrecto");
         }
-        
+
         // Resultado del análisis
         return dniOK;
     }

@@ -20,12 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.Base64;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author JAPO Labs - japolabs@gmail.com
  */
 public final class UtilesBase64 {
+
+    // Constantes
+    private static final String PREFIJO = "data:image/png;base64,";
 
     private UtilesBase64() {
     }
@@ -56,5 +60,25 @@ public final class UtilesBase64 {
 
         // Retorno: true | false
         return checkOK;
+    }
+
+    public static final String obtenerImagenBase64(Part part) throws IOException {
+        // Imagen Base64
+        String img;
+
+        // Part > byte[]
+        try ( InputStream in = part.getInputStream()) {
+            // Tamaño Fichero > Array Vacío - byte[]
+            byte[] bytes = new byte[(int) part.getSize()];
+
+            // Part > byte[]
+            in.read(bytes, 0, bytes.length);
+
+            // byte[] > Base64
+            img = PREFIJO + Base64.getEncoder().encodeToString(bytes);
+        }
+
+        // Retorno: Imagen Base64
+        return img;
     }
 }

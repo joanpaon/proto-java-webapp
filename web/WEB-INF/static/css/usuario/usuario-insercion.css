@@ -129,90 +129,126 @@ main header .btn:first-of-type {
 
 /* --- */
 
-form {
-  /*padding: 1rem;*/
-
-/*  border: solid #999 0.1rem;
-  border-radius: 0.3rem;
-  border-spacing: 0.5rem;*/
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem
+main form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem
 }
 
 /* --- */
 
-main form .campos {
-    width: 70rem;
+main form .form-content {
+    height: 14rem;
+
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    gap: 1rem;
+}
+
+main form .field-container {
+    height: 100%;
+    /*width: 70rem;*/
 
     padding: 1rem;
-    
+
     border: solid #999 0.1rem;
     border-radius: 0.3rem;
     border-spacing: 0.5rem;
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
+    flex: auto;
 }
 
 /*---*/
 
-main form .fieldset {
-  display: flex;
-  /*justify-content: center;*/
-  align-items: center;
-  gap: .5rem;
+main form .field-set {
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    gap: .5rem;
 }
 
 /* --- */
 
-main form label {
-  width: 8rem;
+main form .field-set label {
+    width: 8rem;
 
-  color: azure;
-  color: coral;
+    color: azure;
+    color: coral;
 
-  font-size: 1.4rem;
-  text-align: right;
-  text-shadow: .1rem .1rem .1rem rgba(0, 0, 0, 0.7);
-  
-  flex: none;
+    font-size: 1.4rem;
+    text-align: right;
+    text-shadow: .1rem .1rem .1rem rgba(0, 0, 0, 0.7);
+
+    flex: none;
 }
 
 /* --- */
 
-main form [type="text"] {
-  height: 1.8rem;
-  
-  padding: .2rem .3rem;
+main form .field-set [type="text"] {
+    height: 2rem;
 
-  font-family: sans-serif;
-  font-size: 1.2rem;
+    padding: .2rem .3rem;
 
-  flex: auto;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+
+    flex: auto;
 }
 
 /* --- */
 
-main form select {
-  height: 1.8rem;
-  
-  padding: .2rem .1rem;
+main form .field-set select {
+    height: 2rem;
 
-  font-family: sans-serif;
-  font-size: 1.2rem;
+    padding: .2rem .1rem;
 
-  flex: auto;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+
+    flex: auto;
+}
+
+main .field-set .avatar-name {
+    height: 2rem;
+    
+    background-color: #fff;
+    border: solid .1rem #666;
+    border-radius: .1rem;
+}
+
+main .field-set .btn {
+    height: 2rem;
+    width: 3rem;
+
+    padding-bottom: .2rem;
+
+    color: #333;
+    /*font-size: 1.6rem;*/
+    font-size: 1rem;
+    font-weight: normal;
+    text-decoration: none;
+
+    background-color: #eee;
+    border: solid .1rem #aaa;
+    box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
+    border-radius: .2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* --- */
 
-main .imagen {
-    height: 18rem;
-    width: 24rem;
+main form .avatar-frame {
+    height: 100%;
+    width: 20rem;
 
     padding: .5rem;
 
@@ -226,7 +262,7 @@ main .imagen {
     flex: none;
 }
 
-main .imagen-margen {
+main form .avatar-frame .avatar {
     height: 100%;
     width: 100%;
 
@@ -242,7 +278,7 @@ main .imagen-margen {
     flex: none;
 }
 
-main .imagen img {
+main form .avatar-frame .avatar .actual {
     height: 100%;
 }
 

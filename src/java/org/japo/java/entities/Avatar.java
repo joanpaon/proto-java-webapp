@@ -6,6 +6,9 @@ package org.japo.java.entities;
  */
 public class Avatar {
 
+    public static final int MAX_SIZE = 65536;
+    public static final int MAX_CHARS = 20; 
+
     private int id;
     private String nombre;
     private String imagen;

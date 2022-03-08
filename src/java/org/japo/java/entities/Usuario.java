@@ -145,4 +145,12 @@ public final class Usuario implements Serializable {
     public static final boolean validarPass(String pass) {
         return UtilesValidacion.validarDato(pass, REG_PASS);
     }
+    
+    public static final boolean validarAvatar(int avatar) {
+        return avatar >= 0;
+    }
+    
+    public static final boolean validarPerfil(int perfil) {
+        return perfil >= 0;
+    }
 }

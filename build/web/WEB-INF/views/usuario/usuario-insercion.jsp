@@ -52,34 +52,45 @@
                     <a class="btn btn-listar" href="?cmd=usuario-listado">Listado</a>
                 </header>
 
-                <form method="post" accept-charset="Windows-1252"
+                <form method="post" accept-charset="Windows-1252" 
+                      enctype="multipart/form-data"
                       action="?cmd=usuario-insercion&op=proceso">
-                    <div class="campos">
-                        <div class="fieldset">
-                            <label for="user">Usuario</label>
-                            <input id="user" type="text" name="user" 
-                                   pattern="<%= Usuario.ER_USER%>" required />
+                    <div class="form-content">
+                        <div class="field-container">
+                            <div class="field-set">
+                                <label for="user">Usuario</label>
+                                <input id="user" type="text" name="user" 
+                                       pattern="<%= Usuario.REG_USER%>" required />
+                            </div>
+
+                            <div class="field-set">
+                                <label for="pass">Contraseña</label>
+                                <input id="pass" type="text" name="pass" 
+                                       pattern="<%= Usuario.REG_PASS%>" required />
+                            </div>
+
+                            <div class="field-set">
+                                <label for="avatar">Avatar</label>
+                                <div type="text" class="avatar-name">Predeterminado</div>
+                                <input type="file" id="avatar" name="avatar" accept="image/png,image/jpeg" style="display: none" />
+                                <button type="button" class="btn btn-img" onclick="document.getElementById('avatar').click()">👀</button>
+                            </div>
+
+                            <div class="field-set">
+                                <label for="perfil">Perfil</label>
+                                <select id="perfil" name="perfil" required>
+                                    <option value="<%= Perfil.BASIC%>">Usuario</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="fieldset">
-                            <label for="pass">Contraseña</label>
-                            <input id="pass" type="text" name="pass" 
-                                   pattern="<%= Usuario.ER_PASS%>" required />
+                        <div class="avatar-frame">
+                            <div class="avatar">
+                                <img class="actual" src="<%= Usuario.DEF_AVATAR_IMG%>" alt="Avatar"/>
+                                <img class="backup" src="<%= Usuario.DEF_AVATAR_IMG%>" alt="Avatar" style="display: none;" />
+                            </div>
                         </div>
 
-                        <div class="fieldset">
-                            <label for="avatar">Avatar</label>
-                            <select id="avatar" name="avatar" required>
-                                <option value="0">Desconocido</option>
-                            </select>
-                        </div>
-
-                        <div class="fieldset">
-                            <label for="perfil">Perfil</label>
-                            <select id="perfil" name="perfil" required>
-                                <option value="<%= Perfil.BASIC%>">Usuario</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="controles">

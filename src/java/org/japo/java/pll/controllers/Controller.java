@@ -23,6 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,11 @@ import org.japo.java.bll.services.IService;
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
 @WebServlet(name = "Controller", urlPatterns = {"", "/public/*"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 public final class Controller extends HttpServlet {
 
     // Tamaño Máximo Fichero Recurso ( Defecto: Ilimitado )
@@ -345,8 +351,7 @@ public final class Controller extends HttpServlet {
 
         // Origen > Destino
         try (
-                FileInputStream origen = new FileInputStream(recurso);
-                ServletOutputStream destino = response.getOutputStream()) {
+                 FileInputStream origen = new FileInputStream(recurso);  ServletOutputStream destino = response.getOutputStream()) {
             // Origen > Buffer
             origen.read(buffer);
 

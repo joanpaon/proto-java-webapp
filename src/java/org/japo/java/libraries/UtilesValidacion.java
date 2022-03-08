@@ -24,7 +24,10 @@ import javax.swing.JTextField;
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class UtilesValidacion {
+public final class UtilesValidacion {
+
+    private UtilesValidacion() {
+    }
 
     // Dato + Expresión Regular
     public static boolean validarDato(String dato, String expReg) {
