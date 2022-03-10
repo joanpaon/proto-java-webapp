@@ -43,9 +43,6 @@ public final class CommandUsuarioModificacion extends Command {
         // Salida
         String out = "usuario/usuario-modificacion";
 
-        // Entidad
-        Usuario usuario;
-
         // Sesión
         HttpSession sesion = request.getSession(false);
 
@@ -56,24 +53,25 @@ public final class CommandUsuarioModificacion extends Command {
             // Capas de Negocio
             CommandValidation validator = new CommandValidation(sesion);
 
-            // Capas de Datos
-            DALAvatar dalAvatar = new DALAvatar(sesion);
-            DALPerfil dalPerfil = new DALPerfil(sesion);
-            DALUsuario dalUsuario = new DALUsuario(sesion);
-
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
-                // request > ID Usuario a Modificar
-                int id = obtenerID();
+                // Capas de Datos
+                DALAvatar dalAvatar = new DALAvatar(sesion);
+                DALPerfil dalPerfil = new DALPerfil(sesion);
+                DALUsuario dalUsuario = new DALUsuario(sesion);
 
                 // request > ID Operación
                 String op = request.getParameter("op");
 
+                // request > ID Usuario a Modificar
+                int id = obtenerID();
+
+                // ID Usuario + BD > Usuario
+                Usuario usuario = obtenerUsuario(id, dalUsuario);
+
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
-                    // ID Usuario + BD > Usuario
-                    usuario = obtenerUsuario(id, dalUsuario);
 
-                    // BD > Lista de Abonos
+                    // BD > Lista de Perfiles
                     List<Perfil> perfiles = dalPerfil.listar();
 
                     // Inyectar Datos > JSP
@@ -84,17 +82,53 @@ public final class CommandUsuarioModificacion extends Command {
                     String user = obtenerUser();
                     String pass = obtenerPass();
                     Avatar avatar = obtenerAvatar(dalAvatar);
-                    int avatarId = avatar == null ? 0 : avatar.getId();
                     int perfil = obtenerPerfil();
 
-                    // Parámetros > Entidad
-                    usuario = new Usuario(id, user, pass, avatarId, "", perfil, "");
+                    // Validar Nombre Usuario
+                    if (user.equals(usuario.getUser())) {
+                        // Nombre de Usuario NO modificado - Conservar
+                    } else if (dalUsuario.consultar(user) == null) {
+                        // Nombre de Usuario SI Modificado - Sustituir
+                    } else {
+                        // Nombre de Usuario duplicado - Cancelar
+                        throw new ServletException("Nombre de usuario existente");
+                    }
 
-                    // Ejecutar Operación
-                    boolean checkOK = dalUsuario.modificar(usuario);
+                    // Validar Avatar
+                    if (avatar == null) {
+                        // Avatar NO modificado
+                        avatar = new Avatar(usuario.getAvatar(), "", "");
+                    } else  if (usuario.getAvatar() == Avatar.DEF_ID) {
+                        // Avatar Seleccionado - Avatar Previo Predeterminado
+                        if (!dalAvatar.insertar(avatar)) {
+                            // Error al insertar el avatar
+                            throw new ServletException("Error al insertar el avatar");
+                        }
+                        
+                        // Recuperar Avatar de BD
+                        avatar = dalAvatar.consultar(avatar.getImagen());
+                    } else {
+                        // Avatar Seleccionado - Sustituir Avatar Previo
+                        avatar.setId(usuario.getAvatar());
+
+                        // Sustituir el Avatar anterior
+                        if (!dalAvatar.modificar(avatar)) {
+                            // Error al actualizar el avatar
+                            throw new ServletException("Error al actualizar el avatar");
+                        }
+                    }
+
+                    // Validar Perfil
+                    if (dalPerfil.consultar(perfil) == null) {
+                        // No existe el perfil seleccionado
+                        throw new ServletException("No existe el perfil seleccionado");
+                    }
+
+                    // Parámetros > Usuario a Modificar
+                    usuario = new Usuario(usuario.getId(), user, pass, avatar.getId(), "", perfil, "");
 
                     // Validar Operación
-                    if (checkOK) {
+                    if (dalUsuario.modificar(usuario)) {
                         out = "controller?cmd=usuario-listado";
                     } else {
                         out = "message/operacion-cancelada";
@@ -190,10 +224,10 @@ public final class CommandUsuarioModificacion extends Command {
             avatar = new Avatar(0, nombre, imagen);
 
             // Avatar > BD
-            if (dalAvatar.insertar(avatar)) {
-                // BD > Avatar
-                avatar = dalAvatar.consultar(nombre);
-            }
+//            if (dalAvatar.insertar(avatar)) {
+            // BD > Avatar
+//                avatar = dalAvatar.consultar(nombre);
+//            }
         }
 
         // Retorno: Avatar

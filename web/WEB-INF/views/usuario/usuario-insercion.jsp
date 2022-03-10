@@ -7,7 +7,6 @@
 <%
     // Datos Inyectados
     List<Perfil> perfiles = (ArrayList<Perfil>) request.getAttribute("perfiles");
-    List<Avatar> avatares = (ArrayList<Avatar>) request.getAttribute("avatares");
 %>
 
 <!DOCTYPE html>
@@ -52,28 +51,41 @@
                     <a class="btn btn-listar" href="?cmd=usuario-listado">Listado</a>
                 </header>
 
-                <form method="post" accept-charset="Windows-1252" 
+                <form method="post" 
+                      accept-charset="Windows-1252" 
                       enctype="multipart/form-data"
                       action="?cmd=usuario-insercion&op=proceso">
                     <div class="form-content">
                         <div class="field-container">
                             <div class="field-set">
                                 <label for="user">Usuario</label>
-                                <input id="user" type="text" name="user" 
-                                       pattern="<%= Usuario.REG_USER%>" required />
+                                <input id="user" 
+                                       type="text" 
+                                       name="user" 
+                                       pattern="<%= Usuario.REG_USER%>" 
+                                       required />
                             </div>
 
                             <div class="field-set">
                                 <label for="pass">Contraseña</label>
-                                <input id="pass" type="text" name="pass" 
-                                       pattern="<%= Usuario.REG_PASS%>" required />
+                                <input id="pass" 
+                                       type="text" 
+                                       name="pass" 
+                                       pattern="<%= Usuario.REG_PASS%>" 
+                                       required />
                             </div>
 
                             <div class="field-set">
                                 <label for="avatar">Avatar</label>
                                 <div type="text" class="avatar-name">Predeterminado</div>
-                                <input type="file" id="avatar" name="avatar" accept="image/png,image/jpeg" style="display: none" />
-                                <button type="button" class="btn btn-img" onclick="document.getElementById('avatar').click()">👀</button>
+                                <input id="avatar" 
+                                       type="file" 
+                                       name="avatar" 
+                                       accept="image/png,image/jpeg" 
+                                       style="display: none" />
+                                <button type="button" 
+                                        class="btn btn-img" 
+                                        onclick="document.getElementById('avatar').click()">👀</button>
                             </div>
 
                             <div class="field-set">

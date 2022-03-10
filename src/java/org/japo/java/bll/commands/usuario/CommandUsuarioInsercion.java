@@ -67,22 +67,29 @@ public final class CommandUsuarioInsercion extends Command {
                     // BD > Lista de Perfiles
                     List<Perfil> perfiles = dalPerfil.listar();
 
-                    // BD > Lista de Avatares
-                    List<Avatar> avatares = dalAvatar.listar();
-
-                    // Inyección Datos
+                    // Inyectar Datos > JSP
                     request.setAttribute("perfiles", perfiles);
-                    request.setAttribute("avatares", avatares);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
                     String user = obtenerUser();
                     String pass = obtenerPass();
                     Avatar avatar = obtenerAvatar(dalAvatar);
-                    int avatarId = avatar == null ? 0 : avatar.getId();
                     int perfil = obtenerPerfil();
 
+                    // Validar Avatar
+                    if (avatar == null) {
+                        // Avatar no seleccionado - Predeterminado
+                        avatar = new Avatar();
+                    } else if (dalAvatar.insertar(avatar)) {
+                        // Insertar Avatar seleccionado - Recuperar de BD
+                        avatar = dalAvatar.consultar(avatar.getImagen());
+                    } else {
+                        // Error Inserción de Avatar
+                        throw new ServletException("Error al insertar el avatar");
+                    }
+
                     // Parámetros > Entidad
-                    Usuario usuario = new Usuario(0, user, pass, avatarId, "", perfil, "");
+                    Usuario usuario = new Usuario(0, user, pass, avatar.getId(), "", perfil, "");
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalUsuario.insertar(usuario);
@@ -161,11 +168,11 @@ public final class CommandUsuarioInsercion extends Command {
             // Datos > Avatar
             avatar = new Avatar(0, nombre, imagen);
 
-            // Avatar > BD
-            if (dalAvatar.insertar(avatar)) {
-                // BD > Avatar
-                avatar = dalAvatar.consultar(nombre);
-            }
+//            // Avatar > BD
+//            if (dalAvatar.insertar(avatar)) {
+//                // BD > Avatar
+//                avatar = dalAvatar.consultar(nombre);
+//            }
         }
 
         // Retorno: Avatar

@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -33,15 +34,13 @@ import org.japo.java.libraries.UtilesServlet;
  */
 public final class DALAvatar {
 
-    // Campos
-    private final HttpSession sesion;
+    // Logger
+    private static final Logger logger = Logger.getLogger(DALAvatar.class.getName());
 
     // Nombre de la Base de datos
     private final String bd;
 
     public DALAvatar(HttpSession sesion) {
-        this.sesion = sesion;
-
         bd = (String) sesion.getAttribute("bd");
     }
 
@@ -61,9 +60,9 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -79,7 +78,7 @@ public final class DALAvatar {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -104,12 +103,12 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         String nombre = rs.getString("nombre");
@@ -121,14 +120,14 @@ public final class DALAvatar {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
         return avatar;
     }
 
-    public Avatar consultar(String nombre) {
+    public Avatar consultar(String imagen) {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -136,7 +135,7 @@ public final class DALAvatar {
                 + "FROM "
                 + "avatares "
                 + "WHERE "
-                + "nombre=?";
+                + "imagen=?";
 
         // Entidad
         Avatar avatar = null;
@@ -146,16 +145,16 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
-                ps.setString(1, nombre);
+                ps.setString(1, imagen);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
-                        String imagen = rs.getString("imagen");
+                        String nombre = rs.getString("nombre");
 
                         // Campos > Entidad
                         avatar = new Avatar(id, nombre, imagen);
@@ -163,7 +162,7 @@ public final class DALAvatar {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
@@ -189,7 +188,7 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, avatar.getNombre());
                 ps.setString(2, avatar.getImagen());
@@ -198,7 +197,7 @@ public final class DALAvatar {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -220,7 +219,7 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
 
@@ -228,7 +227,7 @@ public final class DALAvatar {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -253,7 +252,7 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setString(1, avatar.getNombre());
                 ps.setString(2, avatar.getImagen());
@@ -263,7 +262,7 @@ public final class DALAvatar {
                 numReg = ps.executeUpdate();
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -286,15 +285,15 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-                try (ResultSet rs = ps.executeQuery()) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);
                     }
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno: Filas Contadas
@@ -318,13 +317,13 @@ public final class DALAvatar {
             DataSource ds = UtilesServlet.obtenerDataSource(bd);
 
             try (
-                    Connection conn = ds.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setLong(1, indice);
                 ps.setLong(2, longitud);
 
                 // BD > Lista de Entidades
-                try (ResultSet rs = ps.executeQuery()) {
+                try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
@@ -340,7 +339,7 @@ public final class DALAvatar {
                 }
             }
         } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let imgAvatar = document.querySelector(".avatar-frame .actual");
     let divAvatar = document.querySelector(".avatar-name");
     let imgBackup = document.querySelector(".avatar-frame .backup");
-    let btnReset  = document.querySelector(".btn-reset");
+    let btnReset = document.querySelector(".btn-reset");
 
     // Listener Change
     selAvatar.addEventListener("change", () => {
@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (archivos && archivos.length) {
             // Primer archivo > Objeto ObjectURL
             let object = URL.createObjectURL(archivos[0]);
-            
+
             // Objeto ObjectURL > IMG SRC
             imgAvatar.src = object;
-            
+
             // IMG SRC > IMG Name
             divAvatar.innerText = archivos[0].name.replace(/\..*/, "");
         }
