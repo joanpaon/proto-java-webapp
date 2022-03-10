@@ -5,7 +5,6 @@
 <%
     // Datos Inyectados
     Usuario usuario = (Usuario) request.getAttribute("usuario");
-
 %>
 
 <!DOCTYPE html>

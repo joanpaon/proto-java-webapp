@@ -80,7 +80,10 @@ public final class CommandUsuarioInsercion extends Command {
                     if (avatar == null) {
                         // Avatar no seleccionado - Predeterminado
                         avatar = new Avatar();
-                    } else if (dalAvatar.insertar(avatar)) {
+                    }                        
+                    
+                    // Insertar Avatar
+                    if (dalAvatar.insertar(avatar)) {
                         // Insertar Avatar seleccionado - Recuperar de BD
                         avatar = dalAvatar.consultar(avatar.getImagen());
                     } else {
@@ -167,12 +170,6 @@ public final class CommandUsuarioInsercion extends Command {
 
             // Datos > Avatar
             avatar = new Avatar(0, nombre, imagen);
-
-//            // Avatar > BD
-//            if (dalAvatar.insertar(avatar)) {
-//                // BD > Avatar
-//                avatar = dalAvatar.consultar(nombre);
-//            }
         }
 
         // Retorno: Avatar

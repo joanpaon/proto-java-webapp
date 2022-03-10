@@ -86,7 +86,6 @@
 
                 <nav class="controles">
                     <a class="btn btn-borrar" href="?cmd=usuario-borrado&op=proceso&id=<%= usuario.getId()%>">Borrar</a>
-                    <a class="btn btn-modificar" href="?cmd=usuario-modificacion&id=<%= usuario.getId()%>&op=captura">Modificar</a>
                 </nav>
 
             </main>
