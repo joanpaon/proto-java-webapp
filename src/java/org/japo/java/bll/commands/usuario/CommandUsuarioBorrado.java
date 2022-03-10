@@ -1,5 +1,5 @@
 /* 
- * Copyright 2021 José A. Pacheco Ondoño - japolabs@gmail.com.
+ * Copyright 2022 JAPO Labs - japolabs@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public final class CommandUsuarioBorrado extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=usuario-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }

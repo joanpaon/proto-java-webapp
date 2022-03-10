@@ -1,5 +1,5 @@
 /* 
- * Copyright 2021 José A. Pacheco Ondoño - japolabs@gmail.com.
+ * Copyright 2022 JAPO Labs - japolabs@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,17 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import org.japo.java.bll.commands.admin.CommandValidation;
+import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
+import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesBase64;
 
 /**
  *
@@ -36,7 +41,7 @@ public final class CommandUsuarioModificacion extends Command {
     @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "permiso/perfil/modificacion";
+        String out = "usuario/usuario-modificacion";
 
         // Entidad
         Usuario usuario;
@@ -52,20 +57,21 @@ public final class CommandUsuarioModificacion extends Command {
             CommandValidation validator = new CommandValidation(sesion);
 
             // Capas de Datos
+            DALAvatar dalAvatar = new DALAvatar(sesion);
             DALPerfil dalPerfil = new DALPerfil(sesion);
             DALUsuario dalUsuario = new DALUsuario(sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
-                // request > ID Entidad
-                int id = Integer.parseInt(request.getParameter("id"));
+                // request > ID Usuario a Modificar
+                int id = obtenerID();
 
                 // request > ID Operación
                 String op = request.getParameter("op");
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
-                    // ID Entidad > Objeto Entidad
-                    usuario = dalUsuario.consultar(id);
+                    // ID Usuario + BD > Usuario
+                    usuario = obtenerUsuario(id, dalUsuario);
 
                     // BD > Lista de Abonos
                     List<Perfil> perfiles = dalPerfil.listar();
@@ -74,24 +80,22 @@ public final class CommandUsuarioModificacion extends Command {
                     request.setAttribute("usuario", usuario);
                     request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
-                    // ID > Entidad a Modificar
-                    usuario = dalUsuario.consultar(id);
-
                     // Request > Parámetros
-                    String user = request.getParameter("user").trim();
-                    String pass = request.getParameter("pass").trim();
-                    int avatar = Integer.parseInt(request.getParameter("avatar"));
-                    int perfil = Integer.parseInt(request.getParameter("perfil"));
+                    String user = obtenerUser();
+                    String pass = obtenerPass();
+                    Avatar avatar = obtenerAvatar(dalAvatar);
+                    int avatarId = avatar == null ? 0 : avatar.getId();
+                    int perfil = obtenerPerfil();
 
                     // Parámetros > Entidad
-                    usuario = new Usuario(usuario.getId(), user, pass, avatar, "", perfil, "");
+                    usuario = new Usuario(id, user, pass, avatarId, "", perfil, "");
 
                     // Ejecutar Operación
                     boolean checkOK = dalUsuario.modificar(usuario);
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=usuario-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }
@@ -105,5 +109,138 @@ public final class CommandUsuarioModificacion extends Command {
 
         // Redirección
         forward(out);
+    }
+
+    private int obtenerID() throws IOException {
+        // ID Usuario
+        int id;
+
+        try {
+            // Request > ID Usuario
+            id = Integer.parseInt(request.getParameter("id"));
+
+            // Validar ID Usuario
+            if (!Usuario.validarId(id)) {
+                throw new IOException("Usuario NO Registrado");
+            }
+        } catch (IOException e) {
+            throw new IOException(e.getMessage());
+        } catch (NumberFormatException e) {
+            throw new IOException("ID de Usuario Incorrecta");
+        }
+
+        // Retorno: ID Usuario
+        return id;
+    }
+
+    private String obtenerUser() throws IOException {
+        // Request > User
+        String user = request.getParameter("user");
+
+        // Validar User
+        if (!Usuario.validarUser(user)) {
+            throw new IOException("Nombre de Usuario Incorrecto");
+        }
+
+        // Retorno: Nombre de Usuario
+        return user;
+    }
+
+    private String obtenerPass() throws IOException {
+        // Request > Pass
+        String pass = request.getParameter("pass");
+
+        // Validar Contraseña
+        if (!Usuario.validarPass(pass)) {
+            throw new IOException("Contraseña Incorrecta");
+        }
+
+        // Retorno: Contraseña
+        return pass;
+    }
+
+    private Avatar obtenerAvatar(DALAvatar dalAvatar) throws IOException, ServletException {
+        // Datos > Avatar
+        Avatar avatar = null;
+
+        // Request > Part
+        Part part = request.getPart("avatar");
+
+        // Imagen Enviada
+        if (part.getSize() > 0) {
+            // Part > Nombre Imagen
+            String nombre = obtenerNombreAvatar(part);
+
+            // Imagen Base64
+            String imagen;
+
+            // Validar Tamaño Avatar
+            if (Avatar.MAX_SIZE <= 0) {
+                // No hay tamaño máximo
+                imagen = UtilesBase64.obtenerImagenBase64(part);
+            } else if (part.getSize() <= Avatar.MAX_SIZE) {
+                // Tamaño Correcto
+                imagen = UtilesBase64.obtenerImagenBase64(part);
+            } else {
+                // Tamaño Excesivo
+                throw new IOException("Tamaño de imagen excesivo");
+            }
+
+            // Datos > Avatar
+            avatar = new Avatar(0, nombre, imagen);
+
+            // Avatar > BD
+            if (dalAvatar.insertar(avatar)) {
+                // BD > Avatar
+                avatar = dalAvatar.consultar(nombre);
+            }
+        }
+
+        // Retorno: Avatar
+        return avatar;
+    }
+
+    private int obtenerPerfil() throws IOException {
+        // Request > ID Perfil
+        int perfil = Integer.parseInt(request.getParameter("perfil"));
+
+        // Validar ID Perfil
+        if (!Usuario.validarPerfil(perfil)) {
+            throw new IOException("Perfil Incorrecto");
+        }
+
+        // Retorno: ID Perfil
+        return perfil;
+    }
+
+    private String obtenerNombreAvatar(Part part) {
+        // Part > Nombre Fichero Enviado
+        String nombre = part.getSubmittedFileName();
+
+        // Elimina Extensión
+        nombre = nombre.substring(0, nombre.lastIndexOf("."));
+
+        // Valída Nombre
+        if (nombre.length() > Avatar.MAX_CHARS) {
+            nombre = nombre.substring(nombre.length() - Avatar.MAX_CHARS - 1);
+        } else if (nombre.isEmpty()) {
+            nombre = "avatar" + String.format("%6d", new Random().nextInt(100000, 1000000));
+        }
+
+        // Retorno: Imagen Base64
+        return nombre;
+    }
+
+    private Usuario obtenerUsuario(int id, DALUsuario dalUsuario) throws IOException {
+        // ID Usuario + BD > Usuario
+        Usuario usuario = dalUsuario.consultar(id);
+
+        // Validar Usuario
+        if (usuario == null) {
+            throw new IOException("Usuario NO Registrado");
+        }
+
+        // Retorno: Usuario
+        return usuario;
     }
 }

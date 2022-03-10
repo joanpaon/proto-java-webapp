@@ -1,5 +1,5 @@
 /* 
- * Copyright 2021 José A. Pacheco Ondoño - japolabs@gmail.com.
+ * Copyright 2022 JAPO Labs - japolabs@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,7 @@ public final class UtilesBase64 {
             String mimeType = URLConnection.guessContentTypeFromStream(is);
 
             // Tipo MIME > Semáforo
-            checkOK = false
-                    || mimeType.equals("image/jpeg")
-                    || mimeType.equals("image/png")
-                    || mimeType.equals("image/gif");
+            checkOK = mimeType.equals("image/jpeg") || mimeType.equals("image/png");
         } catch (IOException | NullPointerException e) {
             checkOK = false;
         }

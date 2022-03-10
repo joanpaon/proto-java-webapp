@@ -1,10 +1,28 @@
+/* 
+ * Copyright 2022 JAPO Labs - japolabs@gmail.com.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.japo.java.entities;
+
+import java.io.Serializable;
+import org.japo.java.libraries.UtilesValidacion;
 
 /**
  *
  * @author JAPO Labs - japolabs@gmail.com
  */
-public final class PermisoUsuario {
+public final class PermisoUsuario implements Serializable {
 
     // Valores por Defecto
     public static final int DEF_ID = 0;
@@ -15,8 +33,6 @@ public final class PermisoUsuario {
     public static final String DEF_INFO = "Permiso de Usuario NO Definido";
 
     // Expresiones regulares
-    public static final String REG_USUARIO_NAME = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
-    public static final String REG_PROCESO_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
     public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
 
     // Campos
@@ -96,16 +112,55 @@ public final class PermisoUsuario {
         this.info = info;
     }
 
+    // ---
+    //
     public final boolean validarId() {
-        return getId() >= 0;
-    }
-
-    public final boolean validarProceso() {
-        return getProceso() >= 0;
+        return validarId(id);
     }
 
     public final boolean validarUsuario() {
-        return getUsuario() >= 0;
+        return validarUsuario(usuario);
     }
 
+    public final boolean validarUsuarioName() {
+        return validarUsuarioName(usuarioName);
+    }
+
+    public final boolean validarProceso() {
+        return validarProceso(proceso);
+    }
+
+    public final boolean validarProcesoInfo() {
+        return validarProcesoInfo(procesoInfo);
+    }
+
+    public final boolean validarInfo() {
+        return validarInfo(info);
+    }
+
+    // ---
+    //
+    public static final boolean validarId(int id) {
+        return id >= 0;
+    }
+
+    public static final boolean validarUsuario(int usuario) {
+        return Usuario.validarId(usuario);
+    }
+
+    public static final boolean validarUsuarioName(String usuarioName) {
+        return Usuario.validarUser(usuarioName);
+    }
+
+    public static final boolean validarProceso(int proceso) {
+        return Proceso.validarId(proceso);
+    }
+
+    public static final boolean validarProcesoInfo(String procesoInfo) {
+        return Proceso.validarInfo(procesoInfo);
+    }
+
+    public static boolean validarInfo(String info) {
+        return UtilesValidacion.validarDato(info, REG_INFO);
+    }
 }
