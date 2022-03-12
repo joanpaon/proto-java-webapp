@@ -19,9 +19,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.Command;
-import org.japo.java.dal.DALAvatar;
-import org.japo.java.entities.Avatar;
-import org.japo.java.entities.Usuario;
 
 /**
  *

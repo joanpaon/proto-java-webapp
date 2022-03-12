@@ -27,29 +27,33 @@
         <link rel="stylesheet" href="public/css/admin/landing.css" />
         <link rel="stylesheet" href="public/css/partials/header.css" />
         <link rel="stylesheet" href="public/css/partials/footer.css" />
+        <link rel="stylesheet" href="public/css/partials/button-login.css" />
     </head>
 
     <body>
         <!-- Web Content-->
         <div id="container">
-            <%@include file="../partials/header.jspf" %>
+            <%@include file="/WEB-INF/views/partials/header.jspf" %>
 
             <main>
 
                 <img src="public/img/logo01.png" alt="Logo" />
-                
+
                 <h2>Página de Bienvenida</h2>
-                
-                <a class="btn" href="?cmd=login">Continuar</a>
+
+                <div class="controles">
+                    <%@include file="/WEB-INF/views/partials/button-login.jspf" %>
+                </div>
 
             </main>
 
-            <%@include file="../partials/footer.jspf" %>
+            <%@include file="/WEB-INF/views/partials/footer.jspf" %>
         </div>
 
         <!-- Application Scripts -->
         <script src="public/js/admin/landing.js"></script>
         <script src="public/js/partials/header.js"></script>
         <script src="public/js/partials/footer.js"></script>
+        <script src="public/js/partials/button-login.js"></script>
     </body>
 </html>

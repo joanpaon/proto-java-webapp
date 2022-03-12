@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.admin;
+package org.japo.java.bll.commands.usuario;
 
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
@@ -27,7 +27,7 @@ import org.japo.java.entities.Usuario;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class CommandSignup extends Command {
+public final class CommandUsuarioSignup extends Command {
 
     @Override
     @SuppressWarnings("ConvertToStringSwitch")

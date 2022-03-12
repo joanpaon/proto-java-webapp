@@ -32,12 +32,12 @@
     <body>
         <!-- Web Content-->
         <div id="container">
-            <%@include file="../partials/header.jspf" %>
+            <%@include file="/WEB-INF/views/partials/header.jspf" %>
 
             <main>
                 <img src="public/img/logo01.png" alt="Logo" />
 
-                <form action="?cmd=login&op=proceso" 
+                <form action="?cmd=usuario-login&op=proceso" 
                       method="post" 
                       accept-charset="Windows-1252">
 
@@ -74,7 +74,7 @@
 
             </main>
 
-            <%@include file="../partials/footer.jspf" %>
+            <%@include file="/WEB-INF/views/partials/footer.jspf" %>
         </div>
 
         <!-- Application Scripts -->

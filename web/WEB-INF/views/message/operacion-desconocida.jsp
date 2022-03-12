@@ -33,24 +33,22 @@
     <body>
         <!-- Contenido Web -->
         <div id="container">
-            <%@include file="../partials/header.jspf" %>
+            <%@include file="/WEB-INF/views/partials/header.jspf" %>
 
             <main>
                 <img src="public/img/logo01.png" alt="Logo" />
 
                 <h2>Operación desconocida</h2>
 
-                <p>
-                    No se ha reconocido la operación especificada
-                </p>
+                <p>No se ha reconocido la operación especificada</p>
 
                 <div class="controles">
-                    <%@include file="../partials/button-login.jspf" %>
+                    <%@include file="/WEB-INF/views/partials/button-login.jspf" %>
                 </div>
 
             </main>
 
-            <%@include file="../partials/footer.jspf" %>
+            <%@include file="/WEB-INF/views/partials/footer.jspf" %>
         </div>
 
         <!-- Scripts -->

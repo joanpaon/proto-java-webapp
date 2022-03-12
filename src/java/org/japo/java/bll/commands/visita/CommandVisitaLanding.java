@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.admin;
+package org.japo.java.bll.commands.visita;
 
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
@@ -23,10 +23,10 @@ import java.io.IOException;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class CommandLanding extends Command {
+public final class CommandVisitaLanding extends Command {
 
     @Override
     public void process() throws ServletException, IOException {
-        forward("admin/landing");
+        forward("visita/visita-landing");
     }
 }

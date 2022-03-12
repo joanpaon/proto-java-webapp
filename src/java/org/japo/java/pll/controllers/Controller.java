@@ -67,7 +67,7 @@ public final class Controller extends HttpServlet {
                 procesarComando(request, response);
             } else {
                 // Redirección Comando por Defecto ( Bienvenida )
-                response.sendRedirect("?cmd=landing");
+                response.sendRedirect("?cmd=visita-landing");
             }
         } else {
             procesarRecurso(request, response);
@@ -125,10 +125,10 @@ public final class Controller extends HttpServlet {
             Class<?> svcClass = Class.forName(svcClassName);
 
             // Objeto Class > Constructor Clase
-            Constructor<?> svcConstructor = svcClass.getConstructor();
+            Constructor<?> constructor = svcClass.getConstructor();
 
             // Constructor Clase > Instancia Clase
-            svc = (IService) svcConstructor.newInstance();
+            svc = (IService) constructor.newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException
                 | SecurityException | InstantiationException
                 | IllegalAccessException | IllegalArgumentException
@@ -183,10 +183,10 @@ public final class Controller extends HttpServlet {
             Class<?> cmdClass = Class.forName(cmdClassName);
 
             // Objeto Class > Constructor Clase
-            Constructor<?> cmdConstructor = cmdClass.getConstructor();
+            Constructor<?> constructor = cmdClass.getConstructor();
 
             // Constructor Clase > Instancia Clase
-            cmd = (ICommand) cmdConstructor.newInstance();
+            cmd = (ICommand) constructor.newInstance();
         } catch (ClassNotFoundException | NoSuchMethodException
                 | SecurityException | InstantiationException
                 | IllegalAccessException | IllegalArgumentException
@@ -206,17 +206,10 @@ public final class Controller extends HttpServlet {
         // Parámetro > Subpaquete
         if (cmd == null) {
             throw new ServletException("Comando no especificado");
-        } else if (false
-                || cmd.equals("landing")
-                || cmd.equals("login")
-                || cmd.equals("profile")
-                || cmd.equals("validation")
-                || cmd.equals("signup")
-                || cmd.equals("message")
-                || cmd.equals("logout")) {
+        } else if (cmd.equals("validation")) {
             sub = "admin";
         } else if (cmd.contains("-")) {
-            // Eliminar Operacion Final
+            // Eliminar Item Final
             sub = cmd.substring(0, cmd.lastIndexOf("-"));
 
             // Notación Kebab-Case > Notación Package: - > . 

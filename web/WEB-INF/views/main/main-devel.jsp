@@ -32,7 +32,7 @@
     <body>
         <!-- Web Content-->
         <div id="container">
-            <%@include file="../partials/header.jspf" %>
+            <%@include file="/WEB-INF/views/partials/header.jspf" %>
 
             <main>
 
@@ -50,7 +50,7 @@
 
             </main>
 
-            <%@include file="../partials/footer.jspf" %>
+            <%@include file="/WEB-INF/views/partials/footer.jspf" %>
         </div>
 
         <!-- Application Scripts -->

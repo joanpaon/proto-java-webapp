@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.admin;
+package org.japo.java.bll.commands.usuario;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ import org.japo.java.bll.commands.Command;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class CommandLogout extends Command {
+public final class CommandUsuarioLogout extends Command {
 
     @Override
     public void process() throws ServletException, IOException {
@@ -42,7 +42,7 @@ public final class CommandLogout extends Command {
             sesion.invalidate();
 
             // JSP
-            page = "controller?cmd=login";
+            page = "controller?cmd=usuario-login";
         }
 
         // Redirección JSP

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.admin;
+package org.japo.java.bll.commands.usuario;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -27,7 +27,7 @@ import org.japo.java.entities.Usuario;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class CommandLogin extends Command {
+public final class CommandUsuarioLogin extends Command {
 
     // Duración de Sesión - 1800 seg ( 30 min - default )
     private static final int DURACION_SESION = 1800;
@@ -38,7 +38,7 @@ public final class CommandLogin extends Command {
     @Override
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "admin/login";
+        String out = "usuario/usuario-login";
 
         // Obtener Operación
         String op = request.getParameter("op");
@@ -52,16 +52,11 @@ public final class CommandLogin extends Command {
             Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
             // Perfil > Comando
-            switch (usuario.getPerfil()) {
-                case Perfil.DEVEL:
-                    out = "controller?cmd=main-devel";
-                    break;
-                case Perfil.ADMIN:
-                    out = "controller?cmd=main-admin";
-                    break;
-                default:
-                    out = "controller?cmd=main-basic";
-            }
+            out = switch (usuario.getPerfil()) {
+                case Perfil.DEVEL -> "controller?cmd=main-devel";
+                case Perfil.ADMIN -> "controller?cmd=main-admin";
+                default -> "controller?cmd=main-basic";
+            };
         } else if (op == null || op.equals("captura")) {
             // ---
         } else if (op.equals("proceso")) {
