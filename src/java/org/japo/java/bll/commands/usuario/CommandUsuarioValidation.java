@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.bll.commands.admin;
+package org.japo.java.bll.commands.usuario;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -30,7 +30,7 @@ import org.japo.java.entities.Usuario;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class CommandValidation {
+public final class CommandUsuarioValidation {
 
     // Sesión 
     HttpSession sesion;
@@ -40,7 +40,7 @@ public final class CommandValidation {
     private final DALPermisoUsuario dalPermisoUsuario;
     private final DALProceso dalProceso;
 
-    public CommandValidation(HttpSession sesion) {
+    public CommandUsuarioValidation(HttpSession sesion) {
         this.sesion = sesion;
 
         dalPermisoPerfil = new DALPermisoPerfil(sesion);

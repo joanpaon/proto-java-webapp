@@ -24,7 +24,7 @@
         <link href="public/img/logo.png" rel="icon" type="image/x-icon" />
 
         <!-- Style Sheet Links -->
-        <link rel="stylesheet" href="public/css/admin/landing.css" />
+        <link rel="stylesheet" href="public/css/visita/visita-landing.css" />
         <link rel="stylesheet" href="public/css/partials/header.css" />
         <link rel="stylesheet" href="public/css/partials/footer.css" />
         <link rel="stylesheet" href="public/css/partials/button-login.css" />
@@ -51,7 +51,7 @@
         </div>
 
         <!-- Application Scripts -->
-        <script src="public/js/admin/landing.js"></script>
+        <script src="public/js/visita/visita-landing.js"></script>
         <script src="public/js/partials/header.js"></script>
         <script src="public/js/partials/footer.js"></script>
         <script src="public/js/partials/button-login.js"></script>

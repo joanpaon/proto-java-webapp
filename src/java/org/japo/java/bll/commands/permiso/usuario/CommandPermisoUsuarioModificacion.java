@@ -20,7 +20,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import org.japo.java.bll.commands.admin.CommandValidation;
+import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALUsuario;
 import org.japo.java.dal.DALPermisoUsuario;
 import org.japo.java.dal.DALProceso;
@@ -51,7 +51,7 @@ public final class CommandPermisoUsuarioModificacion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation validator = new CommandValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
 
             // Capas de Datos
             DALUsuario dalUsuario = new DALUsuario(sesion);

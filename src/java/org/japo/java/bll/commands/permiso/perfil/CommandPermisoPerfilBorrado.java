@@ -19,7 +19,7 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
-import org.japo.java.bll.commands.admin.CommandValidation;
+import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPermisoPerfil;
 import org.japo.java.entities.PermisoPerfil;
 
@@ -43,7 +43,7 @@ public final class CommandPermisoPerfilBorrado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation validator = new CommandValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
 
             // Capas de Datos
             DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);

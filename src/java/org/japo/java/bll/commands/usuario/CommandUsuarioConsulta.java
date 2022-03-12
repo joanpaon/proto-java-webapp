@@ -19,7 +19,6 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
-import org.japo.java.bll.commands.admin.CommandValidation;
 import org.japo.java.dal.DALUsuario;
 import org.japo.java.entities.Usuario;
 
@@ -42,7 +41,7 @@ public final class CommandUsuarioConsulta extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation validator = new CommandValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos

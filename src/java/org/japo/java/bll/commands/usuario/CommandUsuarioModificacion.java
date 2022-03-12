@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Random;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.japo.java.bll.commands.admin.CommandValidation;
 import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
@@ -51,7 +50,7 @@ public final class CommandUsuarioModificacion extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation validator = new CommandValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos

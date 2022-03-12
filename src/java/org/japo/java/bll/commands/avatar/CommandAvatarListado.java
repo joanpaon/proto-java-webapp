@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import org.japo.java.bll.commands.admin.CommandValidation;
+import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALAvatar;
 import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
@@ -46,7 +46,7 @@ public final class CommandAvatarListado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandValidation validator = new CommandValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos

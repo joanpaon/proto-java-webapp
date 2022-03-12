@@ -24,7 +24,7 @@
         <link href="public/img/logo.png" rel="icon" type="image/x-icon" />
 
         <!-- Style Sheet Links -->
-        <link rel="stylesheet" href="public/css/admin/login.css" />
+        <link rel="stylesheet" href="public/css/usuario/usuario-login.css" />
         <link rel="stylesheet" href="public/css/partials/header.css" />
         <link rel="stylesheet" href="public/css/partials/footer.css" />
     </head>
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Application Scripts -->
-        <script src="public/js/admin/login.js"></script>
+        <script src="public/js/usuario/usuario-login.js"></script>
         <script src="public/js/partials/header.js"></script>
         <script src="public/js/partials/footer.js"></script>
     </body>

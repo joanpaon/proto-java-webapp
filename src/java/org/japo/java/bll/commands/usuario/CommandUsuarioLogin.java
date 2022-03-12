@@ -53,9 +53,12 @@ public final class CommandUsuarioLogin extends Command {
 
             // Perfil > Comando
             out = switch (usuario.getPerfil()) {
-                case Perfil.DEVEL -> "controller?cmd=main-devel";
-                case Perfil.ADMIN -> "controller?cmd=main-admin";
-                default -> "controller?cmd=main-basic";
+                case Perfil.DEVEL ->
+                    "controller?cmd=main-devel";
+                case Perfil.ADMIN ->
+                    "controller?cmd=main-admin";
+                default ->
+                    "controller?cmd=main-basic";
             };
         } else if (op == null || op.equals("captura")) {
             // ---
