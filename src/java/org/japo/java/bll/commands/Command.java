@@ -46,7 +46,7 @@ public abstract class Command implements ICommand {
         this.response = response;
     }
 
-    // Ejecución del Comando
+    // Redirección de la Salida
     protected final void forward(String out) throws ServletException, IOException {
         // Validar Tipo de Salida
         if (out.startsWith("controller")) {
