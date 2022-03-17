@@ -39,7 +39,7 @@ public final class UtilesEstaticos {
             HttpServletRequest request,
             HttpServletResponse response)
             throws IOException {
-        // Request > Recurso ( CSS | JS | PNG | ... )
+        // Request > Recurso
 //        File fichero = obtenerRecursoSeguro(request);
         File fichero = obtenerRecurso(request);
 
@@ -107,8 +107,7 @@ public final class UtilesEstaticos {
             byte[] buffer = new byte[(int) fichero.length()];
 
             // Origen > Destino
-            try (
-                     FileInputStream origen = new FileInputStream(fichero);  ServletOutputStream destino = response.getOutputStream()) {
+            try ( FileInputStream origen = new FileInputStream(fichero);  ServletOutputStream destino = response.getOutputStream()) {
                 // Origen > Buffer
                 origen.read(buffer);
 

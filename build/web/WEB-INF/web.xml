@@ -12,5 +12,9 @@
     <error-page>
         <error-code>500</error-code>
         <location>/WEB-INF/views/message/page500.jsp</location>
-    </error-page>        
+    </error-page>
+    <context-param>
+        <param-name>bd</param-name>
+        <param-value>proto</param-value>
+    </context-param>
 </web-app>

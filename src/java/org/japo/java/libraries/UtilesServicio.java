@@ -18,7 +18,7 @@ package org.japo.java.libraries;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +40,7 @@ public final class UtilesServicio {
     }
 
     public static final void procesarServicio(
-            ServletContext context,
+            ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,7 +51,7 @@ public final class UtilesServicio {
         IService svc = obtenerServicio(svcName);
 
         // ServletContext + Petición + Resuesta > Inicializar Servicio
-        svc.init(context, request, response);
+        svc.init(config, request, response);
 
         // Procesa Servicio
         svc.process();

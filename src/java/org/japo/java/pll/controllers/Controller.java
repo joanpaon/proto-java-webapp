@@ -18,6 +18,7 @@ package org.japo.java.pll.controllers;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,13 @@ import org.japo.java.libraries.UtilesServicio;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-@WebServlet(name = "Controller", urlPatterns = {"", "/public/*"})
+@WebServlet(
+        name = "Controller",
+        urlPatterns = {"", "/public/*"},
+        initParams = {
+            @WebInitParam(name = "author", value = "JAPO Labs"),
+            @WebInitParam(name = "version", value = "1.0.0")
+        })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -45,15 +52,19 @@ public final class Controller extends HttpServlet {
 
         // Análisis de la Petición
         if (request.getPathInfo().equals("/")) {
+            // Recursos Dinámicos
             if (request.getParameter("svc") != null) {
-                UtilesServicio.procesarServicio(getServletContext(), request, response);
+                // Petición de Servicio: XML | JSON
+                UtilesServicio.procesarServicio(getServletConfig(), request, response);
             } else if (request.getParameter("cmd") != null) {
-                UtilesComando.procesarComando(getServletContext(), request, response);
+                // Peticion de Comando: Vista
+                UtilesComando.procesarComando(getServletConfig(), request, response);
             } else {
-                // Redirección Comando por Defecto ( Bienvenida )
+                // Petición por Defecto - Vista Bienvenida
                 response.sendRedirect("?cmd=visita-landing");
             }
         } else {
+            // Recursos Estáticos
             UtilesEstaticos.procesarRecurso(request, response);
         }
     }

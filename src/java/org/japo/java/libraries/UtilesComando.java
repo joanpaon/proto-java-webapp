@@ -18,7 +18,7 @@ package org.japo.java.libraries;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +40,7 @@ public final class UtilesComando {
     }
 
     public static final void procesarComando(
-            ServletContext context,
+            ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,7 +51,7 @@ public final class UtilesComando {
         ICommand cmd = obtenerComando(cmdName);
 
         // ServletContext + Peticion + Resuesta > Inicializar Comando
-        cmd.init(context, request, response);
+        cmd.init(config, request, response);
 
         // Procesa Comando
         cmd.process();

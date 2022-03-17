@@ -17,7 +17,7 @@ package org.japo.java.bll.services;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,17 +29,17 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class Service implements IService {
 
     // Referencias
-    protected ServletContext context;
+    protected ServletConfig config;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
     // Inicialización del Servicio
     @Override
     public void init(
-            ServletContext context,
+            ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response) {
-        this.context = context;
+        this.config = config;
         this.request = request;
         this.response = response;
     }
@@ -53,7 +53,7 @@ public abstract class Service implements IService {
         response.setContentType("UTF-8");
 
         // Enlaza la Salida
-        try (PrintWriter pw = response.getWriter()) {
+        try ( PrintWriter pw = response.getWriter()) {
             // JSON > Salida
             pw.write(json);
         }

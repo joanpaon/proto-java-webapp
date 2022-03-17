@@ -17,7 +17,7 @@ package org.japo.java.bll.commands;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,20 +28,21 @@ import javax.servlet.http.HttpSession;
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
 public abstract class Command implements ICommand {
+
     private static final String VIEWS_PATH = "/WEB-INF/views";
 
     // Referencias
-    protected ServletContext context;
+    protected ServletConfig config;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
     // Inicialización del Comando
     @Override
     public final void init(
-            ServletContext context,
+            ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response) {
-        this.context = context;
+        this.config = config;
         this.request = request;
         this.response = response;
     }
@@ -52,7 +53,7 @@ public abstract class Command implements ICommand {
         if (out.startsWith("controller")) {
             // Elimina el prefijo
             out = out.replace("controller", "");
-            
+
             // Redirección
             response.sendRedirect(out);
         } else {
@@ -60,7 +61,7 @@ public abstract class Command implements ICommand {
             out = String.format("%s/%s.jsp", VIEWS_PATH, out);
 
             // Contexto + Nombre Vista > Despachador
-            RequestDispatcher dispatcher = context.getRequestDispatcher(out);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(out);
 
             // Despachador + Petición + Respuesta > Redirección a Vista
             dispatcher.forward(request, response);
@@ -71,6 +72,7 @@ public abstract class Command implements ICommand {
         // Semáforo
         boolean checkOK = false;
 
+        // Validación
         if (sesion != null) {
             // Sesion > Usuario
             Object usuario = sesion.getAttribute("usuario");
