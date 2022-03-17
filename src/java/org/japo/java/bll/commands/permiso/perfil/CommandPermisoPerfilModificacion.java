@@ -47,18 +47,16 @@ public final class CommandPermisoPerfilModificacion extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
-
-            // Capas de Datos
-            DALPerfil dalPerfil = new DALPerfil(sesion);
-            DALPermisoPerfil dalPermiso = new DALPermisoPerfil(sesion);
-            DALProceso dalProceso = new DALProceso(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
+                // Capas de Datos
+                DALPerfil dalPerfil = new DALPerfil(config);
+                DALPermisoPerfil dalPermiso = new DALPermisoPerfil(config);
+                DALProceso dalProceso = new DALProceso(config);
+
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -97,7 +95,7 @@ public final class CommandPermisoPerfilModificacion extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=permiso-perfil-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }
@@ -107,6 +105,8 @@ public final class CommandPermisoPerfilModificacion extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

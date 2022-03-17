@@ -22,18 +22,13 @@ import org.japo.java.bll.commands.Command;
 import org.japo.java.dal.DALUsuario;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesServlet;
 
 /**
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
 public final class CommandUsuarioLogin extends Command {
-
-    // Duración de Sesión - 1800 seg ( 30 min - default )
-    private static final int DURACION_SESION = 1800;
-
-    // Nombre de la Base de Datos
-    private static final String BD = "proto";
 
     @Override
     public void process() throws ServletException, IOException {
@@ -76,11 +71,8 @@ public final class CommandUsuarioLogin extends Command {
                 // Request > Sesión
                 sesion = request.getSession(true);
 
-                // Nombre de Base de Datos > Sesión
-                sesion.setAttribute("bd", BD);
-
                 // Capas de Negocio
-                DALUsuario dalUsuario = new DALUsuario(sesion);
+                DALUsuario dalUsuario = new DALUsuario(config);
 
                 // Nombre Usuario + BD > Objeto Usuario
                 Usuario usuario = dalUsuario.consultar(user);
@@ -97,14 +89,14 @@ public final class CommandUsuarioLogin extends Command {
                     // Crear/Obtener Sesión
                     sesion = request.getSession(true);
 
+                    // Tiempo Maximo Sesion Inactiva ( Segundos )
+                    int lapso = UtilesServlet.obtenerLapsoInactividad(config);
+
                     // Establecer duracion sesion ( Segundos )
-                    sesion.setMaxInactiveInterval(DURACION_SESION);
+                    sesion.setMaxInactiveInterval(lapso);
 
                     // Usuario > Sesión
                     sesion.setAttribute("usuario", usuario);
-
-                    // Nombre de Base de Datos > Sesión
-                    sesion.setAttribute("bd", BD);
 
                     // Perfil > Comando
                     if (usuario.getPerfil() >= Perfil.DEVEL) {

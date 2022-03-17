@@ -29,55 +29,41 @@ import org.japo.java.entities.Perfil;
  */
 public final class CommandPerfilModificacion extends Command {
 
-    // Redirección Página JSP Proceso
-    private static final String PAGINA_PROCESO = "perfiles/perfil-modificacion";
-
     @Override
     @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
-        // JSP
-        String page;
-
-        // Entidad
-        Perfil perfil;
+        // Salida
+        String out = "perfil/perfil-modificacion";
 
         // Sesión
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
         if (validarSesion(sesion)) {
-            page = "messages/sesion-invalida";
-        } else {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
-
-            // Capas de Datos
-            DALPerfil perfilDAL = new DALPerfil(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
+                // Capas de Datos
+                DALPerfil perfilDAL = new DALPerfil(config);
+
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
+
+                // BD > Perfil
+                Perfil perfil = perfilDAL.consultar(id);
 
                 // request > Operación
                 String op = request.getParameter("op");
 
                 // Entidad > JSP
                 if (op == null || op.equals("captura")) {
-                    // BD > Entidades
-                    perfil = perfilDAL.consultar(id);
-
                     // Inyectar Datos > JSP
                     request.setAttribute("perfil", perfil);
-
-                    // JSP
-                    page = PAGINA_PROCESO;
                 } else if (op.equals("proceso")) {
-                    // ID Entidad > Registro BD > Entidad
-                    perfil = perfilDAL.consultar(id);
-
                     // Request > Parámetros
-                    String nombre = request.getParameter("nombre").trim();
-                    String info = request.getParameter("info").trim();
+                    String nombre = request.getParameter("nombre");
+                    String info = request.getParameter("info");
 
                     // Parámetros > Entidad
                     perfil = new Perfil(perfil.getId(), nombre, info);
@@ -87,19 +73,21 @@ public final class CommandPerfilModificacion extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        page = "messages/operacion-completada";
+                        out = "controller?cmd=perfil-listado";
                     } else {
-                        page = "messages/operacion-cancelada";
+                        out = "messages/operacion-cancelada";
                     }
                 } else {
-                    page = "messages/operacion-desconocida";
+                    out = "messages/operacion-desconocida";
                 }
             } else {
-                page = "messages/acceso-denegado";
+                out = "messages/acceso-denegado";
             }
+        } else {
+            out = "messages/sesion-invalida";
         }
 
         // Redirección JSP
-        forward(page);
+        forward(out);
     }
 }

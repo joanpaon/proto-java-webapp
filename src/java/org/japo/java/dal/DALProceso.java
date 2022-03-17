@@ -21,8 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
 import org.japo.java.entities.Proceso;
 import org.japo.java.libraries.UtilesServlet;
@@ -33,16 +33,14 @@ import org.japo.java.libraries.UtilesServlet;
  */
 public final class DALProceso {
 
-    // Campos
-    private final HttpSession sesion;
+    // Logger
+    private static final Logger logger = Logger.getLogger(DALProceso.class.getName());
 
-    // Nombre de la Base de datos
-    private final String bd;
+    // DataSource
+    DataSource ds;
 
-    public DALProceso(HttpSession sesion) {
-        this.sesion = sesion;
-
-        bd = (String) sesion.getAttribute("bd");
+    public DALProceso(ServletConfig config) {
+        ds = UtilesServlet.obtenerDataSource(config);
     }
 
     public List<Proceso> listar() {
@@ -57,9 +55,6 @@ public final class DALProceso {
         List<Proceso> procesos = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -78,8 +73,8 @@ public final class DALProceso {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -99,9 +94,6 @@ public final class DALProceso {
         Proceso proceso = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -119,8 +111,8 @@ public final class DALProceso {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
@@ -140,9 +132,6 @@ public final class DALProceso {
         Proceso proceso = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -160,8 +149,8 @@ public final class DALProceso {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Entidad
@@ -183,9 +172,6 @@ public final class DALProceso {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -195,8 +181,8 @@ public final class DALProceso {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -214,9 +200,6 @@ public final class DALProceso {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -225,8 +208,8 @@ public final class DALProceso {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -247,9 +230,6 @@ public final class DALProceso {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -260,8 +240,8 @@ public final class DALProceso {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -280,9 +260,6 @@ public final class DALProceso {
                 + "procesos";
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 try ( ResultSet rs = ps.executeQuery()) {
@@ -291,8 +268,8 @@ public final class DALProceso {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: Filas Contadas
@@ -313,9 +290,6 @@ public final class DALProceso {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -338,8 +312,8 @@ public final class DALProceso {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista

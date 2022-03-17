@@ -38,15 +38,13 @@ public final class CommandPerfilConsulta extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "messages/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(sesion);
+                DALPerfil dalPerfil = new DALPerfil(config);
 
                 // Request > ID Perfil
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -59,6 +57,8 @@ public final class CommandPerfilConsulta extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "messages/sesion-invalida";
         }
 
         // Redirección

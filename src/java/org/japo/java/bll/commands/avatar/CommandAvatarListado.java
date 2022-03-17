@@ -46,11 +46,11 @@ public final class CommandAvatarListado extends Command {
             out = "message/sesion-invalida";
         } else {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALAvatar dalAvatar = new DALAvatar(sesion);
+                DALAvatar dalAvatar = new DALAvatar(config);
 
                 // BD > Parámetros Listado
                 long rowCount = dalAvatar.contar();

@@ -22,8 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
 import org.japo.java.entities.Avatar;
 import org.japo.java.libraries.UtilesServlet;
@@ -37,11 +36,11 @@ public final class DALAvatar {
     // Logger
     private static final Logger logger = Logger.getLogger(DALAvatar.class.getName());
 
-    // Nombre de la Base de datos
-    private final String bd;
+    // DataSource
+    DataSource ds;
 
-    public DALAvatar(HttpSession sesion) {
-        bd = (String) sesion.getAttribute("bd");
+    public DALAvatar(ServletConfig config) {
+        ds = UtilesServlet.obtenerDataSource(config);
     }
 
     public List<Avatar> listar() {
@@ -56,9 +55,6 @@ public final class DALAvatar {
         List<Avatar> avatares = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -77,7 +73,7 @@ public final class DALAvatar {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -99,9 +95,6 @@ public final class DALAvatar {
         Avatar avatar = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -119,7 +112,7 @@ public final class DALAvatar {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -141,9 +134,6 @@ public final class DALAvatar {
         Avatar avatar = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -161,7 +151,7 @@ public final class DALAvatar {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -184,9 +174,6 @@ public final class DALAvatar {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -196,7 +183,7 @@ public final class DALAvatar {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -215,9 +202,6 @@ public final class DALAvatar {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -226,7 +210,7 @@ public final class DALAvatar {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -248,9 +232,6 @@ public final class DALAvatar {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -261,7 +242,7 @@ public final class DALAvatar {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -281,9 +262,6 @@ public final class DALAvatar {
                 + "avatares";
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 try ( ResultSet rs = ps.executeQuery()) {
@@ -292,7 +270,7 @@ public final class DALAvatar {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -313,9 +291,6 @@ public final class DALAvatar {
         List<Avatar> avatares = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -338,7 +313,7 @@ public final class DALAvatar {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 

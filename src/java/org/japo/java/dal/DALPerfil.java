@@ -21,8 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
 import org.japo.java.entities.Perfil;
 import org.japo.java.libraries.UtilesServlet;
@@ -33,16 +33,14 @@ import org.japo.java.libraries.UtilesServlet;
  */
 public final class DALPerfil {
 
-    // Campos
-    private final HttpSession sesion;
+    // Logger
+    private static final Logger logger = Logger.getLogger(DALPerfil.class.getName());
 
-    // Nombre de la Base de datos
-    private final String bd;
+    // DataSource
+    DataSource ds;
 
-    public DALPerfil(HttpSession sesion) {
-        this.sesion = sesion;
-
-        bd = (String) sesion.getAttribute("bd");
+    public DALPerfil(ServletConfig config) {
+        ds = UtilesServlet.obtenerDataSource(config);
     }
 
     public List<Perfil> listar() {
@@ -57,9 +55,6 @@ public final class DALPerfil {
         List<Perfil> perfiles = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -78,8 +73,8 @@ public final class DALPerfil {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -100,9 +95,6 @@ public final class DALPerfil {
         Perfil perfil = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -117,8 +109,8 @@ public final class DALPerfil {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista
@@ -140,9 +132,6 @@ public final class DALPerfil {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -152,8 +141,8 @@ public final class DALPerfil {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -172,9 +161,6 @@ public final class DALPerfil {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -183,8 +169,8 @@ public final class DALPerfil {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -204,9 +190,6 @@ public final class DALPerfil {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -217,8 +200,8 @@ public final class DALPerfil {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: true | false
@@ -238,9 +221,6 @@ public final class DALPerfil {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -250,8 +230,8 @@ public final class DALPerfil {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno: Filas Contadas
@@ -272,9 +252,6 @@ public final class DALPerfil {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -297,8 +274,8 @@ public final class DALPerfil {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
-            System.out.println("ERROR: " + ex.getMessage());
+        } catch (NullPointerException | SQLException ex) {
+            logger.info(ex.getMessage());
         }
 
         // Retorno Lista

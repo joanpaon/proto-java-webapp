@@ -39,16 +39,14 @@ public final class CommandPerfilBorrado extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
-
-            // Capas de Datos
-            DALPerfil dalPerfil = new DALPerfil(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
+                // Capas de Datos
+                DALPerfil dalPerfil = new DALPerfil(config);
+
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
 
@@ -78,6 +76,8 @@ public final class CommandPerfilBorrado extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

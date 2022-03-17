@@ -13,16 +13,8 @@
         // Sesión > Usuario
         Usuario _usuario = (Usuario) _sesion.getAttribute("usuario");
 
-        // Sesion > DALAvatar
-        DALAvatar _dalAvatar = new DALAvatar(_sesion);
-
-        // Usuario > Avatar
-        Avatar _avatar = _dalAvatar.consultar(_usuario.getAvatar());
-
-        // Avatar > Imagen
-        if (_avatar != null) {
-            _imagen = _avatar.getImagen();
-        }
+        // Usuario > Imagen
+        _imagen = _usuario.getAvatarImg();
     }
 %>
 

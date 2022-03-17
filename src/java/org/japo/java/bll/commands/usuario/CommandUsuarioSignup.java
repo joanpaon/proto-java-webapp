@@ -18,7 +18,6 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import org.japo.java.dal.DALUsuario;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
@@ -33,13 +32,10 @@ public final class CommandUsuarioSignup extends Command {
     @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "admin/signup";
-
-        // Sesión
-        HttpSession sesion = request.getSession(false);
+        String out = "usuario/usuario-registro";
 
         // Capas de Negocio
-        DALUsuario dalUsuario = new DALUsuario(sesion);
+        DALUsuario dalUsuario = new DALUsuario(config);
 
         // Obtener Operación
         String op = request.getParameter("op");

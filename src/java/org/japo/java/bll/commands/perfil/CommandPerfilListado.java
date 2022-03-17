@@ -41,15 +41,13 @@ public final class CommandPerfilListado extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(sesion);
+                DALPerfil dalPerfil = new DALPerfil(config);
 
                 // BD > Parámetros Listado
                 long rowCount = dalPerfil.contar();
@@ -129,6 +127,8 @@ public final class CommandPerfilListado extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

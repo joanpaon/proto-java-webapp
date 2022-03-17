@@ -46,17 +46,15 @@ public final class CommandUsuarioInsercion extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALUsuario dalUsuario = new DALUsuario(sesion);
-                DALPerfil dalPerfil = new DALPerfil(sesion);
-                DALAvatar dalAvatar = new DALAvatar(sesion);
+                DALAvatar dalAvatar = new DALAvatar(config);
+                DALPerfil dalPerfil = new DALPerfil(config);
+                DALUsuario dalUsuario = new DALUsuario(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");
@@ -79,8 +77,8 @@ public final class CommandUsuarioInsercion extends Command {
                     if (avatar == null) {
                         // Avatar no seleccionado - Predeterminado
                         avatar = new Avatar();
-                    }                        
-                    
+                    }
+
                     // Insertar Avatar
                     if (dalAvatar.insertar(avatar)) {
                         // Insertar Avatar seleccionado - Recuperar de BD
@@ -108,6 +106,8 @@ public final class CommandUsuarioInsercion extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

@@ -65,7 +65,7 @@ public final class Controller extends HttpServlet {
             }
         } else {
             // Recursos Estáticos
-            UtilesEstaticos.procesarRecurso(request, response);
+            UtilesEstaticos.procesarRecurso(getServletConfig(), request, response);
         }
     }
 

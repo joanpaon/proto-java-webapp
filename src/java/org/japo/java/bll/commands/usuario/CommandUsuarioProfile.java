@@ -32,19 +32,17 @@ public final class CommandUsuarioProfile extends Command {
     @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "admin/profile";
+        String out = "usuario/usuario-perfil";
 
         // Sesión
         HttpSession sesion = request.getSession(false);
 
         if (validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
             // Usuario Actual
             Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
             // Capas de Datos
-            DALUsuario usuarioDAL = new DALUsuario(sesion);
+            DALUsuario usuarioDAL = new DALUsuario(config);
 
             // Obtener Operación
             String op = request.getParameter("op");
@@ -78,6 +76,8 @@ public final class CommandUsuarioProfile extends Command {
             } else {
                 out = "message/operacion-desconocida";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección

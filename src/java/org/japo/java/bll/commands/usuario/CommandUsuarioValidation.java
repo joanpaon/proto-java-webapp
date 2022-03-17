@@ -16,6 +16,7 @@
 package org.japo.java.bll.commands.usuario;
 
 import java.util.List;
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpSession;
 import org.japo.java.dal.DALPermisoPerfil;
 import org.japo.java.dal.DALPermisoUsuario;
@@ -40,12 +41,12 @@ public final class CommandUsuarioValidation {
     private final DALPermisoUsuario dalPermisoUsuario;
     private final DALProceso dalProceso;
 
-    public CommandUsuarioValidation(HttpSession sesion) {
+    public CommandUsuarioValidation(ServletConfig config, HttpSession sesion) {
         this.sesion = sesion;
 
-        dalPermisoPerfil = new DALPermisoPerfil(sesion);
-        dalPermisoUsuario = new DALPermisoUsuario(sesion);
-        dalProceso = new DALProceso(sesion);
+        dalPermisoPerfil = new DALPermisoPerfil(config);
+        dalPermisoUsuario = new DALPermisoUsuario(config);
+        dalProceso = new DALProceso(config);
     }
 
     public final boolean validarAccesoComando(String comando) {

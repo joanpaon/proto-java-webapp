@@ -22,8 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesServlet;
@@ -37,11 +36,11 @@ public final class DALUsuario {
     // Logger
     private static final Logger logger = Logger.getLogger(DALUsuario.class.getName());
 
-    // Nombre de la Base de datos
-    private final String bd;
+    // DataSource
+    DataSource ds;
 
-    public DALUsuario(HttpSession sesion) {
-        bd = (String) sesion.getAttribute("bd");
+    public DALUsuario(ServletConfig config) {
+        ds = UtilesServlet.obtenerDataSource(config);
     }
 
     public List<Usuario> listar() {
@@ -66,9 +65,6 @@ public final class DALUsuario {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -91,7 +87,7 @@ public final class DALUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -122,9 +118,6 @@ public final class DALUsuario {
         Usuario usuario = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try ( Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
                 ps.setInt(1, id);
@@ -145,7 +138,7 @@ public final class DALUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -177,9 +170,6 @@ public final class DALUsuario {
         Usuario usuario = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -201,7 +191,7 @@ public final class DALUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -224,9 +214,6 @@ public final class DALUsuario {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -238,7 +225,7 @@ public final class DALUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -256,9 +243,6 @@ public final class DALUsuario {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -267,7 +251,7 @@ public final class DALUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -289,9 +273,6 @@ public final class DALUsuario {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -304,7 +285,7 @@ public final class DALUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -324,9 +305,6 @@ public final class DALUsuario {
                 + "usuarios";
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 try ( ResultSet rs = ps.executeQuery()) {
@@ -335,7 +313,7 @@ public final class DALUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -366,9 +344,6 @@ public final class DALUsuario {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -395,7 +370,7 @@ public final class DALUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             logger.info(ex.getMessage());
         }
 

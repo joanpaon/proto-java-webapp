@@ -18,6 +18,7 @@ package org.japo.java.libraries;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,20 +37,20 @@ public final class UtilesEstaticos {
     }
 
     public static final void procesarRecurso(
+            ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response)
             throws IOException {
         // Request > Recurso
-//        File fichero = obtenerRecursoSeguro(request);
-        File fichero = obtenerRecurso(request);
+        File fichero = obtenerRecurso(config, request);
 
         // Recurso > Salida
         servirRecurso(fichero, response);
     }
 
-    private static File obtenerRecurso(HttpServletRequest request) {
-        // Prefijo de Ruta
-        String base = "/WEB-INF/static";
+    private static File obtenerRecurso(ServletConfig config, HttpServletRequest request) {
+        // Config > Views Path
+        String base = config.getServletContext().getInitParameter("ruta-estatica");
 
         // Request > Ruta Absoluta ( Compilada )
         String ruta = request.getPathTranslated().replace("\\", "/");
@@ -67,9 +68,9 @@ public final class UtilesEstaticos {
         return new File(ruta);
     }
 
-    private static File obtenerRecursoSeguro(HttpServletRequest request) {
-        // Prefijo de Ruta
-        String base = "/WEB-INF/static";
+    private static File obtenerRecursoSeguro(ServletConfig config, HttpServletRequest request) {
+        // Config > Views Path
+        String base = config.getServletContext().getInitParameter("ruta-estatica");
 
         // Obtener Sesión
         HttpSession sesion = request.getSession();

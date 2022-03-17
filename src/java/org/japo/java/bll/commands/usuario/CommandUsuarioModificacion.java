@@ -46,17 +46,15 @@ public final class CommandUsuarioModificacion extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALAvatar dalAvatar = new DALAvatar(sesion);
-                DALPerfil dalPerfil = new DALPerfil(sesion);
-                DALUsuario dalUsuario = new DALUsuario(sesion);
+                DALAvatar dalAvatar = new DALAvatar(config);
+                DALPerfil dalPerfil = new DALPerfil(config);
+                DALUsuario dalUsuario = new DALUsuario(config);
 
                 // request > ID Operación
                 String op = request.getParameter("op");
@@ -69,7 +67,6 @@ public final class CommandUsuarioModificacion extends Command {
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
-
                     // BD > Lista de Perfiles
                     List<Perfil> perfiles = dalPerfil.listar();
 
@@ -80,7 +77,7 @@ public final class CommandUsuarioModificacion extends Command {
                     // Request > Parámetros
                     String user = obtenerUser();
                     String pass = obtenerPass();
-                    Avatar avatar = obtenerAvatar(dalAvatar);
+                    Avatar avatar = obtenerAvatar();
                     int perfil = obtenerPerfil();
 
                     // Validar Nombre Usuario
@@ -97,13 +94,13 @@ public final class CommandUsuarioModificacion extends Command {
                     if (avatar == null) {
                         // Avatar NO modificado
                         avatar = new Avatar(usuario.getAvatar(), "", "");
-                    } else  if (usuario.getAvatar() == Avatar.DEF_ID) {
+                    } else if (usuario.getAvatar() == Avatar.DEF_ID) {
                         // Avatar Seleccionado - Avatar Previo Predeterminado
                         if (!dalAvatar.insertar(avatar)) {
                             // Error al insertar el avatar
                             throw new ServletException("Error al insertar el avatar");
                         }
-                        
+
                         // Recuperar Avatar de BD
                         avatar = dalAvatar.consultar(avatar.getImagen());
                     } else {
@@ -138,6 +135,8 @@ public final class CommandUsuarioModificacion extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección
@@ -192,7 +191,7 @@ public final class CommandUsuarioModificacion extends Command {
         return pass;
     }
 
-    private Avatar obtenerAvatar(DALAvatar dalAvatar) throws IOException, ServletException {
+    private Avatar obtenerAvatar() throws IOException, ServletException {
         // Datos > Avatar
         Avatar avatar = null;
 
@@ -221,12 +220,6 @@ public final class CommandUsuarioModificacion extends Command {
 
             // Datos > Avatar
             avatar = new Avatar(0, nombre, imagen);
-
-            // Avatar > BD
-//            if (dalAvatar.insertar(avatar)) {
-            // BD > Avatar
-//                avatar = dalAvatar.consultar(nombre);
-//            }
         }
 
         // Retorno: Avatar

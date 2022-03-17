@@ -22,8 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
+import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
 import org.japo.java.entities.PermisoUsuario;
 import org.japo.java.libraries.UtilesServlet;
@@ -37,11 +36,11 @@ public final class DALPermisoUsuario {
     // Logger
     private static final Logger logger = Logger.getLogger(DALPermisoUsuario.class.getName());
 
-    // Nombre de la Base de datos
-    private final String bd;
+    // DataSource
+    DataSource ds;
 
-    public DALPermisoUsuario(HttpSession sesion) {
-        bd = (String) sesion.getAttribute("bd");
+    public DALPermisoUsuario(ServletConfig config) {
+        ds = UtilesServlet.obtenerDataSource(config);
     }
 
     public List<PermisoUsuario> listar() {
@@ -65,9 +64,6 @@ public final class DALPermisoUsuario {
         List<PermisoUsuario> permisos = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
@@ -89,7 +85,7 @@ public final class DALPermisoUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -120,9 +116,6 @@ public final class DALPermisoUsuario {
         PermisoUsuario permiso = null;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -143,7 +136,7 @@ public final class DALPermisoUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -174,9 +167,6 @@ public final class DALPermisoUsuario {
         List<PermisoUsuario> permisos = new ArrayList<>();
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -200,7 +190,7 @@ public final class DALPermisoUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -223,9 +213,6 @@ public final class DALPermisoUsuario {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -236,7 +223,7 @@ public final class DALPermisoUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -255,9 +242,6 @@ public final class DALPermisoUsuario {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -266,7 +250,7 @@ public final class DALPermisoUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -288,9 +272,6 @@ public final class DALPermisoUsuario {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -300,7 +281,7 @@ public final class DALPermisoUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -322,9 +303,6 @@ public final class DALPermisoUsuario {
         int numReg = 0;
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(SQL)) {
                 // Parametrizar Sentencia
@@ -336,7 +314,7 @@ public final class DALPermisoUsuario {
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -356,9 +334,6 @@ public final class DALPermisoUsuario {
                 + "permisos_usuario";
 
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 try ( ResultSet rs = ps.executeQuery()) {
@@ -367,7 +342,7 @@ public final class DALPermisoUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 
@@ -398,9 +373,6 @@ public final class DALPermisoUsuario {
 
         // Obtención del Contexto
         try {
-            // Contexto Inicial > DataSource
-            DataSource ds = UtilesServlet.obtenerDataSource(bd);
-
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
@@ -426,7 +398,7 @@ public final class DALPermisoUsuario {
                     }
                 }
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NullPointerException | SQLException ex) {
             logger.info(ex.getMessage());
         }
 

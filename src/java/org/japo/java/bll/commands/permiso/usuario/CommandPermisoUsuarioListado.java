@@ -39,16 +39,14 @@ public final class CommandPermisoUsuarioListado extends Command {
         HttpSession sesion = request.getSession(false);
 
         // Validar Sesión
-        if (!validarSesion(sesion)) {
-            out = "message/sesion-invalida";
-        } else {
+        if (validarSesion(sesion)) {
             // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(sesion);
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
             // Validar Acceso Comando
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
-                DALPermisoUsuario dalPermiso = new DALPermisoUsuario(sesion);
+                DALPermisoUsuario dalPermiso = new DALPermisoUsuario(config);
 
                 // BD > Parámetros Listado
                 long rowCount = dalPermiso.contar();
@@ -107,6 +105,8 @@ public final class CommandPermisoUsuarioListado extends Command {
             } else {
                 out = "message/acceso-denegado";
             }
+        } else {
+            out = "message/sesion-invalida";
         }
 
         // Redirección
