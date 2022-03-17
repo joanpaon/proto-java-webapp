@@ -72,6 +72,42 @@
                     <a class="btn btn-insertar" href="?cmd=usuario-insercion&op=captura" title="Nuevo">Nuevo</a>
                 </header>
 
+                <nav class="paginacion">
+                    <a href="?cmd=permiso-listado&row-index=<%=rowIndexIni%>&rows-page=<%=rowsPage%>" class="btn btn-ini" title="Principio">&lt;&lt;</a>
+                    <a href="?cmd=permiso-listado&row-index=<%=rowIndexAnt%>&rows-page=<%=rowsPage%>" class="btn btn-prv" title="Anterior">&lt;</a>
+                    <a href="?cmd=permiso-listado&row-index=<%=rowIndexSig%>&rows-page=<%=rowsPage%>" class="btn btn-nxt" title="Siguiente">&gt;</a>
+                    <a href="?cmd=permiso-listado&row-index=<%=rowIndexFin%>&rows-page=<%=rowsPage%>" class="btn btn-end" title="Final">&gt;&gt;</a>
+                    |
+                    <form class="rows-page" action="">
+                        <input type="hidden" name="cmd" value="permiso-listado">
+                        <input type="hidden" name="row-index" value="<%= rowIndex%>">
+                        <label for="rows-page">Filas</label>
+                        <select id="rows-page" name="rows-page" onchange="document.querySelector('.rows-page').submit()">
+                            <% if (rowsPage == 80) { %>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="40">40</option>
+                            <option value="80" selected>80</option>
+                            <% } else if (rowsPage == 40) { %>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="40" selected>40</option>
+                            <option value="80">80</option>
+                            <% } else if (rowsPage == 20) { %>
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="40">40</option>
+                            <option value="80">80</option>
+                            <% } else { %>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="40">40</option>
+                            <option value="80">80</option>
+                            <% }%>
+                        </select>
+                    </form>
+                </nav>
+
                 <table>
                     <thead>
                     <th>ID</th>
