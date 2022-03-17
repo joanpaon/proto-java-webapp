@@ -29,8 +29,6 @@ import javax.servlet.http.HttpSession;
  */
 public abstract class Command implements ICommand {
 
-    private static final String VIEWS_PATH = "/WEB-INF/views";
-
     // Referencias
     protected ServletConfig config;
     protected HttpServletRequest request;
@@ -54,11 +52,14 @@ public abstract class Command implements ICommand {
             // Elimina el prefijo
             out = out.replace("controller", "");
 
-            // Redirección
+            // Redirección a Comando
             response.sendRedirect(out);
         } else {
+            // Config > Views Path
+            String ruta = config.getServletContext().getInitParameter("ruta-vistas");
+
             // Nombre Comando ( Petición ) > Nombre Vista ( Respuesta )
-            out = String.format("%s/%s.jsp", VIEWS_PATH, out);
+            out = String.format("%s/%s.jsp", ruta, out);
 
             // Contexto + Nombre Vista > Despachador
             RequestDispatcher dispatcher = request.getRequestDispatcher(out);
