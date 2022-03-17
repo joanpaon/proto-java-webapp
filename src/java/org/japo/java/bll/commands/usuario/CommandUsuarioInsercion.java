@@ -19,16 +19,13 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
 import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
-import org.japo.java.libraries.UtilesBase64;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -42,13 +39,11 @@ public final class CommandUsuarioInsercion extends Command {
         // Salida
         String out = "usuario/usuario-insercion";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
@@ -68,10 +63,10 @@ public final class CommandUsuarioInsercion extends Command {
                     request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    String user = obtenerUser();
-                    String pass = obtenerPass();
-                    Avatar avatar = obtenerAvatar(dalAvatar);
-                    int perfil = obtenerPerfil();
+                    String user = UtilesUsuario.obtenerUser(request);
+                    String pass = UtilesUsuario.obtenerPass(request);
+                    Avatar avatar = UtilesUsuario.obtenerAvatar(request);
+                    int perfil = UtilesUsuario.obtenerPerfil(request);
 
                     // Validar Avatar
                     if (avatar == null) {
@@ -112,97 +107,5 @@ public final class CommandUsuarioInsercion extends Command {
 
         // Redirección
         forward(out);
-    }
-
-    private String obtenerUser() throws IOException {
-        // Request > User
-        String user = request.getParameter("user");
-
-        // Validar User
-        if (!Usuario.validarUser(user)) {
-            throw new IOException("Nombre de Usuario Incorrecto");
-        }
-
-        // Retorno: Nombre de Usuario
-        return user;
-    }
-
-    private String obtenerPass() throws IOException {
-        // Request > Pass
-        String pass = request.getParameter("pass");
-
-        // Validar Contraseña
-        if (!Usuario.validarPass(pass)) {
-            throw new IOException("Contraseña Incorrecta");
-        }
-
-        // Retorno: Contraseña
-        return pass;
-    }
-
-    private Avatar obtenerAvatar(DALAvatar dalAvatar) throws IOException, ServletException {
-        // Datos > Avatar
-        Avatar avatar = null;
-
-        // Request > Part
-        Part part = request.getPart("avatar");
-
-        // Imagen Enviada
-        if (part.getSize() > 0) {
-            // Part > Nombre Imagen
-            String nombre = obtenerNombreAvatar(part);
-
-            // Imagen Base64
-            String imagen;
-
-            // Validar Tamaño Avatar
-            if (Avatar.MAX_SIZE <= 0) {
-                // No hay tamaño máximo
-                imagen = UtilesBase64.obtenerImagenBase64(part);
-            } else if (part.getSize() <= Avatar.MAX_SIZE) {
-                // Tamaño Correcto
-                imagen = UtilesBase64.obtenerImagenBase64(part);
-            } else {
-                // Tamaño Excesivo
-                throw new IOException("Tamaño de imagen excesivo");
-            }
-
-            // Datos > Avatar
-            avatar = new Avatar(0, nombre, imagen);
-        }
-
-        // Retorno: Avatar
-        return avatar;
-    }
-
-    private int obtenerPerfil() throws IOException {
-        // Request > ID Perfil
-        int perfil = Integer.parseInt(request.getParameter("perfil"));
-
-        // Validar ID Perfil
-        if (!Usuario.validarPerfil(perfil)) {
-            throw new IOException("Perfil Incorrecto");
-        }
-
-        // Retorno: ID Perfil
-        return perfil;
-    }
-
-    private String obtenerNombreAvatar(Part part) {
-        // Part > Nombre Fichero Enviado
-        String nombre = part.getSubmittedFileName();
-
-        // Elimina Extensión
-        nombre = nombre.substring(0, nombre.lastIndexOf("."));
-
-        // Valída Nombre
-        if (nombre.length() > Avatar.MAX_CHARS) {
-            nombre = nombre.substring(nombre.length() - Avatar.MAX_CHARS - 1);
-        } else if (nombre.isEmpty()) {
-            nombre = "avatar" + String.format("%6d", new Random().nextInt(100000, 1000000));
-        }
-
-        // Retorno: Imagen Base64
-        return nombre;
     }
 }

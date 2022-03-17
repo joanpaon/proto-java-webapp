@@ -29,18 +29,15 @@ public final class CommandUsuarioLogout extends Command {
     @Override
     public void process() throws ServletException, IOException {
         // Salida
-        String out;
-
-        // request > Sesión Actual
-        HttpSession sesion = request.getSession(false);
+        String out = "controller?cmd=usuario-login";
 
         // Validar Sesión
-        if (validarSesion(sesion)) {
+        if (validarSesion(request)) {
+            // request > Sesión Actual
+            HttpSession sesion = request.getSession(false);
+
             // Cerrar Sesión Actual
             sesion.invalidate();
-
-            // Iniciar Sesión
-            out = "controller?cmd=usuario-login";
         } else {
             // JSP
             out = "messages/sesion-caducada";

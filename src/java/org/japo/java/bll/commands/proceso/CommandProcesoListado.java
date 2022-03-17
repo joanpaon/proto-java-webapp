@@ -19,7 +19,6 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.Proceso;
@@ -35,13 +34,11 @@ public final class CommandProcesoListado extends Command {
         // Salida
         String out = "proceso/proceso-listado";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             // Validar Acceso Comando
             if (validator.validarAccesoComando(getClass().getSimpleName())) {

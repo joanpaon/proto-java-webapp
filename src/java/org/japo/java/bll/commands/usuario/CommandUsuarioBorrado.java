@@ -18,9 +18,9 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import org.japo.java.dal.DALUsuario;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -34,20 +34,18 @@ public final class CommandUsuarioBorrado extends Command {
         // Salida
         String out = "usuario/usuario-borrado";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
                 DALUsuario dalUsuario = new DALUsuario(config);
 
                 // URL > ID Objeto
-                int id = Integer.parseInt(request.getParameter("id"));
+                int id = UtilesUsuario.obtenerId(request);
 
                 // request > ID Operación
                 String op = request.getParameter("op");

@@ -57,7 +57,7 @@ public final class CommandUsuarioSignup extends Command {
 
             // Validar Inserción BD
             if (operacionOK) {
-                out = "message/registro-completado";
+                out = "controller?cmd=usuario-login";
             } else {
                 out = "message/credencial-erronea";
             }

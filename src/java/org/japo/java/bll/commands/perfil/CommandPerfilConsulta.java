@@ -18,7 +18,6 @@ package org.japo.java.bll.commands.perfil;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.entities.Perfil;
@@ -34,13 +33,11 @@ public final class CommandPerfilConsulta extends Command {
         // JSP
         String out = "perfil/perfil-consulta";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos

@@ -19,10 +19,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.Command;
-import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
-import org.japo.java.libraries.UtilesServlet;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -31,85 +29,43 @@ import org.japo.java.libraries.UtilesServlet;
 public final class CommandUsuarioLogin extends Command {
 
     @Override
+    @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
         // Salida
         String out = "usuario/usuario-login";
 
-        // Obtener Operación
-        String op = request.getParameter("op");
-
-        // Request > Sesión
-        HttpSession sesion = request.getSession();
-
         // Procesar Operación
-        if (validarSesion(sesion)) {
-            // Sesión > Usuario
-            Usuario usuario = (Usuario) sesion.getAttribute("usuario");
+        if (validarSesion(request)) {
+            // Salida > Principal del perfil
+            out = UtilesUsuario.obtenerComandoPrincipal(request);
+        } else {
+            // Obtener Operación
+            String op = request.getParameter("op");
 
-            // Perfil > Comando
-            out = switch (usuario.getPerfil()) {
-                case Perfil.DEVEL ->
-                    "controller?cmd=main-devel";
-                case Perfil.ADMIN ->
-                    "controller?cmd=main-admin";
-                default ->
-                    "controller?cmd=main-basic";
-            };
-        } else if (op == null || op.equals("captura")) {
-            // ---
-        } else if (op.equals("proceso")) {
-            // Request > Credenciales
-            String user = request.getParameter("user");
-            String pass = request.getParameter("pass");
+            if (op == null || op.equals("captura")) {
+                // Vista Predeterminada
+            } else if (op.equals("proceso")) {
+                // Entrada + BD > Usuario
+                Usuario usuario = UtilesUsuario.obtenerUsuarioUser(config, request);
 
-            // Validación Formal de la Credencial 
-            if (user == null || !Usuario.validarUser(user)) {
-                out = "message/acceso-denegado";
-            } else if (pass == null || !Usuario.validarPass(pass)) {
-                out = "message/acceso-denegado";
-            } else {
-                // Request > Sesión
-                sesion = request.getSession(true);
-
-                // Capas de Negocio
-                DALUsuario dalUsuario = new DALUsuario(config);
-
-                // Nombre Usuario + BD > Objeto Usuario
-                Usuario usuario = dalUsuario.consultar(user);
-
-                // Validar Objeto Usuario
+                // Validar Usuario
                 if (usuario == null) {
-                    out = "message/acceso-denegado";
-                } else if (!pass.equals(usuario.getPass())) {
+                    // Credenciales Inválidas > Acceso Denegado
                     out = "message/acceso-denegado";
                 } else {
-                    // Eliminar Sesión Actual
-                    sesion.invalidate();
-
-                    // Crear/Obtener Sesión
-                    sesion = request.getSession(true);
-
-                    // Tiempo Maximo Sesion Inactiva ( Segundos )
-                    int lapso = UtilesServlet.obtenerLapsoInactividad(config);
-
-                    // Establecer duracion sesion ( Segundos )
-                    sesion.setMaxInactiveInterval(lapso);
+                    // Regenerar Sesión Actual
+                    HttpSession sesion = UtilesUsuario.regenerarSesion(config, request);
 
                     // Usuario > Sesión
                     sesion.setAttribute("usuario", usuario);
 
-                    // Perfil > Comando
-                    if (usuario.getPerfil() >= Perfil.DEVEL) {
-                        out = "controller?cmd=main-devel";
-                    } else if (usuario.getPerfil() >= Perfil.ADMIN) {
-                        out = "controller?cmd=main-admin";
-                    } else {
-                        out = "controller?cmd=main-basic";
-                    }
+                    // Salida > Principal del perfil
+                    out = UtilesUsuario.obtenerComandoPrincipal(request);
                 }
+            } else {
+                // Vista > Operación Desconocida
+                out = "message/operacion-desconocida";
             }
-        } else {
-            out = "message/operacion-desconocida";
         }
 
         // Redirección

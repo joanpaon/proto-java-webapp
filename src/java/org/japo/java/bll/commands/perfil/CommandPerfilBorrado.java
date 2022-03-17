@@ -15,7 +15,6 @@
  */
 package org.japo.java.bll.commands.perfil;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import org.japo.java.bll.commands.Command;
@@ -35,13 +34,11 @@ public final class CommandPerfilBorrado extends Command {
         // Salida
         String out = "perfil/borrado";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos

@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.japo.java.entities.Usuario;
 
 /**
  *
@@ -69,9 +70,12 @@ public abstract class Command implements ICommand {
         }
     }
 
-    protected final boolean validarSesion(HttpSession sesion) {
+    protected final boolean validarSesion(HttpServletRequest request) {
         // Semáforo
         boolean checkOK = false;
+
+        // Request > Sesión
+        HttpSession sesion = request.getSession(false);
 
         // Validación
         if (sesion != null) {
@@ -79,11 +83,15 @@ public abstract class Command implements ICommand {
             Object usuario = sesion.getAttribute("usuario");
 
             // Valida Usuario
-            if (usuario == null) {
-                sesion.invalidate();
-            } else {
-                checkOK = true;
-            }
+            checkOK = usuario instanceof Usuario;
+
+            // Para validar la sesión de forma más afinada
+            // se deberia comprobar que el usuario que refiere la sesión
+            // está realmente registrado en la BD
+            // y que en ese registro consta que el usuario ha iniciado
+            // una sesión con el mismo id y ip que informa la sesión
+            // y que el tiempo en que se inició no supera el tiempo
+            // máximo que se considere
         }
 
         // Retorno: true | false

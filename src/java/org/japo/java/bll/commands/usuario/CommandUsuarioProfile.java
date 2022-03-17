@@ -19,8 +19,11 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
+import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALUsuario;
+import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -34,15 +37,12 @@ public final class CommandUsuarioProfile extends Command {
         // Salida
         String out = "usuario/usuario-perfil";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
+        if (validarSesion(request)) {
+            // Sesión
+            HttpSession sesion = request.getSession(false);
 
-        if (validarSesion(sesion)) {
             // Usuario Actual
             Usuario usuario = (Usuario) sesion.getAttribute("usuario");
-
-            // Capas de Datos
-            DALUsuario usuarioDAL = new DALUsuario(config);
 
             // Obtener Operación
             String op = request.getParameter("op");
@@ -51,25 +51,53 @@ public final class CommandUsuarioProfile extends Command {
                 // Inyectar Datos > JSP
                 request.setAttribute("usuario", usuario);
             } else if (op.equals("proceso")) {
+                // Capas de Datos
+                DALAvatar dalAvatar = new DALAvatar(config);
+                DALUsuario dalUsuario = new DALUsuario(config);
+
                 // Request > Parámetros
-                String user = request.getParameter("user").trim();
-                String pass = request.getParameter("pass").trim();
-                int avatar = Integer.parseInt(request.getParameter("avatar"));
-                int perfil = Integer.parseInt(request.getParameter("perfil"));
+                String user = UtilesUsuario.obtenerUser(request);
+                String pass = UtilesUsuario.obtenerPass(request);
+                Avatar avatar = UtilesUsuario.obtenerAvatar(request);
+                int perfil = UtilesUsuario.obtenerPerfil(request);
+
+                // Validar Avatar
+                if (avatar == null) {
+                    // Avatar NO modificado
+                    avatar = new Avatar(usuario.getAvatar(), "", "");
+                } else if (usuario.getAvatar() == Avatar.DEF_ID) {
+                    // Avatar Seleccionado - Avatar Previo Predeterminado
+                    if (!dalAvatar.insertar(avatar)) {
+                        // Error al insertar el avatar
+                        throw new ServletException("Error al insertar el avatar");
+                    }
+
+                    // Recuperar Avatar de BD
+                    avatar = dalAvatar.consultar(avatar.getImagen());
+                } else {
+                    // Avatar Seleccionado - Sustituir Avatar Previo
+                    avatar.setId(usuario.getAvatar());
+
+                    // Sustituir el Avatar anterior
+                    if (!dalAvatar.modificar(avatar)) {
+                        // Error al actualizar el avatar
+                        throw new ServletException("Error al actualizar el avatar");
+                    }
+                }
 
                 // Parámetros > Entidad
-                usuario = new Usuario(usuario.getId(), user, pass, avatar, "", perfil, "");
+                usuario = new Usuario(usuario.getId(), user, pass, avatar.getId(), "", perfil, "");
 
                 // Ejecutar Operación
-                boolean checkOK = usuarioDAL.modificar(usuario);
+                boolean checkOK = dalUsuario.modificar(usuario);
 
                 // Validar Operación
                 if (checkOK) {
-                    // Pagina de Aviso
-                    out = "message/operacion-completada";
-
                     // Nuevo Usuario > Sesion
                     sesion.setAttribute("usuario", usuario);
+                    
+                    // Pagina de Aviso
+                    out = UtilesUsuario.obtenerComandoPrincipal(request);
                 } else {
                     out = "message/operacion-cancelada";
                 }

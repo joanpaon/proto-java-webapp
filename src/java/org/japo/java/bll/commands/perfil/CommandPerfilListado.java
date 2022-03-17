@@ -25,6 +25,7 @@ import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesListado;
 
 /**
  *
@@ -37,13 +38,11 @@ public final class CommandPerfilListado extends Command {
         // Salida
         String out = "perfil/perfil-listado";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
@@ -53,42 +52,25 @@ public final class CommandPerfilListado extends Command {
                 long rowCount = dalPerfil.contar();
 
                 // Request > Índice de pagina            
-                long rowIndex;
-                try {
-                    // String > long
-                    rowIndex = Long.parseLong(request.getParameter("row-index"));
-                } catch (NumberFormatException e) {
-                    rowIndex = 0;
-                }
+                long rowIndex = UtilesListado.obtenerRowIndex(request);
 
                 // Request > Líneas por Pagina            
-                int rowsPage;
-                try {
-                    // String > long
-                    rowsPage = Integer.parseInt(request.getParameter("rows-page"));
-
-                    // Validar Escalones
-                    rowsPage = rowsPage == 80
-                            || rowsPage == 40
-                            || rowsPage == 20 ? rowsPage : 10;
-                } catch (NumberFormatException e) {
-                    rowsPage = 10;
-                }
+                int rowsPage = UtilesListado.obtenerRowsPage(request);
 
                 // Indice Navegación - Inicio
-                long rowIndexIni = 0;
+                long rowIndexIni = UtilesListado.obtenerRowIndexIni();
 
                 // Indice Navegación - Anterior
-                long rowIndexAnt = rowIndex - rowsPage < 0 ? 0 : rowIndex - rowsPage;
+                long rowIndexAnt = UtilesListado.obtenerRowIndexAnt(rowIndex, rowsPage);
 
                 // Indice Navegación - Siguiente
-                long rowIndexSig = rowIndex + rowsPage > rowCount - 1 ? rowIndex : rowIndex + rowsPage;
+                long rowIndexSig = UtilesListado.obtenerRowIndexSig(rowIndex, rowsPage, rowCount);
 
                 // Indice Navegación - Final
-                long rowIndexFin = rowCount == 0 ? 0
-                        : rowCount / rowsPage == 0 ? 0
-                                : rowCount % rowsPage == 0 ? (rowCount / rowsPage - 1) * rowsPage
-                                        : rowCount / rowsPage * rowsPage;
+                long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
+
+                // Request > Session
+                HttpSession sesion = request.getSession(false);
 
                 // Sesión > Usuario
                 Usuario usuario = (Usuario) sesion.getAttribute("usuario");

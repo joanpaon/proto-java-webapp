@@ -17,7 +17,6 @@ package org.japo.java.bll.commands.main;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.Command;
 
 /**
@@ -31,11 +30,8 @@ public final class CommandMainDevel extends Command {
         // Salida
         String out;
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
+        if (validarSesion(request)) {
             out = "main/main-devel";
         } else {
             out = "message/sesion-invalida";

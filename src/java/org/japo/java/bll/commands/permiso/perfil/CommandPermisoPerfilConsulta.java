@@ -18,7 +18,6 @@ package org.japo.java.bll.commands.permiso.perfil;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPermisoPerfil;
 import org.japo.java.entities.PermisoPerfil;
@@ -34,13 +33,11 @@ public final class CommandPermisoPerfilConsulta extends Command {
         // Salida
         String out = "permiso/perfil/permiso-perfil-consulta";
 
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos

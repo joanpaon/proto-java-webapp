@@ -18,7 +18,6 @@ package org.japo.java.bll.commands.proceso;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.Proceso;
@@ -35,16 +34,11 @@ public final class CommandProcesoModificacion extends Command {
         // Salida
         String out = "proceso/proceso-modificacion";
 
-        // Entidad
-        Proceso proceso;
-
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
@@ -53,20 +47,17 @@ public final class CommandProcesoModificacion extends Command {
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
+                // ID Entidad > Registro BD > Entidad
+                Proceso proceso = dalProceso.consultar(id);
+
                 // request > Operación
                 String op = request.getParameter("op");
 
                 // Entidad > JSP
                 if (op == null || op.equals("captura")) {
-                    // ID Entidad > Registro BD > Entidad
-                    proceso = dalProceso.consultar(id);
-
                     // Inyección de Datos
                     request.setAttribute("proceso", proceso);
                 } else if (op.equals("proceso")) {
-                    // ID Entidad > Registro BD > Entidad
-                    proceso = dalProceso.consultar(id);
-
                     // Request > Parámetros
                     String nombre = request.getParameter("nombre").trim();
                     String info = request.getParameter("info").trim();

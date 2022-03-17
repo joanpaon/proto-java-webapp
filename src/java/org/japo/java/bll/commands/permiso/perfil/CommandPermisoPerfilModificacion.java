@@ -19,7 +19,6 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALPermisoPerfil;
@@ -40,16 +39,11 @@ public final class CommandPermisoPerfilModificacion extends Command {
         // Salida
         String out = "permiso/perfil/permiso-perfil-modificacion";
 
-        // Entidad
-        PermisoPerfil permiso;
-
-        // Sesión
-        HttpSession sesion = request.getSession(false);
-
         // Validar Sesión
-        if (validarSesion(sesion)) {
-            // Capas de Negocio
-            CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
+        if (validarSesion(request)) {
+            // Validador de Acceso
+            CommandUsuarioValidation validator = new CommandUsuarioValidation(
+                    config, request.getSession(false));
 
             if (validator.validarAccesoComando(getClass().getSimpleName())) {
                 // Capas de Datos
@@ -60,14 +54,14 @@ public final class CommandPermisoPerfilModificacion extends Command {
                 // request > ID Entidad
                 int id = Integer.parseInt(request.getParameter("id"));
 
+                // ID Entidad > Objeto Entidad
+                PermisoPerfil permiso = dalPermiso.consultar(id);
+
                 // request > ID Operación
                 String op = request.getParameter("op");
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
-                    // ID Entidad > Objeto Entidad
-                    permiso = dalPermiso.consultar(id);
-
                     // BD > Lista de Procesos
                     List<Proceso> procesos = dalProceso.listar();
 
@@ -79,9 +73,6 @@ public final class CommandPermisoPerfilModificacion extends Command {
                     request.setAttribute("procesos", procesos);
                     request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
-                    // ID Permiso Perfil > Objeto Entidad
-                    permiso = dalPermiso.consultar(id);
-
                     // Request > Parámetros
                     int proceso = Integer.parseInt(request.getParameter("proceso"));
                     int perfil = Integer.parseInt(request.getParameter("perfil"));
