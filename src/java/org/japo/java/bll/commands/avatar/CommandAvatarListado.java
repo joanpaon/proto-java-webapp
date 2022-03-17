@@ -18,14 +18,12 @@ package org.japo.java.bll.commands.avatar;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALAvatar;
 import org.japo.java.entities.Avatar;
-import org.japo.java.entities.Perfil;
-import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesAvatar;
 import org.japo.java.libraries.UtilesListado;
 
 /**
@@ -74,29 +72,8 @@ public final class CommandAvatarListado extends Command {
                 // Indice Navegación - Final
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
-                // Sesión > Usuario
-                Usuario usuario = (Usuario) sesion.getAttribute("usuario");
-
                 // BD > Lista de Avatares
-                List<Avatar> avatares;
-
-                // Determinar Avatar Usuario
-                switch (usuario.getPerfil()) {
-                    case Perfil.DEVEL:
-                        // BD > Lista de Pefiles
-                        avatares = dalAvatar.listar();
-                        break;
-                    case Perfil.ADMIN:
-                        // BD > Lista de Pefiles
-                        avatares = dalAvatar.listar();
-                        break;
-                    case Perfil.BASIC:
-                    default:
-                        // Usuario Actual (Únicamente) > Lista de Usuarios
-                        Avatar avatar = dalAvatar.consultar(usuario.getAvatar());
-                        avatares = new ArrayList<>();
-                        avatares.add(avatar);
-                }
+                List<Avatar> avatares = UtilesAvatar.obtenerAvataresUsuario(config, request);
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("avatares", avatares);

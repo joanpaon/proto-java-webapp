@@ -22,6 +22,7 @@ import java.util.List;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPermisoPerfil;
 import org.japo.java.entities.PermisoPerfil;
+import org.japo.java.libraries.UtilesListado;
 
 /**
  *
@@ -49,42 +50,22 @@ public final class CommandPermisoPerfilListado extends Command {
                 long rowCount = dalPermiso.contar();
 
                 // Request > Índice de pagina            
-                long rowIndex;
-                try {
-                    // String > long
-                    rowIndex = Long.parseLong(request.getParameter("row-index"));
-                } catch (NumberFormatException e) {
-                    rowIndex = 0;
-                }
+                long rowIndex = UtilesListado.obtenerRowIndex(request);
 
                 // Request > Líneas por Pagina            
-                int rowsPage;
-                try {
-                    // String > long
-                    rowsPage = Integer.parseInt(request.getParameter("rows-page"));
-
-                    // Validar Escalones
-                    rowsPage = rowsPage == 80
-                            || rowsPage == 40
-                            || rowsPage == 20 ? rowsPage : 10;
-                } catch (NumberFormatException e) {
-                    rowsPage = 10;
-                }
+                int rowsPage = UtilesListado.obtenerRowsPage(request);
 
                 // Indice Navegación - Inicio
-                long rowIndexIni = 0;
+                long rowIndexIni = UtilesListado.obtenerRowIndexIni();
 
                 // Indice Navegación - Anterior
-                long rowIndexAnt = rowIndex - rowsPage < 0 ? 0 : rowIndex - rowsPage;
+                long rowIndexAnt = UtilesListado.obtenerRowIndexAnt(rowIndex, rowsPage);
 
                 // Indice Navegación - Siguiente
-                long rowIndexSig = rowIndex + rowsPage > rowCount - 1 ? rowIndex : rowIndex + rowsPage;
+                long rowIndexSig = UtilesListado.obtenerRowIndexSig(rowIndex, rowsPage, rowCount);
 
                 // Indice Navegación - Final
-                long rowIndexFin = rowCount == 0 ? 0
-                        : rowCount / rowsPage == 0 ? 0
-                                : rowCount % rowsPage == 0 ? (rowCount / rowsPage - 1) * rowsPage
-                                        : rowCount / rowsPage * rowsPage;
+                long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
                 // BD > Lista de Permisos de Perfil
                 List<PermisoPerfil> permisos = dalPermiso.listar();

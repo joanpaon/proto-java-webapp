@@ -18,14 +18,12 @@ package org.japo.java.bll.commands.perfil;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.entities.Perfil;
-import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesListado;
+import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -69,32 +67,8 @@ public final class CommandPerfilListado extends Command {
                 // Indice Navegación - Final
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
-                // Request > Session
-                HttpSession sesion = request.getSession(false);
-
-                // Sesión > Usuario
-                Usuario usuario = (Usuario) sesion.getAttribute("usuario");
-
                 // BD > Lista de Perfiles
-                List<Perfil> perfiles;
-
-                // Determinar Perfil Usuario
-                switch (usuario.getPerfil()) {
-                    case Perfil.DEVEL:
-                        // BD > Lista de Pefiles
-                        perfiles = dalPerfil.listar();
-                        break;
-                    case Perfil.ADMIN:
-                        // BD > Lista de Pefiles
-                        perfiles = dalPerfil.listar();
-                        break;
-                    case Perfil.BASIC:
-                    default:
-                        // Usuario Actual (Únicamente) > Lista de Usuarios
-                        Perfil perfil = dalPerfil.consultar(usuario.getPerfil());
-                        perfiles = new ArrayList<>();
-                        perfiles.add(perfil);
-                }
+                List<Perfil> perfiles = UtilesPerfil.obtenerPerfilesUsuario(config, request);
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("perfiles", perfiles);
