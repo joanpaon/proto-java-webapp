@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/permiso/perfil/permiso-perfil-insercion.jsp</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/src/java/org/japo/java/bll/commands/permiso/perfil/CommandPermisoPerfilInsercion.java</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/permiso/usuario/permiso-usuario-insercion.jsp</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/proceso/proceso-insercion.jsp</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/src/java/org/japo/java/entities/PermisoPerfil.java</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/static/css/permiso/permiso-insercion.css</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/src/java/org/japo/java/entities/PermisoUsuario.java</file>
+            <file>file:/D:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/static/css/proceso/proceso-insercion.css</file>
+        </group>
     </open-files>
 </project-private>

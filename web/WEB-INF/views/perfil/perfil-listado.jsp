@@ -68,7 +68,7 @@
                     <% } else { %>
                     <a class="btn btn-principal" href="?cmd=main-basic" title="Principal">Principal</a>
                     <% }%>
-                    <a class="btn btn-insertar" href="?cmd=usuario-insercion&op=captura" title="Nuevo">Nuevo</a>
+                    <a class="btn btn-insertar" href="?cmd=perfil-insercion&op=captura" title="Nuevo">Nuevo</a>
                 </header>
 
                 <nav class="paginacion">

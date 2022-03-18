@@ -123,9 +123,9 @@ public final class DALPerfil {
                 + "INSERT INTO "
                 + "perfiles "
                 + "("
-                + "nombre, info "
+                + "id, nombre, info "
                 + ") "
-                + "VALUES (?, ?)";
+                + "VALUES (?, ?, ?)";
 
         // Número de registros afectados
         int numReg = 0;
@@ -135,8 +135,9 @@ public final class DALPerfil {
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
-                ps.setString(1, perfil.getNombre());
-                ps.setString(2, perfil.getInfo());
+                ps.setInt(1, perfil.getId());
+                ps.setString(2, perfil.getNombre());
+                ps.setString(3, perfil.getInfo());
 
                 // Ejecutar Sentencia
                 numReg = ps.executeUpdate();

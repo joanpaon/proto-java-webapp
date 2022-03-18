@@ -32,7 +32,7 @@ public final class CommandPerfilInsercion extends Command {
     @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "perfil/insercion";
+        String out = "perfil/perfil-insercion";
 
         // Validar Sesión
         if (validarSesion(request)) {
@@ -52,11 +52,12 @@ public final class CommandPerfilInsercion extends Command {
                     // ---
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    String nombre = request.getParameter("nombre").trim();
-                    String info = request.getParameter("info").trim();
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    String nombre = request.getParameter("nombre");
+                    String info = request.getParameter("info");
 
                     // Parámetros > Entidad
-                    Perfil perfil = new Perfil(0, nombre, info);
+                    Perfil perfil = new Perfil(id, nombre, info);
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalPerfil.insertar(perfil);
