@@ -49,7 +49,7 @@ public final class CommandUsuarioValidation {
         dalProceso = new DALProceso(config);
     }
 
-    public final boolean validarAccesoComando(String comando) {
+    public final boolean validarAccesoComando(HttpSession sesion, String comando) {
         // Semáforo
         boolean checkOK;
 
@@ -60,8 +60,8 @@ public final class CommandUsuarioValidation {
             // Usuario > Perfil
             int perfil = usuario.getPerfil();
 
-            // Validar Perfil Desarrollador
-            if (perfil >= Perfil.DEVEL) {
+            // Validar Perfil
+            if (perfil >= Perfil.ADMIN) {
                 checkOK = true;
             } else {
                 // Perfil + BD > Lista de Permisos del Perfil
@@ -82,6 +82,48 @@ public final class CommandUsuarioValidation {
                 }
             }
         } catch (Exception e) {
+            checkOK = false;
+        }
+
+        // Retorno: true | false
+        return checkOK;
+    }
+
+    public final boolean validarAccesoDev(HttpSession sesion) {
+        // Semáforo
+        boolean checkOK;
+
+        try {
+            // Sesión > Usuario
+            Usuario usuario = (Usuario) sesion.getAttribute("usuario");
+
+            // Usuario > Perfil
+            int perfil = usuario.getPerfil();
+
+            // Validar Perfil Desarrollador
+            checkOK = perfil >= Perfil.DEVEL;
+        } catch (NullPointerException e) {
+            checkOK = false;
+        }
+
+        // Retorno: true | false
+        return checkOK;
+    }
+
+    public final boolean validarAccesoAdmin(HttpSession sesion) {
+        // Semáforo
+        boolean checkOK;
+
+        try {
+            // Sesión > Usuario
+            Usuario usuario = (Usuario) sesion.getAttribute("usuario");
+
+            // Usuario > Perfil
+            int perfil = usuario.getPerfil();
+
+            // Validar Perfil Desarrollador
+            checkOK = perfil >= Perfil.ADMIN;
+        } catch (NullPointerException e) {
             checkOK = false;
         }
 

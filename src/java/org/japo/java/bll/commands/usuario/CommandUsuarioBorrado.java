@@ -40,7 +40,7 @@ public final class CommandUsuarioBorrado extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
                 DALUsuario dalUsuario = new DALUsuario(config);
 

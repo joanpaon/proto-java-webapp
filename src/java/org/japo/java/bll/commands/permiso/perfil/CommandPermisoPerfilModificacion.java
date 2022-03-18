@@ -45,7 +45,7 @@ public final class CommandPermisoPerfilModificacion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
                 DALPerfil dalPerfil = new DALPerfil(config);
                 DALPermisoPerfil dalPermiso = new DALPermisoPerfil(config);

@@ -40,6 +40,11 @@
 
                 <h2>Página Principal del Administrador</h2>
 
+                <div class="controles">
+                    <a class="btn" href="?cmd=permiso-usuario-listado">PermisosU</a>
+                    <a class="btn" href="?cmd=usuario-listado">Usuarios</a>
+                </div>
+
             </main>
 
             <%@include file="/WEB-INF/views/partials/footer.jspf" %>

@@ -88,12 +88,16 @@
                                         onclick="document.getElementById('avatar').click()">👀</button>
                             </div>
 
+                            <% if (perfiles != null) {%>
                             <div class="field-set">
                                 <label for="perfil">Perfil</label>
                                 <select id="perfil" name="perfil" required>
-                                    <option value="<%= Perfil.BASIC%>">Usuario</option>
+                                    <option value="<%= Perfil.BASIC%>" selected="">Usuario</option>
+                                    <option value="<%= Perfil.ADMIN%>">Administrador</option>
+                                    <option value="<%= Perfil.DEVEL%>">Desarrollador</option>
                                 </select>
                             </div>
+                            <% }%>
                         </div>
 
                         <div class="avatar-frame">

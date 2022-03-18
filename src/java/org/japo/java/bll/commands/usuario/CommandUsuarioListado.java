@@ -20,9 +20,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import org.japo.java.dal.DALUsuario;
+import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesListado;
-import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -41,12 +41,20 @@ public final class CommandUsuarioListado extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
+                // Sesión > Usuario
+                Usuario usuario = (Usuario) request.getSession(false).getAttribute("usuario");
+
                 // Capas de Datos
                 DALUsuario dalUsuario = new DALUsuario(config);
 
-                // BD > Parámetros Listado
-                long rowCount = dalUsuario.contar();
+                // BD > Número de Registros
+                long rowCount;
+                if (usuario.getPerfil() >= Perfil.DEVEL) {
+                    rowCount = dalUsuario.contarDev();
+                } else {
+                    rowCount = dalUsuario.contarUser();
+                }
 
                 // Request > Índice de pagina            
                 long rowIndex = UtilesListado.obtenerRowIndex(request);
@@ -66,8 +74,13 @@ public final class CommandUsuarioListado extends Command {
                 // Indice Navegación - Final
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
-                // BD > Lista de Usuarios visibles por el Perfil
-                List<Usuario> usuarios = UtilesUsuario.obtenerUsuariosPerfil(config, request);
+                // BD > Número de Registros
+                List<Usuario> usuarios;
+                if (usuario.getPerfil() >= Perfil.DEVEL) {                // BD > Lista de Usuarios visibles por el Perfil
+                    usuarios = dalUsuario.listarDev();
+                } else {
+                    usuarios = dalUsuario.listarUser();
+                }
 
                 // Inyecta Datos > JSP
                 request.setAttribute("usuarios", usuarios);

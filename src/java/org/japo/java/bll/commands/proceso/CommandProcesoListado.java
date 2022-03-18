@@ -42,7 +42,7 @@ public final class CommandProcesoListado extends Command {
                     config, request.getSession(false));
 
             // Validar Acceso Comando
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
                 DALProceso dalProceso = new DALProceso(config);
 

@@ -45,7 +45,7 @@ public final class CommandUsuarioInsercion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
                 DALAvatar dalAvatar = new DALAvatar(config);
                 DALPerfil dalPerfil = new DALPerfil(config);
@@ -56,8 +56,16 @@ public final class CommandUsuarioInsercion extends Command {
 
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
+                    // Sesión > Usuario
+                    Usuario usuario = (Usuario) request.getSession(false).getAttribute("usuario");
+
                     // BD > Lista de Perfiles
-                    List<Perfil> perfiles = dalPerfil.listar();
+                    List<Perfil> perfiles;
+                    if (usuario.getPerfil() >= Perfil.DEVEL) {
+                        perfiles = dalPerfil.listar();
+                    } else {
+                        perfiles = null;
+                    }
 
                     // Inyectar Datos > JSP
                     request.setAttribute("perfiles", perfiles);

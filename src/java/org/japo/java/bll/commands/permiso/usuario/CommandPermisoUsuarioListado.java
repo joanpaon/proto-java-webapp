@@ -42,7 +42,7 @@ public final class CommandPermisoUsuarioListado extends Command {
                     config, request.getSession(false));
 
             // Validar Acceso Comando
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
                 DALPermisoUsuario dalPermiso = new DALPermisoUsuario(config);
 

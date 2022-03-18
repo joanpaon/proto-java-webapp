@@ -1,6 +1,4 @@
-*,
-*::before,
-*::after {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
 
@@ -70,12 +68,19 @@ main img {
 /* --- */
 
 main h2 {
+    margin-bottom: 5rem;
+
     color: #333;
     font-size: 4rem;
     text-shadow: .2rem .2rem .4rem rgba(0, 0, 0, 0.5);
 }
 
-/* --- */
+main .controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
 
 main .btn {
     height: 3.4rem;
@@ -94,5 +99,3 @@ main .btn {
     justify-content: center;
     align-items: center;
 }
-
-

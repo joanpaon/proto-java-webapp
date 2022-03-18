@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
+import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesServlet;
 
@@ -43,7 +44,7 @@ public final class DALUsuario {
         ds = UtilesServlet.obtenerDataSource(config);
     }
 
-    public List<Usuario> listar() {
+    public List<Usuario> listarDev() {
         // SQL
         String sql = ""
                 + "SELECT "
@@ -68,6 +69,63 @@ public final class DALUsuario {
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // BD > Lista de Entidades
+                try ( ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        // Fila Actual > Campos 
+                        int id = rs.getInt("id");
+                        String user = rs.getString("user");
+                        String pass = rs.getString("pass");
+                        int avatar = rs.getInt("avatar");
+                        String avatarImg = rs.getString("avatar_img");
+                        int perfil = rs.getInt("perfil");
+                        String perfilInfo = rs.getString("perfil_info");
+
+                        // Campos > Entidad
+                        Usuario usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
+
+                        // Entidad > Lista
+                        usuarios.add(usuario);
+                    }
+                }
+            }
+        } catch (SQLException | NullPointerException ex) {
+            logger.info(ex.getMessage());
+        }
+
+        // Retorno Lista
+        return usuarios;
+    }
+
+    public List<Usuario> listarUser() {
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "usuarios.id AS id, "
+                + "usuarios.user AS user, "
+                + "usuarios.pass AS pass, "
+                + "usuarios.avatar AS avatar, "
+                + "avatares.imagen AS avatar_img, "
+                + "usuarios.perfil AS perfil, "
+                + "perfiles.info AS perfil_info "
+                + "FROM "
+                + "usuarios "
+                + "INNER JOIN "
+                + "avatares ON avatares.id = usuarios.avatar "
+                + "INNER JOIN "
+                + "perfiles ON perfiles.id = usuarios.perfil "
+                + "WHERE "
+                + "usuarios.perfil < ?";
+
+        // Lista Vacía
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            try (
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setInt(1, Perfil.ADMIN);
+
+                // Ejecutar Sentencia
                 try ( ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         // Fila Actual > Campos 
@@ -293,7 +351,7 @@ public final class DALUsuario {
         return numReg == 1;
     }
 
-    public Long contar() {
+    public Long contarDev() {
         // Número de Filas
         long filas = 0;
 
@@ -307,6 +365,40 @@ public final class DALUsuario {
         try {
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        filas = rs.getLong(1);
+                    }
+                }
+            }
+        } catch (SQLException | NullPointerException ex) {
+            logger.info(ex.getMessage());
+        }
+
+        // Retorno: Filas Contadas
+        return filas;
+    }
+
+    public Long contarUser() {
+        // Número de Filas
+        long filas = 0;
+
+        // SQL
+        String sql = ""
+                + "SELECT "
+                + "COUNT(*) "
+                + "FROM "
+                + "usuarios "
+                + "WHERE "
+                + "usuarios.perfil < ?";
+
+        try {
+            try (
+                     Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+                // Parametrizar Sentencia
+                ps.setInt(1, Perfil.ADMIN);
+
+                // Ejecutar Sentencia
                 try ( ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         filas = rs.getLong(1);

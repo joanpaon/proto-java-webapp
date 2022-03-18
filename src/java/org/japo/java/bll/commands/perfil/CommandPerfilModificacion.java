@@ -40,7 +40,7 @@ public final class CommandPerfilModificacion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
                 DALPerfil perfilDAL = new DALPerfil(config);
 

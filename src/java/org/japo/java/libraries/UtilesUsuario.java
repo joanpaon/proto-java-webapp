@@ -140,10 +140,19 @@ public final class UtilesUsuario {
 
     public static final int obtenerPerfil(HttpServletRequest request) throws IOException {
         // Request > ID Perfil
-        int perfil = Integer.parseInt(request.getParameter("perfil"));
+        int perfil;
+        try {
+            if (request.getParameter("perfil") == null) {
+                perfil = Perfil.BASIC;
+            } else {
+                perfil = Integer.parseInt(request.getParameter("perfil"));
+            }
 
-        // Validar ID Perfil
-        if (!Usuario.validarPerfil(perfil)) {
+            // Validar ID Perfil
+            if (!Usuario.validarPerfil(perfil)) {
+                throw new IOException("Perfil Incorrecto");
+            }
+        } catch (NullPointerException | NumberFormatException e) {
             throw new IOException("Perfil Incorrecto");
         }
 
@@ -170,11 +179,11 @@ public final class UtilesUsuario {
         switch (usuario.getPerfil()) {
             case Perfil.DEVEL:
                 // BD > Lista de Usuarios
-                usuarios = dalUsuario.listar();
+                usuarios = dalUsuario.listarDev();
                 break;
             case Perfil.ADMIN:
                 // BD > Lista de Usuarios
-                usuarios = dalUsuario.listar();
+                usuarios = dalUsuario.listarDev();
                 break;
             case Perfil.BASIC:
             default:
@@ -188,8 +197,8 @@ public final class UtilesUsuario {
     }
 
     public static final Usuario obtenerUsuarioId(
-            ServletConfig config, 
-            HttpServletRequest request) 
+            ServletConfig config,
+            HttpServletRequest request)
             throws IOException {
         // Referencia
         Usuario usuario = null;
@@ -210,7 +219,7 @@ public final class UtilesUsuario {
     }
 
     public static final Usuario obtenerUsuarioUser(
-            ServletConfig config, 
+            ServletConfig config,
             HttpServletRequest request) {
         // Referencia
         Usuario usuario = null;
@@ -243,7 +252,7 @@ public final class UtilesUsuario {
     }
 
     public static final HttpSession regenerarSesion(
-            ServletConfig config, 
+            ServletConfig config,
             HttpServletRequest request) {
         // Request > Session
         HttpSession sesion = request.getSession(false);

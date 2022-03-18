@@ -45,7 +45,7 @@ public final class CommandPermisoUsuarioInsercion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
                 DALPermisoUsuario dalPermiso = new DALPermisoUsuario(config);
                 DALProceso dalProceso = new DALProceso(config);
@@ -60,7 +60,7 @@ public final class CommandPermisoUsuarioInsercion extends Command {
                     List<Proceso> procesos = dalProceso.listar();
 
                     // BD > Lista de Usuarios
-                    List<Usuario> usuarios = dalUsuario.listar();
+                    List<Usuario> usuarios = dalUsuario.listarDev();
 
                     // Inyecta Datos > JSP
                     request.setAttribute("procesos", procesos);

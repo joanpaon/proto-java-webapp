@@ -42,7 +42,7 @@ public final class CommandPermisoPerfilListado extends Command {
                     config, request.getSession(false));
 
             // Validar Acceso Comando
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
                 DALPermisoPerfil dalPermiso = new DALPermisoPerfil(config);
 

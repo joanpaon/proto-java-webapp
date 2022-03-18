@@ -47,7 +47,7 @@ public final class CommandAvatarListado extends Command {
             // Capas de Negocio
             CommandUsuarioValidation validator = new CommandUsuarioValidation(config, sesion);
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
                 DALAvatar dalAvatar = new DALAvatar(config);
 

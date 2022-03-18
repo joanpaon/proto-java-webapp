@@ -45,7 +45,7 @@ public final class CommandUsuarioModificacion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoComando(getClass().getSimpleName())) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
                 DALAvatar dalAvatar = new DALAvatar(config);
                 DALPerfil dalPerfil = new DALPerfil(config);
