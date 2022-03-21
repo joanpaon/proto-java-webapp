@@ -63,7 +63,7 @@ public final class CommandPermisoPerfilBorrado extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=permiso-perfil-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }

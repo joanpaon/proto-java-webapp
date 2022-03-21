@@ -63,7 +63,7 @@ public final class CommandProcesoBorrado extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=proceso-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }

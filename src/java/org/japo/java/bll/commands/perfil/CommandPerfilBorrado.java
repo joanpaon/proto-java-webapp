@@ -32,7 +32,7 @@ public final class CommandPerfilBorrado extends Command {
     @SuppressWarnings("ConvertToStringSwitch")
     public void process() throws ServletException, IOException {
         // Salida
-        String out = "perfil/borrado";
+        String out = "perfil/perfil-borrado";
 
         // Validar Sesión
         if (validarSesion(request)) {
@@ -63,7 +63,7 @@ public final class CommandPerfilBorrado extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=perfil-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }

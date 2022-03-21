@@ -63,7 +63,7 @@ public final class CommandPermisoUsuarioBorrado extends Command {
 
                     // Validar Operación
                     if (checkOK) {
-                        out = "message/operacion-completada";
+                        out = "controller?cmd=permiso-usuario-listado";
                     } else {
                         out = "message/operacion-cancelada";
                     }
