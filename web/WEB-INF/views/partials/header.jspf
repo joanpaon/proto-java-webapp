@@ -1,5 +1,3 @@
-<%@page import="org.japo.java.entities.Avatar"%>
-<%@page import="org.japo.java.dal.DALAvatar"%>
 <%@page import="org.japo.java.entities.Usuario"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -7,14 +5,11 @@
 <%
     HttpSession _sesion = request.getSession(false);
 
-    String _imagen = null;
+    Usuario _usuario = null;
 
     if (_sesion != null && _sesion.getAttribute("usuario") instanceof Usuario) {
         // Sesión > Usuario
-        Usuario _usuario = (Usuario) _sesion.getAttribute("usuario");
-
-        // Usuario > Imagen
-        _imagen = _usuario.getAvatarImg();
+        _usuario = (Usuario) _sesion.getAttribute("usuario");
     }
 %>
 
@@ -31,9 +26,9 @@
     </div>
 
     <div class="user">
-        <% if (_imagen != null) {%>
+        <% if (_usuario != null) {%>
         <a href="?cmd=usuario-logout">
-            <img src="<%= _imagen%>" alt="Avatar"/>
+            <img src="<%= _usuario.getAvatar()%>" alt="Avatar"/>
         </a>
         <% }%>
     </div>

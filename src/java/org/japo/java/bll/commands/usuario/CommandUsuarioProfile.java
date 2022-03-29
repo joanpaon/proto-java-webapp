@@ -19,9 +19,7 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
-import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -52,41 +50,16 @@ public final class CommandUsuarioProfile extends Command {
                 request.setAttribute("usuario", usuario);
             } else if (op.equals("proceso")) {
                 // Capas de Datos
-                DALAvatar dalAvatar = new DALAvatar(config);
                 DALUsuario dalUsuario = new DALUsuario(config);
 
                 // Request > Parámetros
                 String user = UtilesUsuario.obtenerUser(request);
                 String pass = UtilesUsuario.obtenerPass(request);
-                Avatar avatar = UtilesUsuario.obtenerAvatar(request);
-                int perfil = UtilesUsuario.obtenerPerfil(request);
-
-                // Validar Avatar
-                if (avatar == null) {
-                    // Avatar NO modificado
-                    avatar = new Avatar(usuario.getAvatar(), "", "");
-                } else if (usuario.getAvatar() == Avatar.DEF_ID) {
-                    // Avatar Seleccionado - Avatar Previo Predeterminado
-                    if (!dalAvatar.insertar(avatar)) {
-                        // Error al insertar el avatar
-                        throw new ServletException("Error al insertar el avatar");
-                    }
-
-                    // Recuperar Avatar de BD
-                    avatar = dalAvatar.consultar(avatar.getImagen());
-                } else {
-                    // Avatar Seleccionado - Sustituir Avatar Previo
-                    avatar.setId(usuario.getAvatar());
-
-                    // Sustituir el Avatar anterior
-                    if (!dalAvatar.modificar(avatar)) {
-                        // Error al actualizar el avatar
-                        throw new ServletException("Error al actualizar el avatar");
-                    }
-                }
+                String avatar = UtilesUsuario.obtenerAvatar(request);
+                int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
                 // Parámetros > Entidad
-                usuario = new Usuario(usuario.getId(), user, pass, avatar.getId(), "", perfil, "");
+                usuario = new Usuario(usuario.getId(), user, pass, avatar, perfil, "");
 
                 // Ejecutar Operación
                 boolean checkOK = dalUsuario.modificar(usuario);
@@ -95,7 +68,7 @@ public final class CommandUsuarioProfile extends Command {
                 if (checkOK) {
                     // Nuevo Usuario > Sesion
                     sesion.setAttribute("usuario", usuario);
-                    
+
                     // Pagina de Aviso
                     out = UtilesUsuario.obtenerComandoPrincipal(request);
                 } else {

@@ -55,17 +55,17 @@ public final class Controller extends HttpServlet {
             // Recursos Dinámicos
             if (request.getParameter("svc") != null) {
                 // Petición de Servicio: XML | JSON
-                UtilesServicio.procesarServicio(getServletConfig(), request, response);
+                UtilesServicio.procesar(getServletConfig(), request, response);
             } else if (request.getParameter("cmd") != null) {
                 // Peticion de Comando: Vista
-                UtilesComando.procesarComando(getServletConfig(), request, response);
+                UtilesComando.procesar(getServletConfig(), request, response);
             } else {
                 // Petición por Defecto - Vista Bienvenida
                 response.sendRedirect("?cmd=visita-landing");
             }
         } else {
             // Recursos Estáticos
-            UtilesEstaticos.procesarRecurso(getServletConfig(), request, response);
+            UtilesEstaticos.procesar(getServletConfig(), request, response);
         }
     }
 

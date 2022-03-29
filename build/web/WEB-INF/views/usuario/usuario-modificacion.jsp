@@ -95,15 +95,15 @@
                             <div class="field-set">
                                 <label for="perfil">Perfil</label>
                                 <select id="perfil" name="perfil" required>
-                                    <option value="<%= Perfil.BASIC%>">Usuario</option>
+                                    <option value="<%= usuario.getPerfil()%>"><%= usuario.getPerfilInfo()%></option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="avatar-frame">
                             <div class="avatar">
-                                <img class="actual" src="<%= usuario.getAvatarImg()%>" alt="Avatar"/>
-                                <img class="backup" src="<%= usuario.getAvatarImg()%>" alt="Avatar" style="display: none;" />
+                                <img class="actual" src="<%= usuario.getAvatar()%>" alt="Avatar"/>
+                                <img class="backup" src="<%= usuario.getAvatar()%>" alt="Avatar" style="display: none;" />
                             </div>
                         </div>
 

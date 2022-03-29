@@ -19,10 +19,8 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
@@ -47,18 +45,17 @@ public final class CommandUsuarioInsercion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALAvatar dalAvatar = new DALAvatar(config);
                 DALPerfil dalPerfil = new DALPerfil(config);
                 DALUsuario dalUsuario = new DALUsuario(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");
 
+                // Sesión > Usuario
+                Usuario usuario = (Usuario) request.getSession(false).getAttribute("usuario");
+
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
-                    // Sesión > Usuario
-                    Usuario usuario = (Usuario) request.getSession(false).getAttribute("usuario");
-
                     // BD > Lista de Perfiles
                     List<Perfil> perfiles;
                     if (usuario.getPerfil() >= Perfil.DEVEL) {
@@ -73,26 +70,11 @@ public final class CommandUsuarioInsercion extends Command {
                     // Request > Parámetros
                     String user = UtilesUsuario.obtenerUser(request);
                     String pass = UtilesUsuario.obtenerPass(request);
-                    Avatar avatar = UtilesUsuario.obtenerAvatar(request);
-                    int perfil = UtilesUsuario.obtenerPerfil(request);
+                    String avatar = UtilesUsuario.obtenerAvatar(request);
+                    int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
-                    // Validar Avatar
-                    if (avatar == null) {
-                        // Avatar no seleccionado - Predeterminado
-                        avatar = new Avatar();
-                    }
-
-                    // Insertar Avatar
-                    if (dalAvatar.insertar(avatar)) {
-                        // Insertar Avatar seleccionado - Recuperar de BD
-                        avatar = dalAvatar.consultar(avatar.getImagen());
-                    } else {
-                        // Error Inserción de Avatar
-                        throw new ServletException("Error al insertar el avatar");
-                    }
-
-                    // Parámetros > Entidad
-                    Usuario usuario = new Usuario(0, user, pass, avatar.getId(), "", perfil, "");
+                    // Parámetros > Usuario
+                    usuario = new Usuario(0, user, pass, avatar, perfil, "");
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalUsuario.insertar(usuario);

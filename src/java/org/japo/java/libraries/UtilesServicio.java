@@ -39,7 +39,7 @@ public final class UtilesServicio {
     private UtilesServicio() {
     }
 
-    public static final void procesarServicio(
+    public static final void procesar(
             ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response)

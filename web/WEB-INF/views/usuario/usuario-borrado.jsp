@@ -48,7 +48,7 @@
                 <img class="watermark" src="public/img/logo01.png" alt="Logo" />
 
                 <header>
-                    <h2>Borrado de Usuarios</h2>
+                    <h2>Borrado de Usuarios - Confirmación</h2>
                     <a class="btn btn-listar" href="?cmd=usuario-listado">Listado</a>
                 </header>
 
@@ -79,7 +79,7 @@
 
                     <div class="imagen">
                         <div class="imagen-margen">
-                            <img src="<%= usuario.getAvatarImg()%>" alt="<%= usuario.getUser()%>"/> 
+                            <img src="<%= usuario.getAvatar()%>" alt="<%= usuario.getUser()%>"/> 
                         </div>
                     </div>
                 </div>

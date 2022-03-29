@@ -39,7 +39,7 @@ public final class UtilesComando {
     private UtilesComando() {
     }
 
-    public static final void procesarComando(
+    public static final void procesar(
             ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response)

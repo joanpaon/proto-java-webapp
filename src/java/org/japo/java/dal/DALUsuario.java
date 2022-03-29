@@ -52,13 +52,10 @@ public final class DALUsuario {
                 + "usuarios.user AS user, "
                 + "usuarios.pass AS pass, "
                 + "usuarios.avatar AS avatar, "
-                + "avatares.imagen AS avatar_img, "
                 + "usuarios.perfil AS perfil, "
                 + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
-                + "INNER JOIN "
-                + "avatares ON avatares.id = usuarios.avatar "
                 + "INNER JOIN "
                 + "perfiles ON perfiles.id = usuarios.perfil ";
 
@@ -75,13 +72,12 @@ public final class DALUsuario {
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
-                        int avatar = rs.getInt("avatar");
-                        String avatarImg = rs.getString("avatar_img");
+                        String avatar = rs.getString("avatar");
                         int perfil = rs.getInt("perfil");
                         String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil, perfilInfo);
 
                         // Entidad > Lista
                         usuarios.add(usuario);
@@ -104,13 +100,10 @@ public final class DALUsuario {
                 + "usuarios.user AS user, "
                 + "usuarios.pass AS pass, "
                 + "usuarios.avatar AS avatar, "
-                + "avatares.imagen AS avatar_img, "
                 + "usuarios.perfil AS perfil, "
                 + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
-                + "INNER JOIN "
-                + "avatares ON avatares.id = usuarios.avatar "
                 + "INNER JOIN "
                 + "perfiles ON perfiles.id = usuarios.perfil "
                 + "WHERE "
@@ -132,13 +125,12 @@ public final class DALUsuario {
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
-                        int avatar = rs.getInt("avatar");
-                        String avatarImg = rs.getString("avatar_img");
+                        String avatar = rs.getString("avatar");
                         int perfil = rs.getInt("perfil");
                         String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil, perfilInfo);
 
                         // Entidad > Lista
                         usuarios.add(usuario);
@@ -161,13 +153,10 @@ public final class DALUsuario {
                 + "usuarios.user AS user, "
                 + "usuarios.pass AS pass, "
                 + "usuarios.avatar AS avatar, "
-                + "avatares.imagen AS avatar_img, "
                 + "usuarios.perfil AS perfil, "
                 + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
-                + "INNER JOIN "
-                + "avatares ON avatares.id = usuarios.avatar "
                 + "INNER JOIN "
                 + "perfiles ON perfiles.id = usuarios.perfil "
                 + "WHERE usuarios.id=?";
@@ -186,13 +175,12 @@ public final class DALUsuario {
                         // Fila Actual > Campos 
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
-                        int avatar = rs.getInt("avatar");
-                        String avatarImg = rs.getString("avatar_img");
+                        String avatar = rs.getString("avatar");
                         int perfil = rs.getInt("perfil");
                         String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
+                        usuario = new Usuario(id, user, pass, avatar, perfil, perfilInfo);
                     }
                 }
             }
@@ -212,13 +200,10 @@ public final class DALUsuario {
                 + "usuarios.user AS user, "
                 + "usuarios.pass AS pass, "
                 + "usuarios.avatar AS avatar, "
-                + "avatares.imagen AS avatar_img, "
                 + "usuarios.perfil AS perfil, "
                 + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
-                + "INNER JOIN "
-                + "avatares ON avatares.id = usuarios.avatar "
                 + "INNER JOIN "
                 + "perfiles ON perfiles.id = usuarios.perfil "
                 + "WHERE "
@@ -239,13 +224,12 @@ public final class DALUsuario {
                         // Fila Actual > Campos 
                         int id = rs.getInt("id");
                         String pass = rs.getString("pass");
-                        int avatar = rs.getInt("avatar");
-                        String avatarImg = rs.getString("avatar_img");
+                        String avatar = rs.getString("avatar");
                         int perfil = rs.getInt("perfil");
                         String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
+                        usuario = new Usuario(id, user, pass, avatar, perfil, perfilInfo);
                     }
                 }
             }
@@ -277,7 +261,7 @@ public final class DALUsuario {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
-                ps.setInt(3, usuario.getAvatar());
+                ps.setString(3, usuario.getAvatar());
                 ps.setInt(4, usuario.getPerfil());
 
                 // Ejecutar Sentencia
@@ -336,7 +320,7 @@ public final class DALUsuario {
                 // Parametrizar Sentencia
                 ps.setString(1, usuario.getUser());
                 ps.setString(2, usuario.getPass());
-                ps.setInt(3, usuario.getAvatar());
+                ps.setString(3, usuario.getAvatar());
                 ps.setInt(4, usuario.getPerfil());
                 ps.setInt(5, usuario.getId());
 
@@ -421,13 +405,10 @@ public final class DALUsuario {
                 + "usuarios.user AS user, "
                 + "usuarios.pass AS pass, "
                 + "usuarios.avatar AS avatar, "
-                + "avatares.imagen AS avatar_img, "
                 + "usuarios.perfil AS perfil, "
                 + "perfiles.info AS perfil_info "
                 + "FROM "
                 + "usuarios "
-                + "INNER JOIN "
-                + "avatares ON avatares.id = usuarios.avatar "
                 + "INNER JOIN "
                 + "perfiles ON perfiles.id = usuarios.perfil "
                 + "LIMIT ?, ?";
@@ -449,13 +430,12 @@ public final class DALUsuario {
                         int id = rs.getInt("id");
                         String user = rs.getString("user");
                         String pass = rs.getString("pass");
-                        int avatar = rs.getInt("avatar");
-                        String avatarImg = rs.getString("avatar_img");
+                        String avatar = rs.getString("avatar");
                         int perfil = rs.getInt("perfil");
                         String perfilInfo = rs.getString("perfil_info");
 
                         // Campos > Entidad
-                        Usuario usuario = new Usuario(id, user, pass, avatar, avatarImg, perfil, perfilInfo);
+                        Usuario usuario = new Usuario(id, user, pass, avatar, perfil, perfilInfo);
 
                         // Entidad > Lista
                         usuarios.add(usuario);

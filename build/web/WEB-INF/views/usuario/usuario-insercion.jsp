@@ -102,8 +102,8 @@
 
                         <div class="avatar-frame">
                             <div class="avatar">
-                                <img class="actual" src="<%= Usuario.DEF_AVATAR_IMG%>" alt="Avatar"/>
-                                <img class="backup" src="<%= Usuario.DEF_AVATAR_IMG%>" alt="Avatar" style="display: none;" />
+                                <img class="actual" src="<%= Usuario.DEF_AVATAR%>" alt="Avatar"/>
+                                <img class="backup" src="<%= Usuario.DEF_AVATAR%>" alt="Avatar" style="display: none;" />
                             </div>
                         </div>
 

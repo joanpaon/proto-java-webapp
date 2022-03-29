@@ -18,14 +18,12 @@ package org.japo.java.libraries;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 
@@ -85,60 +83,36 @@ public final class UtilesUsuario {
         return pass;
     }
 
-    public static final Avatar obtenerAvatar(HttpServletRequest request) throws IOException, ServletException {
-        // Datos > Avatar
-        Avatar avatar = null;
+    public static final String obtenerAvatar(HttpServletRequest request) throws IOException, ServletException {
+        // Imagen Base64
+        String avatar;
 
         // Request > Part
         Part part = request.getPart("avatar");
 
         // Imagen Enviada
         if (part.getSize() > 0) {
-            // Part > Nombre Imagen
-            String nombre = obtenerNombreAvatar(part);
-
-            // Imagen Base64
-            String imagen;
-
             // Validar Tamaño Avatar
-            if (Avatar.MAX_SIZE <= 0) {
+            if (Usuario.AVATAR_MAX_SIZE <= 0) {
                 // No hay tamaño máximo
-                imagen = UtilesBase64.obtenerImagenBase64(part);
-            } else if (part.getSize() <= Avatar.MAX_SIZE) {
+                avatar = UtilesBase64.obtenerImagenBase64(part);
+            } else if (part.getSize() <= Usuario.AVATAR_MAX_SIZE) {
                 // Tamaño Correcto
-                imagen = UtilesBase64.obtenerImagenBase64(part);
+                avatar = UtilesBase64.obtenerImagenBase64(part);
             } else {
-                // Tamaño Excesivo
-                throw new IOException("Tamaño de imagen excesivo");
+                // Tamaño Excesivo - Avatar Predeterminado
+                avatar = Usuario.DEF_AVATAR;
             }
-
-            // Datos > Avatar
-            avatar = new Avatar(0, nombre, imagen);
+        } else {
+            // Avatar Erróneo - Avatar Predeterminado
+            avatar = Usuario.DEF_AVATAR;
         }
 
         // Retorno: Avatar
         return avatar;
     }
 
-    private static String obtenerNombreAvatar(Part part) {
-        // Part > Nombre Fichero Enviado
-        String nombre = part.getSubmittedFileName();
-
-        // Elimina Extensión
-        nombre = nombre.substring(0, nombre.lastIndexOf("."));
-
-        // Valída Nombre
-        if (nombre.length() > Avatar.MAX_CHARS) {
-            nombre = nombre.substring(nombre.length() - Avatar.MAX_CHARS - 1);
-        } else if (nombre.isEmpty()) {
-            nombre = "avatar" + String.format("%6d", new Random().nextInt(100000, 1000000));
-        }
-
-        // Retorno: Imagen Base64
-        return nombre;
-    }
-
-    public static final int obtenerPerfil(HttpServletRequest request) throws IOException {
+    public static final int obtenerPerfilRequest(HttpServletRequest request) throws IOException {
         // Request > ID Perfil
         int perfil;
         try {
@@ -196,50 +170,34 @@ public final class UtilesUsuario {
         return usuarios;
     }
 
-    public static final Usuario obtenerUsuarioId(
+    public static final Usuario obtenerUsuarioIdRequest(
             ServletConfig config,
             HttpServletRequest request)
             throws IOException {
-        // Referencia
-        Usuario usuario = null;
+        // Capas de Negocio
+        DALUsuario dalUsuario = new DALUsuario(config);
 
-        if (validarCredencial(request)) {
-            // Capas de Negocio
-            DALUsuario dalUsuario = new DALUsuario(config);
+        // Request > Id de Usuario
+        int id = obtenerId(request);
 
-            // Request > Id de Usuario
-            int id = obtenerId(request);
-
-            // Nombre Usuario + BD > Objeto Usuario
-            usuario = dalUsuario.consultar(id);
-        }
-
-        // Retorno
-        return usuario;
+        // Retorno: Usuario
+        return dalUsuario.consultar(id);
     }
 
     public static final Usuario obtenerUsuarioUser(
             ServletConfig config,
             HttpServletRequest request) {
-        // Referencia
-        Usuario usuario = null;
+        // Capas de Negocio
+        DALUsuario dalUsuario = new DALUsuario(config);
 
-        if (validarCredencial(request)) {
-            // Capas de Negocio
-            DALUsuario dalUsuario = new DALUsuario(config);
+        // Request > Nombre de Usuario
+        String user = request.getParameter("user");
 
-            // Request > Nombre de Usuario
-            String user = request.getParameter("user");
-
-            // Nombre Usuario + BD > Objeto Usuario
-            usuario = dalUsuario.consultar(user);
-        }
-
-        // Retorno
-        return usuario;
+        // Retorno: Usuario
+        return dalUsuario.consultar(user);
     }
 
-    private static boolean validarCredencial(
+    public static final boolean validarFormatoCredencialRequest(
             HttpServletRequest request) {
         // Request > Credenciales
         String user = request.getParameter("user");

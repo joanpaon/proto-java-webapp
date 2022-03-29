@@ -19,10 +19,8 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-import org.japo.java.dal.DALAvatar;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Avatar;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
@@ -47,7 +45,6 @@ public final class CommandUsuarioModificacion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALAvatar dalAvatar = new DALAvatar(config);
                 DALPerfil dalPerfil = new DALPerfil(config);
                 DALUsuario dalUsuario = new DALUsuario(config);
 
@@ -55,7 +52,7 @@ public final class CommandUsuarioModificacion extends Command {
                 String op = request.getParameter("op");
 
                 // ID Usuario + BD > Usuario
-                Usuario usuario = UtilesUsuario.obtenerUsuarioId(config, request);
+                Usuario usuario = UtilesUsuario.obtenerUsuarioIdRequest(config, request);
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
@@ -69,51 +66,11 @@ public final class CommandUsuarioModificacion extends Command {
                     // Request > Parámetros
                     String user = UtilesUsuario.obtenerUser(request);
                     String pass = UtilesUsuario.obtenerPass(request);
-                    Avatar avatar = UtilesUsuario.obtenerAvatar(request);
-                    int perfil = UtilesUsuario.obtenerPerfil(request);
-
-                    // Validar Nombre Usuario
-                    if (user.equals(usuario.getUser())) {
-                        // Nombre de Usuario NO modificado - Conservar
-                    } else if (dalUsuario.consultar(user) == null) {
-                        // Nombre de Usuario SI Modificado - Sustituir
-                    } else {
-                        // Nombre de Usuario duplicado - Cancelar
-                        throw new ServletException("Nombre de usuario existente");
-                    }
-
-                    // Validar Avatar
-                    if (avatar == null) {
-                        // Avatar NO modificado
-                        avatar = new Avatar(usuario.getAvatar(), "", "");
-                    } else if (usuario.getAvatar() == Avatar.DEF_ID) {
-                        // Avatar Seleccionado - Avatar Previo Predeterminado
-                        if (!dalAvatar.insertar(avatar)) {
-                            // Error al insertar el avatar
-                            throw new ServletException("Error al insertar el avatar");
-                        }
-
-                        // Recuperar Avatar de BD
-                        avatar = dalAvatar.consultar(avatar.getImagen());
-                    } else {
-                        // Avatar Seleccionado - Sustituir Avatar Previo
-                        avatar.setId(usuario.getAvatar());
-
-                        // Sustituir el Avatar anterior
-                        if (!dalAvatar.modificar(avatar)) {
-                            // Error al actualizar el avatar
-                            throw new ServletException("Error al actualizar el avatar");
-                        }
-                    }
-
-                    // Validar Perfil
-                    if (dalPerfil.consultar(perfil) == null) {
-                        // No existe el perfil seleccionado
-                        throw new ServletException("No existe el perfil seleccionado");
-                    }
+                    String avatar = UtilesUsuario.obtenerAvatar(request);
+                    int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
                     // Parámetros > Usuario a Modificar
-                    usuario = new Usuario(usuario.getId(), user, pass, avatar.getId(), "", perfil, "");
+                    usuario = new Usuario(usuario.getId(), user, pass, avatar, perfil, "");
 
                     // Validar Operación
                     if (dalUsuario.modificar(usuario)) {

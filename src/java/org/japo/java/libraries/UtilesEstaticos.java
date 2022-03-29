@@ -36,7 +36,7 @@ public final class UtilesEstaticos {
     private UtilesEstaticos() {
     }
 
-    public static final void procesarRecurso(
+    public static final void procesar(
             ServletConfig config,
             HttpServletRequest request,
             HttpServletResponse response)

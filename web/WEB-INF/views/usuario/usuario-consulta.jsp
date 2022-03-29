@@ -77,7 +77,7 @@
 
                     <div class="imagen">
                         <div class="imagen-margen">
-                            <img src="<%= usuario.getAvatarImg()%>" alt="<%= usuario.getUser()%>"/> 
+                            <img src="<%= usuario.getAvatar()%>" alt="<%= usuario.getUser()%>"/> 
                         </div>
                     </div>
                 </div>

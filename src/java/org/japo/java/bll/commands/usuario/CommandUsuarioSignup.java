@@ -19,8 +19,8 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -45,12 +45,13 @@ public final class CommandUsuarioSignup extends Command {
             // ---
         } else if (op.equals("proceso")) {
             // Request > Parámetros
-            String user = request.getParameter("user").trim();
-            String pass = request.getParameter("pass").trim();
-            int avatar = Integer.parseInt(request.getParameter("avatar"));
+            String user = UtilesUsuario.obtenerUser(request);
+            String pass = UtilesUsuario.obtenerPass(request);
+            String avatar = UtilesUsuario.obtenerAvatar(request);
+            int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
             // Parámetros > Entidad
-            Usuario usuario = new Usuario(0, user, pass, avatar, "", Perfil.BASIC, "");
+            Usuario usuario = new Usuario(0, user, pass, avatar, perfil, "");
 
             // Entidad > Inserción BD - true | false
             boolean operacionOK = dalUsuario.insertar(usuario);
