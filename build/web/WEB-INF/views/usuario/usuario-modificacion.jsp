@@ -39,7 +39,7 @@
     </head>
 
     <body>
-        <!-- Web Content-->
+        <!-- Web Content -->
         <div id="container">
             <%@include file="/WEB-INF/views/partials/header.jspf" %>
 

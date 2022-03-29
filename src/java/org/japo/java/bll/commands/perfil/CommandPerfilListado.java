@@ -68,7 +68,7 @@ public final class CommandPerfilListado extends Command {
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
                 // BD > Lista de Perfiles
-                List<Perfil> perfiles = UtilesPerfil.obtenerPerfilesUsuario(config, request);
+                List<Perfil> perfiles = UtilesPerfil.listarPerfilesUsuario(config, request);
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("perfiles", perfiles);

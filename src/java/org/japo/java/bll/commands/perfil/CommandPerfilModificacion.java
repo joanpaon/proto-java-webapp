@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALPerfil;
 import org.japo.java.entities.Perfil;
+import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -44,26 +45,24 @@ public final class CommandPerfilModificacion extends Command {
                 // Capas de Datos
                 DALPerfil perfilDAL = new DALPerfil(config);
 
-                // request > ID Entidad
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                // BD > Perfil
-                Perfil perfil = perfilDAL.consultar(id);
-
                 // request > Operación
                 String op = request.getParameter("op");
 
                 // Entidad > JSP
                 if (op == null || op.equals("captura")) {
+                    // Request + ID Usuario + BD > Usuario
+                    Perfil perfil = UtilesPerfil.consultarPerfilIdRequest(config, request);
+
                     // Inyectar Datos > JSP
                     request.setAttribute("perfil", perfil);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    String nombre = request.getParameter("nombre");
-                    String info = request.getParameter("info");
+                    int id = UtilesPerfil.obtenerIdRequest(request);
+                    String nombre = UtilesPerfil.obtenerNombreRequest(request);
+                    String info = UtilesPerfil.obtenerInfoRequest(request);
 
                     // Parámetros > Entidad
-                    perfil = new Perfil(perfil.getId(), nombre, info);
+                    Perfil perfil = new Perfil(id, nombre, info);
 
                     // Ejecutar Operación
                     boolean checkOK = perfilDAL.modificar(perfil);

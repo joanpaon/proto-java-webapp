@@ -15,6 +15,7 @@
  */
 package org.japo.java.libraries;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletConfig;
@@ -33,7 +34,60 @@ public final class UtilesPerfil {
     private UtilesPerfil() {
     }
 
-    public static final List<Perfil> obtenerPerfilesUsuario(
+    public static final int obtenerIdRequest(
+            HttpServletRequest request)
+            throws IOException {
+        // Referencia
+        int id;
+
+        // URL > ID Objeto
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+
+            if (!Perfil.validarId(id)) {
+                throw new IOException("ID de Perfil Fuera de Rango");
+            }
+        } catch (NullPointerException e) {
+            throw new IOException(e.getMessage());
+        } catch (NumberFormatException e) {
+            throw new IOException("ID de Perfil Incorrecta");
+        }
+
+        // Retorno
+        return id;
+    }
+
+    public static final String obtenerNombreRequest(
+            HttpServletRequest request)
+            throws IOException {
+        // Request > Nombre
+        String nombre = request.getParameter("nombre");
+
+        // Validar User
+        if (!Perfil.validarNombre(nombre)) {
+            throw new IOException("Nombre de Perfil Incorrecto");
+        }
+
+        // Retorno: Nombre
+        return nombre;
+    }
+
+    public static final String obtenerInfoRequest(
+            HttpServletRequest request)
+            throws IOException {
+        // Request > Info
+        String info = request.getParameter("info");
+
+        // Validar User
+        if (!Perfil.validarInfo(info)) {
+            throw new IOException("Info de Perfil Incorrecta");
+        }
+
+        // Retorno: Nombre
+        return info;
+    }
+
+    public static final List<Perfil> listarPerfilesUsuario(
             ServletConfig config,
             HttpServletRequest request) {
         // BD > Lista de Perfiles
@@ -70,4 +124,17 @@ public final class UtilesPerfil {
         return perfiles;
     }
 
+    public static final Perfil consultarPerfilIdRequest(
+            ServletConfig config,
+            HttpServletRequest request)
+            throws IOException {
+        // Capas de Negocio
+        DALPerfil dalPerfil = new DALPerfil(config);
+
+        // Request > Id Perfil
+        int id = obtenerIdRequest(request);
+
+        // Retorno: Perfil
+        return dalPerfil.consultar(id);
+    }
 }
