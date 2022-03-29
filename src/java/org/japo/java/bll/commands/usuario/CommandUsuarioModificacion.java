@@ -18,10 +18,7 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.List;
-import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -45,32 +42,28 @@ public final class CommandUsuarioModificacion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(config);
                 DALUsuario dalUsuario = new DALUsuario(config);
 
-                // request > ID Operación
+                // request > Operación
                 String op = request.getParameter("op");
-
-                // ID Usuario + BD > Usuario
-                Usuario usuario = UtilesUsuario.obtenerUsuarioIdRequest(config, request);
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
-                    // BD > Lista de Perfiles
-                    List<Perfil> perfiles = dalPerfil.listar();
+                    // Request + ID Usuario + BD > Usuario
+                    Usuario usuario = UtilesUsuario.consultarUsuarioIdRequest(config, request);
 
                     // Inyectar Datos > JSP
                     request.setAttribute("usuario", usuario);
-                    request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    String user = UtilesUsuario.obtenerUser(request);
-                    String pass = UtilesUsuario.obtenerPass(request);
-                    String avatar = UtilesUsuario.obtenerAvatar(request);
+                    int id = UtilesUsuario.obtenerIdRequest(request);
+                    String user = UtilesUsuario.obtenerUserRequest(request);
+                    String pass = UtilesUsuario.obtenerPassRequest(request);
+                    String avatar = UtilesUsuario.obtenerAvatarRequest(config, request);
                     int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
                     // Parámetros > Usuario a Modificar
-                    usuario = new Usuario(usuario.getId(), user, pass, avatar, perfil, "");
+                    Usuario usuario = new Usuario(id, user, pass, avatar, perfil, "");
 
                     // Validar Operación
                     if (dalUsuario.modificar(usuario)) {

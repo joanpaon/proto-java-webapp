@@ -37,7 +37,7 @@ public final class CommandUsuarioLogin extends Command {
         // Procesar Operación
         if (validarSesion(request)) {
             // Salida > Principal del perfil
-            out = UtilesUsuario.obtenerComandoPrincipal(request);
+            out = UtilesUsuario.obtenerComandoVistaPrincipal(request);
         } else {
             // Obtener Operación
             String op = request.getParameter("op");
@@ -46,7 +46,7 @@ public final class CommandUsuarioLogin extends Command {
                 // Vista Predeterminada
             } else if (op.equals("proceso")) {
                 // Entrada + BD > Usuario
-                Usuario usuario = UtilesUsuario.obtenerUsuarioUser(config, request);
+                Usuario usuario = UtilesUsuario.obtenerUsuarioUserRequest(config, request);
 
                 // Validar Usuario
                 if (usuario == null) {
@@ -54,13 +54,13 @@ public final class CommandUsuarioLogin extends Command {
                     out = "message/acceso-denegado";
                 } else {
                     // Regenerar Sesión Actual
-                    HttpSession sesion = UtilesUsuario.regenerarSesion(config, request);
+                    HttpSession sesion = UtilesUsuario.reiniciarSesion(config, request);
 
                     // Usuario > Sesión
                     sesion.setAttribute("usuario", usuario);
 
                     // Salida > Principal del perfil
-                    out = UtilesUsuario.obtenerComandoPrincipal(request);
+                    out = UtilesUsuario.obtenerComandoVistaPrincipal(request);
                 }
             } else {
                 // Vista > Operación Desconocida

@@ -45,9 +45,9 @@ public final class CommandUsuarioSignup extends Command {
             // ---
         } else if (op.equals("proceso")) {
             // Request > Parámetros
-            String user = UtilesUsuario.obtenerUser(request);
-            String pass = UtilesUsuario.obtenerPass(request);
-            String avatar = UtilesUsuario.obtenerAvatar(request);
+            String user = UtilesUsuario.obtenerUserRequest(request);
+            String pass = UtilesUsuario.obtenerPassRequest(request);
+            String avatar = UtilesUsuario.obtenerAvatarRequest(config, request);
             int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
             // Parámetros > Entidad

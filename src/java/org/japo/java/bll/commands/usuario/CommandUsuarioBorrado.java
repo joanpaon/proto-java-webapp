@@ -44,20 +44,20 @@ public final class CommandUsuarioBorrado extends Command {
                 // Capas de Datos
                 DALUsuario dalUsuario = new DALUsuario(config);
 
-                // URL > ID Objeto
-                int id = UtilesUsuario.obtenerId(request);
-
                 // request > ID Operación
                 String op = request.getParameter("op");
 
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
-                    // ID Entidad + BD > Entidad
-                    Usuario usuario = dalUsuario.consultar(id);
+                    // Request + ID Usuario + BD > Usuario
+                    Usuario usuario = UtilesUsuario.consultarUsuarioIdRequest(config, request);
 
                     // Inyecta Datos > JSP
                     request.setAttribute("usuario", usuario);
                 } else if (op.equals("proceso")) {
+                    // Request > Parámetros
+                    int id = UtilesUsuario.obtenerIdRequest(request);
+                    
                     // ID > Registro Borrado - true | false
                     boolean checkOK = dalUsuario.borrar(id);
 

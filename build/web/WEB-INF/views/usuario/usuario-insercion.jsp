@@ -6,7 +6,6 @@
 
 <%
     // Datos Inyectados
-    List<Perfil> perfiles = (ArrayList<Perfil>) request.getAttribute("perfiles");
 %>
 
 <!DOCTYPE html>
@@ -55,6 +54,7 @@
                       accept-charset="Windows-1252" 
                       enctype="multipart/form-data"
                       action="?cmd=usuario-insercion&op=proceso">
+                    <input type="hidden" name="perfil" value="<%= Perfil.BASIC%>" />
                     <div class="form-content">
                         <div class="field-container">
                             <div class="field-set">
@@ -87,17 +87,6 @@
                                         class="btn btn-img" 
                                         onclick="document.getElementById('avatar').click()">👀</button>
                             </div>
-
-                            <% if (perfiles != null) {%>
-                            <div class="field-set">
-                                <label for="perfil">Perfil</label>
-                                <select id="perfil" name="perfil" required>
-                                    <option value="<%= Perfil.BASIC%>" selected="">Usuario</option>
-                                    <option value="<%= Perfil.ADMIN%>">Administrador</option>
-                                    <option value="<%= Perfil.DEVEL%>">Desarrollador</option>
-                                </select>
-                            </div>
-                            <% }%>
                         </div>
 
                         <div class="avatar-frame">

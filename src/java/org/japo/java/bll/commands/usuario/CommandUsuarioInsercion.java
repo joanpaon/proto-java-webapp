@@ -18,10 +18,7 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.List;
-import org.japo.java.dal.DALPerfil;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -45,36 +42,23 @@ public final class CommandUsuarioInsercion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(config);
                 DALUsuario dalUsuario = new DALUsuario(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");
 
-                // Sesión > Usuario
-                Usuario usuario = (Usuario) request.getSession(false).getAttribute("usuario");
-
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
-                    // BD > Lista de Perfiles
-                    List<Perfil> perfiles;
-                    if (usuario.getPerfil() >= Perfil.DEVEL) {
-                        perfiles = dalPerfil.listar();
-                    } else {
-                        perfiles = null;
-                    }
-
-                    // Inyectar Datos > JSP
-                    request.setAttribute("perfiles", perfiles);
+                    // ---
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    String user = UtilesUsuario.obtenerUser(request);
-                    String pass = UtilesUsuario.obtenerPass(request);
-                    String avatar = UtilesUsuario.obtenerAvatar(request);
+                    String user = UtilesUsuario.obtenerUserRequest(request);
+                    String pass = UtilesUsuario.obtenerPassRequest(request);
+                    String avatar = UtilesUsuario.obtenerAvatarRequest(config, request);
                     int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
                     // Parámetros > Usuario
-                    usuario = new Usuario(0, user, pass, avatar, perfil, "");
+                    Usuario usuario = new Usuario(0, user, pass, avatar, perfil, "");
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalUsuario.insertar(usuario);

@@ -36,7 +36,7 @@ public final class UtilesUsuario {
     private UtilesUsuario() {
     }
 
-    public static final int obtenerId(HttpServletRequest request) throws IOException {
+    public static final int obtenerIdRequest(HttpServletRequest request) throws IOException {
         // Referencia
         int id;
 
@@ -45,7 +45,7 @@ public final class UtilesUsuario {
             id = Integer.parseInt(request.getParameter("id"));
 
             if (!Usuario.validarId(id)) {
-                throw new IOException("Usuario NO Registrado");
+                throw new IOException("ID de Usuario Fuera de Rango");
             }
         } catch (NullPointerException e) {
             throw new IOException(e.getMessage());
@@ -57,7 +57,7 @@ public final class UtilesUsuario {
         return id;
     }
 
-    public static final String obtenerUser(HttpServletRequest request) throws IOException {
+    public static final String obtenerUserRequest(HttpServletRequest request) throws IOException {
         // Request > User
         String user = request.getParameter("user");
 
@@ -70,7 +70,7 @@ public final class UtilesUsuario {
         return user;
     }
 
-    public static final String obtenerPass(HttpServletRequest request) throws IOException {
+    public static final String obtenerPassRequest(HttpServletRequest request) throws IOException {
         // Request > Pass
         String pass = request.getParameter("pass");
 
@@ -83,7 +83,10 @@ public final class UtilesUsuario {
         return pass;
     }
 
-    public static final String obtenerAvatar(HttpServletRequest request) throws IOException, ServletException {
+    public static final String obtenerAvatarRequest(
+            ServletConfig config,
+            HttpServletRequest request) 
+            throws IOException, ServletException {
         // Imagen Base64
         String avatar;
 
@@ -104,8 +107,11 @@ public final class UtilesUsuario {
                 avatar = Usuario.DEF_AVATAR;
             }
         } else {
-            // Avatar Erróneo - Avatar Predeterminado
-            avatar = Usuario.DEF_AVATAR;
+            // Avatar NO modificado - Request + ID Usuario + BD > Usuario
+            Usuario usuario = consultarUsuarioIdRequest(config, request);
+            
+            // Usuario > Avatar
+            avatar = usuario.getAvatar();
         }
 
         // Retorno: Avatar
@@ -134,7 +140,7 @@ public final class UtilesUsuario {
         return perfil;
     }
 
-    public static final List<Usuario> obtenerUsuariosPerfil(
+    public static final List<Usuario> listarUsuariosPerfil(
             ServletConfig config,
             HttpServletRequest request) {
         // Referencia
@@ -170,7 +176,7 @@ public final class UtilesUsuario {
         return usuarios;
     }
 
-    public static final Usuario obtenerUsuarioIdRequest(
+    public static final Usuario consultarUsuarioIdRequest(
             ServletConfig config,
             HttpServletRequest request)
             throws IOException {
@@ -178,13 +184,13 @@ public final class UtilesUsuario {
         DALUsuario dalUsuario = new DALUsuario(config);
 
         // Request > Id de Usuario
-        int id = obtenerId(request);
+        int id = obtenerIdRequest(request);
 
         // Retorno: Usuario
         return dalUsuario.consultar(id);
     }
 
-    public static final Usuario obtenerUsuarioUser(
+    public static final Usuario obtenerUsuarioUserRequest(
             ServletConfig config,
             HttpServletRequest request) {
         // Capas de Negocio
@@ -209,7 +215,7 @@ public final class UtilesUsuario {
                 && pass != null && Usuario.validarPass(pass);
     }
 
-    public static final HttpSession regenerarSesion(
+    public static final HttpSession reiniciarSesion(
             ServletConfig config,
             HttpServletRequest request) {
         // Request > Session
@@ -234,7 +240,7 @@ public final class UtilesUsuario {
         return sesion;
     }
 
-    public static final String obtenerComandoPrincipal(HttpServletRequest request) {
+    public static final String obtenerComandoVistaPrincipal(HttpServletRequest request) {
         // Request > Session
         HttpSession sesion = request.getSession(false);
 

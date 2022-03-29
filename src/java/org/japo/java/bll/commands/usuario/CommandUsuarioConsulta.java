@@ -18,7 +18,6 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import org.japo.java.dal.DALUsuario;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -40,14 +39,8 @@ public final class CommandUsuarioConsulta extends Command {
                     config, request.getSession(false));
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
-                // Capas de Datos
-                DALUsuario dalUsuario = new DALUsuario(config);
-
-                // URL > ID Objeto
-                int id = UtilesUsuario.obtenerId(request);
-
-                // ID Usuario > Usuario
-                Usuario usuario = dalUsuario.consultar(id);
+                // Request + ID Usuario + BD > Usuario
+                Usuario usuario = UtilesUsuario.consultarUsuarioIdRequest(config, request);
 
                 // Enlaza Datos > JSP
                 request.setAttribute("usuario", usuario);

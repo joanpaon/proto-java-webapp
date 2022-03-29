@@ -53,9 +53,9 @@ public final class CommandUsuarioProfile extends Command {
                 DALUsuario dalUsuario = new DALUsuario(config);
 
                 // Request > Parámetros
-                String user = UtilesUsuario.obtenerUser(request);
-                String pass = UtilesUsuario.obtenerPass(request);
-                String avatar = UtilesUsuario.obtenerAvatar(request);
+                String user = UtilesUsuario.obtenerUserRequest(request);
+                String pass = UtilesUsuario.obtenerPassRequest(request);
+                String avatar = UtilesUsuario.obtenerAvatarRequest(config, request);
                 int perfil = UtilesUsuario.obtenerPerfilRequest(request);
 
                 // Parámetros > Entidad
@@ -70,7 +70,7 @@ public final class CommandUsuarioProfile extends Command {
                     sesion.setAttribute("usuario", usuario);
 
                     // Pagina de Aviso
-                    out = UtilesUsuario.obtenerComandoPrincipal(request);
+                    out = UtilesUsuario.obtenerComandoVistaPrincipal(request);
                 } else {
                     out = "message/operacion-cancelada";
                 }

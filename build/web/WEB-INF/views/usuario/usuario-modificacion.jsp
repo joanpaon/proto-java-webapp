@@ -8,7 +8,6 @@
 <%
     // Datos Inyectados
     Usuario usuario = (Usuario) request.getAttribute("usuario");
-    List<Perfil> perfiles = (ArrayList<Perfil>) request.getAttribute("perfiles");
 %>
 
 <!DOCTYPE html>
@@ -90,13 +89,6 @@
                                 <button type="button" 
                                         class="btn btn-img" 
                                         onclick="document.getElementById('avatar').click()">👀</button>
-                            </div>
-
-                            <div class="field-set">
-                                <label for="perfil">Perfil</label>
-                                <select id="perfil" name="perfil" required>
-                                    <option value="<%= usuario.getPerfil()%>"><%= usuario.getPerfilInfo()%></option>
-                                </select>
                             </div>
                         </div>
 
