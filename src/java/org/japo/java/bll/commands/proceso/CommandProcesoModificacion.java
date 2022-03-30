@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.Proceso;
+import org.japo.java.libraries.UtilesProceso;
 
 /**
  *
@@ -44,26 +45,24 @@ public final class CommandProcesoModificacion extends Command {
                 // Capas de Datos
                 DALProceso dalProceso = new DALProceso(config);
 
-                // request > ID Entidad
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                // ID Entidad > Registro BD > Entidad
-                Proceso proceso = dalProceso.consultar(id);
-
                 // request > Operación
                 String op = request.getParameter("op");
 
                 // Entidad > JSP
                 if (op == null || op.equals("captura")) {
+                    // Request + ID Usuario + BD > Usuario
+                    Proceso proceso = UtilesProceso.consultarProcesoIdRequest(config, request);
+
                     // Inyección de Datos
                     request.setAttribute("proceso", proceso);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    String nombre = request.getParameter("nombre").trim();
-                    String info = request.getParameter("info").trim();
+                    int id = UtilesProceso.obtenerIdRequest(request);
+                    String nombre = UtilesProceso.obtenerNombreRequest(request);
+                    String info = UtilesProceso.obtenerInfoRequest(request);
 
                     // Parámetros > Entidad
-                    proceso = new Proceso(proceso.getId(), nombre, info);
+                    Proceso proceso = new Proceso(id, nombre, info);
 
                     // Ejecutar Operación
                     boolean checkOK = dalProceso.modificar(proceso);
