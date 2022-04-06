@@ -26,6 +26,7 @@ import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.PermisoUsuario;
 import org.japo.java.entities.Usuario;
 import org.japo.java.entities.Proceso;
+import org.japo.java.libraries.UtilesPermisoUsuario;
 
 /**
  *
@@ -51,17 +52,14 @@ public final class CommandPermisoUsuarioModificacion extends Command {
                 DALProceso dalProceso = new DALProceso(config);
                 DALUsuario dalUsuario = new DALUsuario(config);
 
-                // request > ID Entidad
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                // ID Permiso Usuario > Objeto Entidad
-                PermisoUsuario permiso = dalPermiso.consultar(id);
-
                 // request > ID Operación
                 String op = request.getParameter("op");
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
+                    // Request + ID PermisoUsuario + BD > PermisoUsuario
+                    PermisoUsuario permiso = UtilesPermisoUsuario.consultarPermisoUsuarioIdRequest(config, request);
+
                     // BD > Lista de Procesos
                     List<Proceso> procesos = dalProceso.listar();
 
@@ -74,12 +72,13 @@ public final class CommandPermisoUsuarioModificacion extends Command {
                     request.setAttribute("usuarios", usuarios);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    int usuario = Integer.parseInt(request.getParameter("usuario"));
-                    int proceso = Integer.parseInt(request.getParameter("proceso"));
-                    String info = request.getParameter("info");
+                    int id = UtilesPermisoUsuario.obtenerIdRequest(request);
+                    int usuario = UtilesPermisoUsuario.obtenerUsuarioRequest(request);
+                    int proceso = UtilesPermisoUsuario.obtenerProcesoRequest(request);
+                    String info = UtilesPermisoUsuario.obtenerInfoRequest(request);
 
                     // Entidad Final
-                    permiso = new PermisoUsuario(permiso.getId(), usuario, "", proceso, "", info);
+                    PermisoUsuario permiso = new PermisoUsuario(id, usuario, "", proceso, "", info);
 
                     // Entidad > Modificación Registro BD
                     boolean checkOK = dalPermiso.modificar(permiso);

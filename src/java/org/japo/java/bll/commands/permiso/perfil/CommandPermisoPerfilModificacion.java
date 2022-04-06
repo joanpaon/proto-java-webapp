@@ -26,6 +26,7 @@ import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.PermisoPerfil;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Proceso;
+import org.japo.java.libraries.UtilesPermisoPerfil;
 
 /**
  *
@@ -45,23 +46,20 @@ public final class CommandPermisoPerfilModificacion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(config);
                 DALPermisoPerfil dalPermiso = new DALPermisoPerfil(config);
                 DALProceso dalProceso = new DALProceso(config);
-
-                // request > ID Entidad
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                // ID Entidad > Objeto Entidad
-                PermisoPerfil permiso = dalPermiso.consultar(id);
+                DALPerfil dalPerfil = new DALPerfil(config);
 
                 // request > ID Operación
                 String op = request.getParameter("op");
 
                 // Captura de Datos
                 if (op == null || op.equals("captura")) {
+                    // Request + ID PermisoPerfil + BD > PermisoPerfil
+                    PermisoPerfil permiso = UtilesPermisoPerfil.consultarPermisoPerfilIdRequest(config, request);
+
                     // BD > Lista de Procesos
                     List<Proceso> procesos = dalProceso.listar();
 
@@ -74,12 +72,13 @@ public final class CommandPermisoPerfilModificacion extends Command {
                     request.setAttribute("perfiles", perfiles);
                 } else if (op.equals("proceso")) {
                     // Request > Parámetros
-                    int proceso = Integer.parseInt(request.getParameter("proceso"));
-                    int perfil = Integer.parseInt(request.getParameter("perfil"));
-                    String info = request.getParameter("info");
+                    int id = UtilesPermisoPerfil.obtenerIdRequest(request);
+                    int perfil = UtilesPermisoPerfil.obtenerPerfilRequest(request);
+                    int proceso = UtilesPermisoPerfil.obtenerProcesoRequest(request);
+                    String info = UtilesPermisoPerfil.obtenerInfoRequest(request);
 
-                    // Parámetros > Entidad
-                    permiso = new PermisoPerfil(permiso.getId(), proceso, "", perfil, "", info);
+                    // Entidad Final
+                    PermisoPerfil permiso = new PermisoPerfil(id, perfil, "", proceso, "", info);
 
                     // Entidad > Modificación Registro BD
                     boolean checkOK = dalPermiso.modificar(permiso);
