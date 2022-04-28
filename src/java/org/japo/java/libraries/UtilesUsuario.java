@@ -36,7 +36,9 @@ public final class UtilesUsuario {
     private UtilesUsuario() {
     }
 
-    public static final int obtenerIdRequest(HttpServletRequest request) throws IOException {
+    public static final int obtenerIdRequest(
+            HttpServletRequest request) 
+            throws IOException {
         // Referencia
         int id;
 
@@ -57,7 +59,9 @@ public final class UtilesUsuario {
         return id;
     }
 
-    public static final String obtenerUserRequest(HttpServletRequest request) throws IOException {
+    public static final String obtenerUserRequest(
+            HttpServletRequest request) 
+            throws IOException {
         // Request > User
         String user = request.getParameter("user");
 
@@ -70,7 +74,9 @@ public final class UtilesUsuario {
         return user;
     }
 
-    public static final String obtenerPassRequest(HttpServletRequest request) throws IOException {
+    public static final String obtenerPassRequest(
+            HttpServletRequest request) 
+            throws IOException {
         // Request > Pass
         String pass = request.getParameter("pass");
 
@@ -85,7 +91,7 @@ public final class UtilesUsuario {
 
     public static final String obtenerAvatarRequest(
             ServletConfig config,
-            HttpServletRequest request) 
+            HttpServletRequest request)
             throws IOException, ServletException {
         // Imagen Base64
         String avatar;
@@ -109,7 +115,7 @@ public final class UtilesUsuario {
         } else {
             // Avatar NO modificado - Request + ID Usuario + BD > Usuario
             Usuario usuario = consultarUsuarioIdRequest(config, request);
-            
+
             // Usuario > Avatar
             avatar = usuario.getAvatar();
         }
@@ -118,7 +124,9 @@ public final class UtilesUsuario {
         return avatar;
     }
 
-    public static final int obtenerPerfilRequest(HttpServletRequest request) throws IOException {
+    public static final int obtenerPerfilRequest(
+            HttpServletRequest request) 
+            throws IOException {
         // Request > ID Perfil
         int perfil;
         try {
@@ -190,6 +198,15 @@ public final class UtilesUsuario {
         return dalUsuario.consultar(id);
     }
 
+    /*
+    Este método obtiene el nombre de usuario de la petición 
+    y, a partir de él, obtiene de la BD los datos 
+    correspondientes.
+    A continuación, si la contraseña almacenada en la BD 
+    coincide con la contraseña de la petición, devuelve los 
+    datos de usuario encapsulados en un objeto.
+    Si algo falla durante este proceso se devolverá: null.
+     */
     public static final Usuario obtenerUsuarioUserRequest(
             ServletConfig config,
             HttpServletRequest request) {
@@ -199,8 +216,18 @@ public final class UtilesUsuario {
         // Request > Nombre de Usuario
         String user = request.getParameter("user");
 
+        // Nombre de Usuario + BD > Usuario
+        Usuario usuario = dalUsuario.consultar(user);
+
+        // Request > Contraseña de Usuario
+        String pass = request.getParameter("pass");
+
+        // Validar Contraseña
+        usuario = usuario != null && usuario.getPass().equals(pass)
+                ? usuario : null;
+
         // Retorno: Usuario
-        return dalUsuario.consultar(user);
+        return usuario;
     }
 
     public static final boolean validarFormatoCredencialRequest(
@@ -240,7 +267,8 @@ public final class UtilesUsuario {
         return sesion;
     }
 
-    public static final String obtenerComandoVistaPrincipal(HttpServletRequest request) {
+    public static final String obtenerComandoVistaPrincipal(
+            HttpServletRequest request) {
         // Request > Session
         HttpSession sesion = request.getSession(false);
 
