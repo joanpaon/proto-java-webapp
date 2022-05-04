@@ -31,6 +31,33 @@ import org.japo.java.entities.Usuario;
  */
 public final class UtilesPerfil {
 
+    // Códigos de Perfiles Básicos
+    public static final int VISIT_CODE = 0;
+    public static final int BASIC_CODE = 100;
+    public static final int ADMIN_CODE = 800;
+    public static final int DEVEL_CODE = 900;
+
+    // Nombres de Perfiles Básicos
+    public static final String VISIT_NAME = "Visitante";
+    public static final String BASIC_NAME = "Usuario";
+    public static final String ADMIN_NAME = "Administrador";
+    public static final String DEVEL_NAME = "Desarrollador";
+
+    // Descripción de Perfiles Básicos
+    public static final String VISIT_INFO = "Usuario NO Identificado";
+    public static final String BASIC_INFO = "Usuario Identificado";
+    public static final String ADMIN_INFO = "Usuario con Derechos Administrativos";
+    public static final String DEVEL_INFO = "Usuario con Derechos de Desarrollo";
+
+    // Valores por Defecto
+    public static final int DEF_ID = 0;
+    public static final String DEF_NOMBRE = VISIT_NAME;
+    public static final String DEF_INFO = VISIT_INFO;
+
+    // Expresiones regulares
+    public static final String REG_NOMBRE = "[\\wáéíóúüñÁÉÍÓÚÜÑ]{6,20}";
+    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
+
     private UtilesPerfil() {
     }
 
@@ -44,7 +71,7 @@ public final class UtilesPerfil {
         try {
             id = Integer.parseInt(request.getParameter("id"));
 
-            if (!Perfil.validarId(id)) {
+            if (!validarId(id)) {
                 throw new IOException("ID de Perfil Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -64,7 +91,7 @@ public final class UtilesPerfil {
         String nombre = request.getParameter("nombre");
 
         // Validar User
-        if (!Perfil.validarNombre(nombre)) {
+        if (!validarNombre(nombre)) {
             throw new IOException("Nombre de Perfil Incorrecto");
         }
 
@@ -79,7 +106,7 @@ public final class UtilesPerfil {
         String info = request.getParameter("info");
 
         // Validar User
-        if (!Perfil.validarInfo(info)) {
+        if (!validarInfo(info)) {
             throw new IOException("Info de Perfil Incorrecta");
         }
 
@@ -104,15 +131,15 @@ public final class UtilesPerfil {
 
         // Determinar Perfil Usuario
         switch (usuario.getPerfil()) {
-            case Perfil.DEVEL:
+            case DEVEL_CODE:
                 // BD > Lista de Pefiles
                 perfiles = dalPerfil.listar();
                 break;
-            case Perfil.ADMIN:
+            case ADMIN_CODE:
                 // BD > Lista de Pefiles
                 perfiles = dalPerfil.listar();
                 break;
-            case Perfil.BASIC:
+            case BASIC_CODE:
             default:
                 // Usuario Actual (Únicamente) > Lista de Usuarios
                 Perfil perfil = dalPerfil.consultar(usuario.getPerfil());
@@ -136,5 +163,17 @@ public final class UtilesPerfil {
 
         // Retorno: Perfil
         return dalPerfil.consultar(id);
+    }
+
+    public static final boolean validarId(int id) {
+        return id >= DEF_ID;
+    }
+
+    public static final boolean validarNombre(String nombre) {
+        return UtilesValidacion.validarDato(nombre, REG_NOMBRE);
+    }
+
+    public static boolean validarInfo(String info) {
+        return UtilesValidacion.validarDato(info, REG_INFO);
     }
 }

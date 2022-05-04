@@ -27,6 +27,17 @@ import org.japo.java.entities.PermisoUsuario;
  */
 public final class UtilesPermisoUsuario {
 
+    // Valores por Defecto
+    public static final int DEF_ID = 0;
+    public static final int DEF_USUARIO = UtilesUsuario.DEF_ID;
+    public static final String DEF_USUARIO_NAME = UtilesUsuario.DEF_USER;
+    public static final int DEF_PROCESO = UtilesProceso.DEF_ID;
+    public static final String DEF_PROCESO_INFO = UtilesProceso.DEF_INFO;
+    public static final String DEF_INFO = "Permiso de Usuario NO Definido";
+
+    // Expresiones regulares
+    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
+
     private UtilesPermisoUsuario() {
     }
 
@@ -54,7 +65,7 @@ public final class UtilesPermisoUsuario {
         try {
             id = Integer.parseInt(request.getParameter("id"));
 
-            if (!PermisoUsuario.validarId(id)) {
+            if (!validarId(id)) {
                 throw new IOException("ID de Permiso de Usuario Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -77,7 +88,7 @@ public final class UtilesPermisoUsuario {
         try {
             proceso = Integer.parseInt(request.getParameter("proceso"));
 
-            if (!PermisoUsuario.validarProceso(proceso)) {
+            if (!UtilesProceso.validarId(proceso)) {
                 throw new IOException("ID de Proceso Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -100,7 +111,7 @@ public final class UtilesPermisoUsuario {
         try {
             usuario = Integer.parseInt(request.getParameter("usuario"));
 
-            if (!PermisoUsuario.validarUsuario(usuario)) {
+            if (!UtilesUsuario.validarId(usuario)) {
                 throw new IOException("ID de Usuario Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -120,11 +131,19 @@ public final class UtilesPermisoUsuario {
         String info = request.getParameter("info");
 
         // Validar User
-        if (!PermisoUsuario.validarInfo(info)) {
+        if (!validarInfo(info)) {
             throw new IOException("Info de Permiso de Usuario Incorrecta");
         }
 
         // Retorno
         return info;
+    }
+
+    public static final boolean validarId(int id) {
+        return id >= DEF_ID;
+    }
+
+    public static boolean validarInfo(String info) {
+        return UtilesValidacion.validarDato(info, REG_INFO);
     }
 }

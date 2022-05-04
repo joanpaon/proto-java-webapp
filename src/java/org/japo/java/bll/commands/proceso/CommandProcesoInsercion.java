@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
 import org.japo.java.dal.DALProceso;
 import org.japo.java.entities.Proceso;
+import org.japo.java.libraries.UtilesProceso;
 
 /**
  *
@@ -56,7 +57,7 @@ public final class CommandProcesoInsercion extends Command {
                     String info = request.getParameter("info").trim();
 
                     // Parámetros > Entidad
-                    Proceso proceso = new Proceso(nombre, info);
+                    Proceso proceso = new Proceso(UtilesProceso.DEF_ID, nombre, info);
 
                     // Entidad > Inserción BD - true | false
                     boolean checkOK = dalProceso.insertar(proceso);

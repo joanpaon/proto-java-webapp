@@ -21,11 +21,11 @@ import javax.servlet.http.HttpSession;
 import org.japo.java.dal.DALPermisoPerfil;
 import org.japo.java.dal.DALPermisoUsuario;
 import org.japo.java.dal.DALProceso;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.PermisoPerfil;
 import org.japo.java.entities.PermisoUsuario;
 import org.japo.java.entities.Proceso;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -34,7 +34,7 @@ import org.japo.java.entities.Usuario;
 public final class CommandUsuarioValidation {
 
     // Sesión 
-    HttpSession sesion;
+    private final HttpSession sesion;
 
     // Capas de Datos
     private final DALPermisoPerfil dalPermisoPerfil;
@@ -61,7 +61,7 @@ public final class CommandUsuarioValidation {
             int perfil = usuario.getPerfil();
 
             // Validar Perfil
-            if (perfil >= Perfil.ADMIN) {
+            if (perfil >= UtilesPerfil.ADMIN_CODE) {
                 checkOK = true;
             } else {
                 // Perfil + BD > Lista de Permisos del Perfil
@@ -101,7 +101,7 @@ public final class CommandUsuarioValidation {
             int perfil = usuario.getPerfil();
 
             // Validar Perfil Desarrollador
-            checkOK = perfil >= Perfil.DEVEL;
+            checkOK = perfil >= UtilesPerfil.DEVEL_CODE;
         } catch (NullPointerException e) {
             checkOK = false;
         }
@@ -122,7 +122,7 @@ public final class CommandUsuarioValidation {
             int perfil = usuario.getPerfil();
 
             // Validar Perfil Desarrollador
-            checkOK = perfil >= Perfil.ADMIN;
+            checkOK = perfil >= UtilesPerfil.ADMIN_CODE;
         } catch (NullPointerException e) {
             checkOK = false;
         }

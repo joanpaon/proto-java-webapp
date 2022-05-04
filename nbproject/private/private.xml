@@ -2,6 +2,25 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/partials/button-login.jspf</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/page404.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/comando-desconocido.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/src/java/org/japo/java/pll/controllers/Controller.java</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/sesion-caducada.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/usuario/usuario-login.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/partials/header.jspf</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/main/main-admin.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/acceso-denegado.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/operacion-desconocida.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/visita/visita-landing.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/page500.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/src/java/org/japo/java/bll/commands/usuario/CommandUsuarioLogout.java</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/sesion-invalida.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/message/operacion-cancelada.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/web.xml</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/main/main-basic.jsp</file>
+            <file>file:/F:/Docencia/Docencia%202021-2022/01-Maestro%20DWES/03-Temas/Tema%20019%20-%20Entorno%20-%20Proyectos%20Globalizadores/02%20-%20Proyectos%20WEB/proto-java-webapp/web/WEB-INF/views/partials/footer.jspf</file>
+        </group>
     </open-files>
 </project-private>

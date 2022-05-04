@@ -1,3 +1,4 @@
+<%@page import="org.japo.java.libraries.UtilesPerfil"%>
 <%@page import="org.japo.java.entities.Perfil"%>
 <%@page import="org.japo.java.entities.Usuario"%>
 <%@page import="org.japo.java.entities.PermisoUsuario"%>
@@ -7,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    // Session > Usuario
+    // Sesión > Usuario
     Usuario usuario = (Usuario) (session.getAttribute("usuario"));
 
     // Datos Inyectados
@@ -62,9 +63,9 @@
 
                 <header>
                     <h2>Listado de Permisos de Usuario</h2>
-                    <% if (usuario.getPerfil() >= Perfil.DEVEL) { %>
+                    <% if (usuario.getPerfil() >= UtilesPerfil.DEVEL_CODE) { %>
                     <a class="btn btn-principal" href="?cmd=main-devel" title="Principal">Principal</a>
-                    <% } else if (usuario.getPerfil() >= Perfil.ADMIN) { %>
+                    <% } else if (usuario.getPerfil() >= UtilesPerfil.ADMIN_CODE) { %>
                     <a class="btn btn-principal" href="?cmd=main-admin" title="Principal">Principal</a>
                     <% } else { %>
                     <a class="btn btn-principal" href="?cmd=main-basic" title="Principal">Principal</a>

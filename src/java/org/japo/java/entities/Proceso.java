@@ -16,7 +16,8 @@
 package org.japo.java.entities;
 
 import java.io.Serializable;
-import org.japo.java.libraries.UtilesValidacion;
+import java.util.Objects;
+import org.japo.java.libraries.UtilesProceso;
 
 /**
  *
@@ -24,34 +25,37 @@ import org.japo.java.libraries.UtilesValidacion;
  */
 public final class Proceso implements Serializable {
 
-    // Valores por Defecto
-    public static final int DEF_ID = 0;
-    public static final String DEF_NOMBRE = "CommandUnknown";
-    public static final String DEF_INFO = "Proceso Desconocido";
-    
-    // Expresiones regulares
-    public static final String REG_NOMBRE = "[\\wáéíóúüñÁÉÍÓÚÜÑ]{6,20}";
-    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
-    
+    // Campos
     private int id;
     private String nombre;
     private String info;
 
+    // Constructor Predeterminado
     public Proceso() {
-        id = DEF_ID;
-        nombre = DEF_NOMBRE;
-        info = DEF_INFO;
+        id = UtilesProceso.DEF_ID;
+        nombre = UtilesProceso.DEF_NOMBRE;
+        info = UtilesProceso.DEF_INFO;
     }
 
+    // Constructor Parametrizado
     public Proceso(int id, String nombre, String info) {
-        this.id = id;
-        this.nombre = nombre;
-        this.info = info;
-    }
+        if (UtilesProceso.validarId(id)) {
+            this.id = id;
+        } else {
+            this.id = UtilesProceso.DEF_ID;
+        }
 
-    public Proceso(String nombre, String info) {
-        this.nombre = nombre;
-        this.info = info;
+        if (UtilesProceso.validarNombre(nombre)) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = UtilesProceso.DEF_NOMBRE;
+        }
+
+        if (UtilesProceso.validarInfo(info)) {
+            this.info = info;
+        } else {
+            this.info = UtilesProceso.DEF_INFO;
+        }
     }
 
     public int getId() {
@@ -59,7 +63,9 @@ public final class Proceso implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (UtilesProceso.validarId(id)) {
+            this.id = id;
+        }
     }
 
     public String getNombre() {
@@ -67,7 +73,9 @@ public final class Proceso implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (UtilesProceso.validarNombre(nombre)) {
+            this.nombre = nombre;
+        }
     }
 
     public String getInfo() {
@@ -75,34 +83,35 @@ public final class Proceso implements Serializable {
     }
 
     public void setInfo(String info) {
-        this.info = info;
+        if (UtilesProceso.validarInfo(info)) {
+            this.info = info;
+        }
     }
 
-    // ---
-    //
-    public final boolean validarId() {
-        return validarId(id);
+    @Override
+    public boolean equals(Object o) {
+        // Semáforo
+        boolean testOK = false;
+
+        // Validación Parámetro
+        if (o instanceof Proceso p) {
+            // Validación Perfil
+            testOK = true
+                    && p.getId() == id
+                    && p.getNombre().equals(nombre)
+                    && p.getInfo().equals(info);
+        }
+
+        // Retorno: Semáforo
+        return testOK;
     }
 
-    public final boolean validarNombre() {
-        return validarNombre(nombre);
-    }
-
-    public final boolean validarInfo() {
-        return validarInfo(info);
-    }
-
-    // ---
-    //
-    public static final boolean validarId(int id) {
-        return id >= 0;
-    }
-
-    public static final boolean validarNombre(String nombre) {
-        return UtilesValidacion.validarDato(nombre, REG_NOMBRE);
-    }
-
-    public static boolean validarInfo(String info) {
-        return UtilesValidacion.validarDato(info, REG_INFO);
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + this.id;
+        hash = 23 * hash + Objects.hashCode(this.nombre);
+        hash = 23 * hash + Objects.hashCode(this.info);
+        return hash;
     }
 }

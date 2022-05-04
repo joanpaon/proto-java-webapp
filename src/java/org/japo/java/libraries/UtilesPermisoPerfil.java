@@ -27,6 +27,13 @@ import org.japo.java.entities.PermisoPerfil;
  */
 public final class UtilesPermisoPerfil {
 
+    // Valores por Defecto
+    public static final int DEF_ID = 0;
+    public static final String DEF_INFO = "Permiso de Perfil NO Definido";
+
+    // Expresiones regulares
+    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
+
     private UtilesPermisoPerfil() {
     }
 
@@ -54,7 +61,7 @@ public final class UtilesPermisoPerfil {
         try {
             id = Integer.parseInt(request.getParameter("id"));
 
-            if (!PermisoPerfil.validarId(id)) {
+            if (!validarId(id)) {
                 throw new IOException("ID de Permiso de Perfil Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -77,7 +84,7 @@ public final class UtilesPermisoPerfil {
         try {
             proceso = Integer.parseInt(request.getParameter("proceso"));
 
-            if (!PermisoPerfil.validarProceso(proceso)) {
+            if (!UtilesProceso.validarId(proceso)) {
                 throw new IOException("ID de Proceso Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -100,7 +107,7 @@ public final class UtilesPermisoPerfil {
         try {
             perfil = Integer.parseInt(request.getParameter("perfil"));
 
-            if (!PermisoPerfil.validarPerfil(perfil)) {
+            if (!UtilesPerfil.validarId(perfil)) {
                 throw new IOException("ID de Perfil Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -120,11 +127,19 @@ public final class UtilesPermisoPerfil {
         String info = request.getParameter("info");
 
         // Validar User
-        if (!PermisoPerfil.validarInfo(info)) {
+        if (!validarInfo(info)) {
             throw new IOException("Info de Permiso de Perfil Incorrecta");
         }
 
         // Retorno
         return info;
+    }
+
+    public static final boolean validarId(int id) {
+        return id >= DEF_ID;
+    }
+
+    public static boolean validarInfo(String info) {
+        return UtilesValidacion.validarDato(info, REG_INFO);
     }
 }

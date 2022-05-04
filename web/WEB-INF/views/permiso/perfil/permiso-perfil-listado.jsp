@@ -1,5 +1,5 @@
+<%@page import="org.japo.java.libraries.UtilesPerfil"%>
 <%@page import="org.japo.java.entities.PermisoPerfil"%>
-<%@page import="org.japo.java.entities.Perfil"%>
 <%@page import="org.japo.java.entities.Usuario"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -62,9 +62,9 @@
 
                 <header>
                     <h2>Listado de Permisos de Perfil</h2>
-                    <% if (usuario.getPerfil() >= Perfil.DEVEL) { %>
+                    <% if (usuario.getPerfil() >= UtilesPerfil.DEVEL_CODE) { %>
                     <a class="btn btn-principal" href="?cmd=main-devel" title="Principal">Principal</a>
-                    <% } else if (usuario.getPerfil() >= Perfil.ADMIN) { %>
+                    <% } else if (usuario.getPerfil() >= UtilesPerfil.ADMIN_CODE) { %>
                     <a class="btn btn-principal" href="?cmd=main-admin" title="Principal">Principal</a>
                     <% } else { %>
                     <a class="btn btn-principal" href="?cmd=main-basic" title="Principal">Principal</a>

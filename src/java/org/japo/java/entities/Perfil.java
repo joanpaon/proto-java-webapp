@@ -16,7 +16,9 @@
 package org.japo.java.entities;
 
 import java.io.Serializable;
-import org.japo.java.libraries.UtilesValidacion;
+import java.util.Objects;
+import org.japo.java.libraries.UtilesPerfil;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
@@ -24,48 +26,37 @@ import org.japo.java.libraries.UtilesValidacion;
  */
 public final class Perfil implements Serializable {
 
-    // Códigos de Perfiles Básicos
-    public static final int VISIT = 0;
-    public static final int BASIC = 100;
-    public static final int ADMIN = 800;
-    public static final int DEVEL = 900;
-
-    // Nombres de Perfiles Básicos
-    public static final String VISIT_NAME = "Visitante";
-    public static final String BASIC_NAME = "Usuario";
-    public static final String ADMIN_NAME = "Administrador";
-    public static final String DEVEL_NAME = "Desarrollador";
-
-    // Descripción de Perfiles Básicos
-    public static final String VISIT_INFO = "Usuario NO Identificado";
-    public static final String BASIC_INFO = "Usuario Identificado";
-    public static final String ADMIN_INFO = "Usuario con Derechos Administrativos";
-    public static final String DEVEL_INFO = "Usuario con Derechos de Desarrollo";
-
-    // Valores por Defecto
-    public static final int DEF_ID = 0;
-    public static final String DEF_NOMBRE = VISIT_NAME;
-    public static final String DEF_INFO = VISIT_INFO;
-
-    // Expresiones regulares
-    public static final String REG_NOMBRE = "[\\wáéíóúüñÁÉÍÓÚÜÑ]{6,20}";
-    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
-
     // Campos
     private int id;
     private String nombre;
     private String info;
 
+    // Contructor Predeterminado
     public Perfil() {
-        id = DEF_ID;
-        nombre = DEF_NOMBRE;
-        info = DEF_INFO;
+        id = UtilesPerfil.DEF_ID;
+        nombre = UtilesPerfil.DEF_NOMBRE;
+        info = UtilesPerfil.DEF_INFO;
     }
 
+    // Constructor Parametrizado
     public Perfil(int id, String nombre, String info) {
-        this.id = id;
-        this.nombre = nombre;
-        this.info = info;
+        if (UtilesPerfil.validarId(id)) {
+            this.id = id;
+        } else {
+            this.id = UtilesPerfil.DEF_ID;
+        }
+
+        if (UtilesPerfil.validarNombre(nombre)) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = UtilesPerfil.DEF_NOMBRE;
+        }
+
+        if (UtilesPerfil.validarInfo(info)) {
+            this.info = info;
+        } else {
+            this.info = UtilesPerfil.DEF_INFO;
+        }
     }
 
     public int getId() {
@@ -73,7 +64,9 @@ public final class Perfil implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (UtilesPerfil.validarId(id)) {
+            this.id = id;
+        }
     }
 
     public String getNombre() {
@@ -81,7 +74,9 @@ public final class Perfil implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (UtilesPerfil.validarNombre(nombre)) {
+            this.nombre = nombre;
+        }
     }
 
     public String getInfo() {
@@ -89,34 +84,35 @@ public final class Perfil implements Serializable {
     }
 
     public void setInfo(String info) {
-        this.info = info;
+        if (UtilesPerfil.validarInfo(info)) {
+            this.info = info;
+        }
     }
 
-    // ---
-    //
-    public final boolean validarId() {
-        return validarId(id);
+    @Override
+    public boolean equals(Object o) {
+        // Semáforo
+        boolean testOK = false;
+
+        // Validación Parámetro
+        if (o instanceof Perfil p) {
+            // Validación Perfil
+            testOK = true
+                    && p.getId() == id
+                    && p.getNombre().equals(nombre)
+                    && p.getInfo().equals(info);
+        }
+
+        // Retorno: Semáforo
+        return testOK;
     }
 
-    public final boolean validarNombre() {
-        return validarNombre(nombre);
-    }
-
-    public final boolean validarInfo() {
-        return validarInfo(info);
-    }
-
-    // ---
-    //
-    public static final boolean validarId(int id) {
-        return id >= 0;
-    }
-
-    public static final boolean validarNombre(String nombre) {
-        return UtilesValidacion.validarDato(nombre, REG_NOMBRE);
-    }
-
-    public static boolean validarInfo(String info) {
-        return UtilesValidacion.validarDato(info, REG_INFO);
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.id;
+        hash = 37 * hash + Objects.hashCode(this.nombre);
+        hash = 37 * hash + Objects.hashCode(this.info);
+        return hash;
     }
 }

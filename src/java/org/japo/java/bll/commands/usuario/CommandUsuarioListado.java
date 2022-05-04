@@ -20,9 +20,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import org.japo.java.dal.DALUsuario;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesListado;
+import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -50,7 +50,7 @@ public final class CommandUsuarioListado extends Command {
 
                 // BD > Número de Registros
                 long rowCount;
-                if (usuario.getPerfil() >= Perfil.DEVEL) {
+                if (usuario.getPerfil() >= UtilesPerfil.DEVEL_CODE) {
                     rowCount = dalUsuario.contarDev();
                 } else {
                     rowCount = dalUsuario.contarUser();
@@ -76,7 +76,7 @@ public final class CommandUsuarioListado extends Command {
 
                 // BD > Número de Registros
                 List<Usuario> usuarios;
-                if (usuario.getPerfil() >= Perfil.DEVEL) {                // BD > Lista de Usuarios visibles por el Perfil
+                if (usuario.getPerfil() >= UtilesPerfil.DEVEL_CODE) {                // BD > Lista de Usuarios visibles por el Perfil
                     usuarios = dalUsuario.listarDev();
                 } else {
                     usuarios = dalUsuario.listarUser();

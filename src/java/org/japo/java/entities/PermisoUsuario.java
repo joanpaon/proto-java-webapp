@@ -16,24 +16,15 @@
 package org.japo.java.entities;
 
 import java.io.Serializable;
-import org.japo.java.libraries.UtilesValidacion;
+import org.japo.java.libraries.UtilesPermisoUsuario;
+import org.japo.java.libraries.UtilesProceso;
+import org.japo.java.libraries.UtilesUsuario;
 
 /**
  *
  * @author JAPO Labs - japolabs@gmail.com
  */
 public final class PermisoUsuario implements Serializable {
-
-    // Valores por Defecto
-    public static final int DEF_ID = 0;
-    public static final int DEF_USUARIO = Usuario.DEF_ID;
-    public static final String DEF_USUARIO_NAME = Usuario.DEF_USER;
-    public static final int DEF_PROCESO = Proceso.DEF_ID;
-    public static final String DEF_PROCESO_INFO = Proceso.DEF_INFO;
-    public static final String DEF_INFO = "Permiso de Usuario NO Definido";
-
-    // Expresiones regulares
-    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
 
     // Campos
     private int id;
@@ -43,25 +34,56 @@ public final class PermisoUsuario implements Serializable {
     private String procesoInfo;
     private String info;
 
+    // Constructor Predeterminado
     public PermisoUsuario() {
-        id = DEF_ID;
-        usuario = DEF_USUARIO;
-        usuarioName = DEF_USUARIO_NAME;
-        proceso = DEF_PROCESO;
-        procesoInfo = DEF_PROCESO_INFO;
-        info = DEF_INFO;
+        id = UtilesPermisoUsuario.DEF_ID;
+        usuario = UtilesUsuario.DEF_ID;
+        usuarioName = UtilesUsuario.DEF_USER;
+        proceso = UtilesProceso.DEF_ID;
+        procesoInfo = UtilesProceso.DEF_INFO;
+        info = UtilesPermisoUsuario.DEF_INFO;
     }
 
+    // Constructor Parametrizado
     public PermisoUsuario(int id,
             int usuario, String usuarioName,
             int proceso, String procesoInfo,
             String info) {
-        this.id = id;
-        this.usuario = usuario;
-        this.usuarioName = usuarioName;
-        this.proceso = proceso;
-        this.procesoInfo = procesoInfo;
-        this.info = info;
+        if (UtilesPermisoUsuario.validarId(id)) {
+            this.id = id;
+        } else {
+            this.id = UtilesPermisoUsuario.DEF_ID;
+        }
+
+        if (UtilesUsuario.validarId(usuario)) {
+            this.usuario = usuario;
+        } else {
+            this.usuario = UtilesUsuario.DEF_ID;
+        }
+
+        if (UtilesUsuario.validarUser(usuarioName)) {
+            this.usuarioName = usuarioName;
+        } else {
+            this.usuarioName = UtilesUsuario.DEF_USER;
+        }
+
+        if (UtilesProceso.validarId(proceso)) {
+            this.proceso = proceso;
+        } else {
+            this.proceso = UtilesProceso.DEF_ID;
+        }
+
+        if (UtilesProceso.validarInfo(procesoInfo)) {
+            this.procesoInfo = procesoInfo;
+        } else {
+            this.procesoInfo = UtilesProceso.DEF_INFO;
+        }
+
+        if (UtilesPermisoUsuario.validarInfo(info)) {
+            this.info = info;
+        } else {
+            this.info = UtilesPermisoUsuario.DEF_INFO;
+        }
     }
 
     public int getId() {
@@ -69,23 +91,9 @@ public final class PermisoUsuario implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getProceso() {
-        return proceso;
-    }
-
-    public void setProceso(int proceso) {
-        this.proceso = proceso;
-    }
-
-    public String getProcesoInfo() {
-        return procesoInfo;
-    }
-
-    public void setProcesoInfo(String procesoInfo) {
-        this.procesoInfo = procesoInfo;
+        if (UtilesPermisoUsuario.validarId(id)) {
+            this.id = id;
+        }
     }
 
     public int getUsuario() {
@@ -93,7 +101,9 @@ public final class PermisoUsuario implements Serializable {
     }
 
     public void setUsuario(int usuario) {
-        this.usuario = usuario;
+        if (UtilesUsuario.validarId(usuario)) {
+            this.usuario = usuario;
+        }
     }
 
     public String getUsuarioName() {
@@ -101,7 +111,29 @@ public final class PermisoUsuario implements Serializable {
     }
 
     public void setUsuarioName(String usuarioName) {
-        this.usuarioName = usuarioName;
+        if (UtilesUsuario.validarUser(usuarioName)) {
+            this.usuarioName = usuarioName;
+        }
+    }
+
+    public int getProceso() {
+        return proceso;
+    }
+
+    public void setProceso(int proceso) {
+        if (UtilesProceso.validarId(proceso)) {
+            this.proceso = proceso;
+        }
+    }
+
+    public String getProcesoInfo() {
+        return procesoInfo;
+    }
+
+    public void setProcesoInfo(String procesoInfo) {
+        if (UtilesProceso.validarInfo(procesoInfo)) {
+            this.procesoInfo = procesoInfo;
+        }
     }
 
     public String getInfo() {
@@ -109,58 +141,8 @@ public final class PermisoUsuario implements Serializable {
     }
 
     public void setInfo(String info) {
-        this.info = info;
-    }
-
-    // ---
-    //
-    public final boolean validarId() {
-        return validarId(id);
-    }
-
-    public final boolean validarUsuario() {
-        return validarUsuario(usuario);
-    }
-
-    public final boolean validarUsuarioName() {
-        return validarUsuarioName(usuarioName);
-    }
-
-    public final boolean validarProceso() {
-        return validarProceso(proceso);
-    }
-
-    public final boolean validarProcesoInfo() {
-        return validarProcesoInfo(procesoInfo);
-    }
-
-    public final boolean validarInfo() {
-        return validarInfo(info);
-    }
-
-    // ---
-    //
-    public static final boolean validarId(int id) {
-        return id >= 0;
-    }
-
-    public static final boolean validarUsuario(int usuario) {
-        return Usuario.validarId(usuario);
-    }
-
-    public static final boolean validarUsuarioName(String usuarioName) {
-        return Usuario.validarUser(usuarioName);
-    }
-
-    public static final boolean validarProceso(int proceso) {
-        return Proceso.validarId(proceso);
-    }
-
-    public static final boolean validarProcesoInfo(String procesoInfo) {
-        return Proceso.validarInfo(procesoInfo);
-    }
-
-    public static boolean validarInfo(String info) {
-        return UtilesValidacion.validarDato(info, REG_INFO);
+        if (UtilesPermisoUsuario.validarInfo(info)) {
+            this.info = info;
+        }
     }
 }

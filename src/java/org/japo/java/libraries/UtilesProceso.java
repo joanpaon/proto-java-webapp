@@ -27,6 +27,15 @@ import org.japo.java.entities.Proceso;
  */
 public final class UtilesProceso {
 
+    // Valores por Defecto
+    public static final int DEF_ID = 0;
+    public static final String DEF_NOMBRE = "CommandUnknown";
+    public static final String DEF_INFO = "Proceso Desconocido";
+
+    // Expresiones regulares
+    public static final String REG_NOMBRE = "[\\wáéíóúüñÁÉÍÓÚÜÑ]{6,20}";
+    public static final String REG_INFO = "[\\wáéíóúüñÁÉÍÓÚÜÑ\\- ]{6,50}";
+
     private UtilesProceso() {
     }
 
@@ -54,7 +63,7 @@ public final class UtilesProceso {
         try {
             id = Integer.parseInt(request.getParameter("id"));
 
-            if (!Proceso.validarId(id)) {
+            if (!validarId(id)) {
                 throw new IOException("ID de Proceso Fuera de Rango");
             }
         } catch (NullPointerException e) {
@@ -74,7 +83,7 @@ public final class UtilesProceso {
         String valor = request.getParameter("nombre");
 
         // Validar User
-        if (!Proceso.validarNombre(valor)) {
+        if (!validarNombre(valor)) {
             throw new IOException("Nombre de Proceso Incorrecto");
         }
 
@@ -89,11 +98,23 @@ public final class UtilesProceso {
         String valor = request.getParameter("info");
 
         // Validar User
-        if (!Proceso.validarInfo(valor)) {
+        if (!validarInfo(valor)) {
             throw new IOException("Info de Proceso Incorrecta");
         }
 
         // Retorno
         return valor;
+    }
+
+    public static final boolean validarId(int id) {
+        return id >= DEF_ID;
+    }
+
+    public static final boolean validarNombre(String nombre) {
+        return UtilesValidacion.validarDato(nombre, REG_NOMBRE);
+    }
+
+    public static boolean validarInfo(String info) {
+        return UtilesValidacion.validarDato(info, REG_INFO);
     }
 }

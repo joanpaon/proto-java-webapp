@@ -41,7 +41,6 @@
                 <h2>Página Principal del Desarrollador</h2>
 
                 <div class="controles">
-                    <a class="btn" href="?cmd=avatar-listado">Avatares</a>
                     <a class="btn" href="?cmd=perfil-listado">Perfiles</a>
                     <a class="btn" href="?cmd=permiso-perfil-listado">PermisosP</a>
                     <a class="btn" href="?cmd=permiso-usuario-listado">PermisosU</a>
@@ -58,6 +57,5 @@
         <script src="public/js/main/main-devel.js"></script>
         <script src="public/js/partials/header.js"></script>
         <script src="public/js/partials/footer.js"></script>
-        <script src="public/js/partials/button-login.js"></script>
     </body>
 </html>

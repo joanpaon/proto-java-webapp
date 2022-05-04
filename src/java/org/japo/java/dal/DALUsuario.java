@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
-import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
+import org.japo.java.libraries.UtilesPerfil;
 import org.japo.java.libraries.UtilesServlet;
 
 /**
@@ -116,7 +116,7 @@ public final class DALUsuario {
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
-                ps.setInt(1, Perfil.ADMIN);
+                ps.setInt(1, UtilesPerfil.ADMIN_CODE);
 
                 // Ejecutar Sentencia
                 try ( ResultSet rs = ps.executeQuery()) {
@@ -380,7 +380,7 @@ public final class DALUsuario {
             try (
                      Connection conn = ds.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
                 // Parametrizar Sentencia
-                ps.setInt(1, Perfil.ADMIN);
+                ps.setInt(1, UtilesPerfil.ADMIN_CODE);
 
                 // Ejecutar Sentencia
                 try ( ResultSet rs = ps.executeQuery()) {
