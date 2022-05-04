@@ -1,4 +1,5 @@
-<%@page import="org.japo.java.entities.Perfil"%>
+<%@page import="org.japo.java.libraries.UtilesUsuario"%>
+<%@page import="org.japo.java.libraries.UtilesPerfil"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 
@@ -54,7 +55,7 @@
                       accept-charset="Windows-1252" 
                       enctype="multipart/form-data"
                       action="?cmd=usuario-insercion&op=proceso">
-                    <input type="hidden" name="perfil" value="<%= Perfil.BASIC%>" />
+                    <input type="hidden" name="perfil" value="<%= UtilesPerfil.BASIC_CODE%>" />
                     <div class="form-content">
                         <div class="field-container">
                             <div class="field-set">
@@ -62,7 +63,7 @@
                                 <input id="user" 
                                        type="text" 
                                        name="user" 
-                                       pattern="<%= Usuario.REG_USER%>" 
+                                       pattern="<%= UtilesUsuario.REG_USER%>" 
                                        required />
                             </div>
 
@@ -71,7 +72,7 @@
                                 <input id="pass" 
                                        type="text" 
                                        name="pass" 
-                                       pattern="<%= Usuario.REG_PASS%>" 
+                                       pattern="<%= UtilesUsuario.REG_PASS%>" 
                                        required />
                             </div>
 
@@ -91,8 +92,8 @@
 
                         <div class="avatar-frame">
                             <div class="avatar">
-                                <img class="actual" src="<%= Usuario.DEF_AVATAR%>" alt="Avatar"/>
-                                <img class="backup" src="<%= Usuario.DEF_AVATAR%>" alt="Avatar" style="display: none;" />
+                                <img class="actual" src="<%= UtilesUsuario.DEF_AVATAR%>" alt="Avatar"/>
+                                <img class="backup" src="<%= UtilesUsuario.DEF_AVATAR%>" alt="Avatar" style="display: none;" />
                             </div>
                         </div>
 

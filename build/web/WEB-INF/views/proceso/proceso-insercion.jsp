@@ -1,4 +1,4 @@
-<%@page import="org.japo.java.entities.Proceso"%>
+<%@page import="org.japo.java.libraries.UtilesProceso"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -56,7 +56,7 @@
                                 <input id="nombre" 
                                        type="text" 
                                        name="nombre" 
-                                       pattern="<%= Proceso.REG_NOMBRE%>" 
+                                       pattern="<%= UtilesProceso.REG_NOMBRE%>" 
                                        required />
                             </div>
 
@@ -65,7 +65,7 @@
                                 <input id="info" 
                                        type="text" 
                                        name="info" 
-                                       pattern="<%= Proceso.REG_INFO%>" 
+                                       pattern="<%= UtilesProceso.REG_INFO%>" 
                                        required />
                             </div>
                         </div>

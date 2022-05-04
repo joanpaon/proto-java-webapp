@@ -1,3 +1,4 @@
+<%@page import="org.japo.java.libraries.UtilesPermisoPerfil"%>
 <%@page import="org.japo.java.entities.PermisoPerfil"%>
 <%@page import="org.japo.java.entities.Proceso"%>
 <%@page import="org.japo.java.entities.Perfil"%>
@@ -95,7 +96,7 @@
                                 <input id="info" 
                                        type="text" 
                                        name="info" 
-                                       pattern="<%= PermisoPerfil.REG_INFO%>" 
+                                       pattern="<%= UtilesPermisoPerfil.REG_INFO%>" 
                                        required 
                                        value="<%= permiso.getInfo()%>" />
                             </div>

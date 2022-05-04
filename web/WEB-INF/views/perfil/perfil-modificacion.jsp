@@ -1,3 +1,4 @@
+<%@page import="org.japo.java.libraries.UtilesPerfil"%>
 <%@page import="org.japo.java.entities.Perfil"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -60,7 +61,7 @@
                                 <input id="nombre" 
                                        type="text" 
                                        name="nombre" 
-                                       pattern="<%= Perfil.REG_NOMBRE %>" 
+                                       pattern="<%= UtilesPerfil.REG_NOMBRE%>" 
                                        required 
                                        value="<%= perfil.getNombre()%>"/>
                             </div>
@@ -70,7 +71,7 @@
                                 <input id="info" 
                                        type="text" 
                                        name="info" 
-                                       pattern="<%= Perfil.REG_INFO %>" 
+                                       pattern="<%= UtilesPerfil.REG_INFO%>" 
                                        required 
                                        value="<%= perfil.getInfo()%>"/>
                             </div>

@@ -1,5 +1,5 @@
+<%@page import="org.japo.java.libraries.UtilesProceso"%>
 <%@page import="org.japo.java.entities.Proceso"%>
-<%@page import="org.japo.java.entities.Perfil"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 
@@ -63,7 +63,7 @@
                                 <input id="nombre" 
                                        type="text" 
                                        name="nombre" 
-                                       pattern="<%= Proceso.REG_NOMBRE%>" 
+                                       pattern="<%= UtilesProceso.REG_NOMBRE%>" 
                                        required 
                                        value="<%= proceso.getNombre()%>"/>
                             </div>
@@ -73,7 +73,7 @@
                                 <input id="info" 
                                        type="text" 
                                        name="info" 
-                                       pattern="<%= Proceso.REG_INFO%>" 
+                                       pattern="<%= UtilesProceso.REG_INFO%>" 
                                        required 
                                        value="<%= proceso.getInfo()%>"/>
                             </div>

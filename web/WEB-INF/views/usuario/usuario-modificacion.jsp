@@ -1,3 +1,4 @@
+<%@page import="org.japo.java.libraries.UtilesUsuario"%>
 <%@page import="org.japo.java.entities.Usuario"%>
 <%@page import="org.japo.java.entities.Perfil"%>
 <%@page import="java.util.ArrayList"%>
@@ -12,7 +13,7 @@
 
 <!DOCTYPE html>
 <html lang="es">
-    
+
     <head>
         <!-- These lines go in the first 1024 bytes -->
         <meta charset="utf-8" />
@@ -64,7 +65,7 @@
                                 <input id="user" 
                                        type="text" 
                                        name="user" 
-                                       pattern="<%= Usuario.REG_USER%>" 
+                                       pattern="<%= UtilesUsuario.REG_USER%>" 
                                        required 
                                        value="<%= usuario.getUser()%>"/>
                             </div>
@@ -74,7 +75,7 @@
                                 <input id="pass" 
                                        type="text" 
                                        name="pass" 
-                                       pattern="<%= Usuario.REG_PASS%>" 
+                                       pattern="<%= UtilesUsuario.REG_PASS%>" 
                                        required 
                                        value="<%= usuario.getPass()%>"/>
                             </div>
