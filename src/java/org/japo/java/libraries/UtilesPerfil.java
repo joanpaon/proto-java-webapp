@@ -21,7 +21,7 @@ import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.japo.java.dal.DALPerfil;
+import org.japo.java.dll.DLLPerfil;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Usuario;
 
@@ -127,7 +127,7 @@ public final class UtilesPerfil {
         Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
         // Capas de Datos
-        DALPerfil dalPerfil = new DALPerfil(config);
+        DLLPerfil dalPerfil = new DLLPerfil(config);
 
         // Determinar Perfil Usuario
         switch (usuario.getPerfil()) {
@@ -156,7 +156,7 @@ public final class UtilesPerfil {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DALPerfil dalPerfil = new DALPerfil(config);
+        DLLPerfil dalPerfil = new DLLPerfil(config);
 
         // Request > Id Perfil
         int id = obtenerIdRequest(request);

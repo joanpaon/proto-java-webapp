@@ -19,7 +19,7 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALProceso;
+import org.japo.java.dll.DLLProceso;
 import org.japo.java.entities.Proceso;
 
 /**
@@ -41,7 +41,7 @@ public final class CommandProcesoConsulta extends Command {
 
             if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
-                DALProceso dalProceso = new DALProceso(config);
+                DLLProceso dalProceso = new DLLProceso(config);
 
                 // Request > ID Proceso
                 int id = Integer.parseInt(request.getParameter("id"));

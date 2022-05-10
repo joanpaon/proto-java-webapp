@@ -23,7 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.japo.java.dal.DALUsuario;
+import org.japo.java.dll.DLLUsuario;
 import org.japo.java.entities.Usuario;
 
 /**
@@ -173,7 +173,7 @@ public final class UtilesUsuario {
         Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
         // Capas de Datos
-        DALUsuario dalUsuario = new DALUsuario(config);
+        DLLUsuario dalUsuario = new DLLUsuario(config);
 
         // Determinar Perfil Usuario
         switch (usuario.getPerfil()) {
@@ -201,7 +201,7 @@ public final class UtilesUsuario {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DALUsuario dalUsuario = new DALUsuario(config);
+        DLLUsuario dalUsuario = new DLLUsuario(config);
 
         // Request > Id de Usuario
         int id = obtenerIdRequest(request);
@@ -223,7 +223,7 @@ public final class UtilesUsuario {
             ServletConfig config,
             HttpServletRequest request) {
         // Capas de Negocio
-        DALUsuario dalUsuario = new DALUsuario(config);
+        DLLUsuario dalUsuario = new DLLUsuario(config);
 
         // Request > Nombre de Usuario
         String user = request.getParameter("user");

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.dal;
+package org.japo.java.dll;
 
 import java.util.logging.Logger;
 import java.sql.Connection;
@@ -32,15 +32,15 @@ import org.japo.java.libraries.UtilesServlet;
  *
  * @author José A. Pacheco Ondoño - japolabs@gmail.com
  */
-public final class DALUsuario {
+public final class DLLUsuario {
 
     // Logger
-    private static final Logger logger = Logger.getLogger(DALUsuario.class.getName());
+    private static final Logger logger = Logger.getLogger(DLLUsuario.class.getName());
 
     // DataSource
     DataSource ds;
 
-    public DALUsuario(ServletConfig config) {
+    public DLLUsuario(ServletConfig config) {
         ds = UtilesServlet.obtenerDataSource(config);
     }
 
@@ -335,7 +335,7 @@ public final class DALUsuario {
         return numReg == 1;
     }
 
-    public Long contarDev() {
+    public Long contar() {
         // Número de Filas
         long filas = 0;
 

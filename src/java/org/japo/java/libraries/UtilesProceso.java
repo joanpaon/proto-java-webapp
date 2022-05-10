@@ -18,7 +18,7 @@ package org.japo.java.libraries;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import org.japo.java.dal.DALProceso;
+import org.japo.java.dll.DLLProceso;
 import org.japo.java.entities.Proceso;
 
 /**
@@ -44,7 +44,7 @@ public final class UtilesProceso {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DALProceso dalProceso = new DALProceso(config);
+        DLLProceso dalProceso = new DLLProceso(config);
 
         // Request > Id de Proceso
         int id = obtenerIdRequest(request);

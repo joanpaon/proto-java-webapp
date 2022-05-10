@@ -19,7 +19,7 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALPerfil;
+import org.japo.java.dll.DLLPerfil;
 import org.japo.java.entities.Perfil;
 
 /**
@@ -42,7 +42,7 @@ public final class CommandPerfilInsercion extends Command {
 
             if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(config);
+                DLLPerfil dalPerfil = new DLLPerfil(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");

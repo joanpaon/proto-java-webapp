@@ -18,7 +18,7 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import org.japo.java.dal.DALUsuario;
+import org.japo.java.dll.DLLUsuario;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -42,7 +42,7 @@ public final class CommandUsuarioModificacion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALUsuario dalUsuario = new DALUsuario(config);
+                DLLUsuario dalUsuario = new DLLUsuario(config);
 
                 // request > Operación
                 String op = request.getParameter("op");

@@ -19,10 +19,9 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
-import org.japo.java.dal.DALUsuario;
+import org.japo.java.dll.DLLUsuario;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesListado;
-import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -42,19 +41,11 @@ public final class CommandUsuarioListado extends Command {
                     config, request.getSession(false));
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
-                // Sesión > Usuario
-                Usuario usuario = (Usuario) request.getSession(false).getAttribute("usuario");
-
                 // Capas de Datos
-                DALUsuario dalUsuario = new DALUsuario(config);
+                DLLUsuario dllUsuario = new DLLUsuario(config);
 
                 // BD > Número de Registros
-                long rowCount;
-                if (usuario.getPerfil() >= UtilesPerfil.DEVEL_CODE) {
-                    rowCount = dalUsuario.contarDev();
-                } else {
-                    rowCount = dalUsuario.contarUser();
-                }
+                long rowCount = dllUsuario.contar();
 
                 // Request > Índice de pagina            
                 long rowIndex = UtilesListado.obtenerRowIndex(request);
@@ -75,12 +66,7 @@ public final class CommandUsuarioListado extends Command {
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
                 // BD > Número de Registros
-                List<Usuario> usuarios;
-                if (usuario.getPerfil() >= UtilesPerfil.DEVEL_CODE) {                // BD > Lista de Usuarios visibles por el Perfil
-                    usuarios = dalUsuario.listarDev();
-                } else {
-                    usuarios = dalUsuario.listarUser();
-                }
+                List<Usuario> usuarios = dllUsuario.paginar(rowIndex, rowsPage);
 
                 // Inyecta Datos > JSP
                 request.setAttribute("usuarios", usuarios);

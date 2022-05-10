@@ -18,7 +18,7 @@ package org.japo.java.bll.commands.usuario;
 import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import org.japo.java.dal.DALUsuario;
+import org.japo.java.dll.DLLUsuario;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -35,7 +35,7 @@ public final class CommandUsuarioSignup extends Command {
         String out = "usuario/usuario-registro";
 
         // Capas de Negocio
-        DALUsuario dalUsuario = new DALUsuario(config);
+        DLLUsuario dalUsuario = new DLLUsuario(config);
 
         // Obtener Operación
         String op = request.getParameter("op");

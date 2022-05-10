@@ -20,10 +20,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALPerfil;
+import org.japo.java.dll.DLLPerfil;
 import org.japo.java.entities.Perfil;
 import org.japo.java.libraries.UtilesListado;
-import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -44,10 +43,10 @@ public final class CommandPerfilListado extends Command {
 
             if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(config);
+                DLLPerfil dllPerfil = new DLLPerfil(config);
 
                 // BD > Parámetros Listado
-                long rowCount = dalPerfil.contar();
+                long rowCount = dllPerfil.contar();
 
                 // Request > Índice de pagina            
                 long rowIndex = UtilesListado.obtenerRowIndex(request);
@@ -68,7 +67,7 @@ public final class CommandPerfilListado extends Command {
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
                 // BD > Lista de Perfiles
-                List<Perfil> perfiles = UtilesPerfil.listarPerfilesUsuario(config, request);
+                List<Perfil> perfiles = dllPerfil.paginar(rowIndex, rowsPage);
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("perfiles", perfiles);

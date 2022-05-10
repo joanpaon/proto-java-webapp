@@ -20,9 +20,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALPerfil;
-import org.japo.java.dal.DALPermisoPerfil;
-import org.japo.java.dal.DALProceso;
+import org.japo.java.dll.DLLPerfil;
+import org.japo.java.dll.DLLPermisoPerfil;
+import org.japo.java.dll.DLLProceso;
 import org.japo.java.entities.PermisoPerfil;
 import org.japo.java.entities.Perfil;
 import org.japo.java.entities.Proceso;
@@ -47,9 +47,9 @@ public final class CommandPermisoPerfilInsercion extends Command {
 
             if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
-                DALPerfil dalPerfil = new DALPerfil(config);
-                DALPermisoPerfil dalPermiso = new DALPermisoPerfil(config);
-                DALProceso dalProceso = new DALProceso(config);
+                DLLPerfil dalPerfil = new DLLPerfil(config);
+                DLLPermisoPerfil dalPermiso = new DLLPermisoPerfil(config);
+                DLLProceso dalProceso = new DLLProceso(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");

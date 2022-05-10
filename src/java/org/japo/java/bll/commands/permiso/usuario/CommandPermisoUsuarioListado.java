@@ -20,7 +20,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALPermisoUsuario;
+import org.japo.java.dll.DLLPermisoUsuario;
 import org.japo.java.entities.PermisoUsuario;
 import org.japo.java.libraries.UtilesListado;
 
@@ -44,10 +44,10 @@ public final class CommandPermisoUsuarioListado extends Command {
             // Validar Acceso Comando
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALPermisoUsuario dalPermiso = new DALPermisoUsuario(config);
+                DLLPermisoUsuario dllPermiso = new DLLPermisoUsuario(config);
 
                 // BD > Parámetros Listado
-                long rowCount = dalPermiso.contar();
+                long rowCount = dllPermiso.contar();
 
                 // Request > Índice de pagina            
                 long rowIndex = UtilesListado.obtenerRowIndex(request);
@@ -68,7 +68,7 @@ public final class CommandPermisoUsuarioListado extends Command {
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
                 // BD > Lista de Permisos de Perfil
-                List<PermisoUsuario> permisos = dalPermiso.listar();
+                List<PermisoUsuario> permisos = dllPermiso.paginar(rowIndex, rowsPage);
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("permisos", permisos);

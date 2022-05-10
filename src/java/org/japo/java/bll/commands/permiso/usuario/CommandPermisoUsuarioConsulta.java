@@ -19,7 +19,7 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALPermisoUsuario;
+import org.japo.java.dll.DLLPermisoUsuario;
 import org.japo.java.entities.PermisoUsuario;
 
 /**
@@ -41,7 +41,7 @@ public final class CommandPermisoUsuarioConsulta extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DALPermisoUsuario dalPermiso = new DALPermisoUsuario(config);
+                DLLPermisoUsuario dalPermiso = new DLLPermisoUsuario(config);
 
                 // Request > ID Permiso Usuario
                 int id = Integer.parseInt(request.getParameter("id"));

@@ -18,9 +18,9 @@ package org.japo.java.bll.commands.usuario;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpSession;
-import org.japo.java.dal.DALPermisoPerfil;
-import org.japo.java.dal.DALPermisoUsuario;
-import org.japo.java.dal.DALProceso;
+import org.japo.java.dll.DLLPermisoPerfil;
+import org.japo.java.dll.DLLPermisoUsuario;
+import org.japo.java.dll.DLLProceso;
 import org.japo.java.entities.PermisoPerfil;
 import org.japo.java.entities.PermisoUsuario;
 import org.japo.java.entities.Proceso;
@@ -37,16 +37,16 @@ public final class CommandUsuarioValidation {
     private final HttpSession sesion;
 
     // Capas de Datos
-    private final DALPermisoPerfil dalPermisoPerfil;
-    private final DALPermisoUsuario dalPermisoUsuario;
-    private final DALProceso dalProceso;
+    private final DLLPermisoPerfil dalPermisoPerfil;
+    private final DLLPermisoUsuario dalPermisoUsuario;
+    private final DLLProceso dalProceso;
 
     public CommandUsuarioValidation(ServletConfig config, HttpSession sesion) {
         this.sesion = sesion;
 
-        dalPermisoPerfil = new DALPermisoPerfil(config);
-        dalPermisoUsuario = new DALPermisoUsuario(config);
-        dalProceso = new DALProceso(config);
+        dalPermisoPerfil = new DLLPermisoPerfil(config);
+        dalPermisoUsuario = new DLLPermisoUsuario(config);
+        dalProceso = new DLLProceso(config);
     }
 
     public final boolean validarAccesoComando(HttpSession sesion, String comando) {

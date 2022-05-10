@@ -20,7 +20,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dal.DALProceso;
+import org.japo.java.dll.DLLProceso;
 import org.japo.java.entities.Proceso;
 import org.japo.java.libraries.UtilesListado;
 
@@ -44,10 +44,10 @@ public final class CommandProcesoListado extends Command {
             // Validar Acceso Comando
             if (validator.validarAccesoDev(request.getSession(false))) {
                 // Capas de Datos
-                DALProceso dalProceso = new DALProceso(config);
+                DLLProceso dllProceso = new DLLProceso(config);
 
                 // BD > Parámetros Listado
-                long rowCount = dalProceso.contar();
+                long rowCount = dllProceso.contar();
 
                 // Request > Índice de pagina            
                 long rowIndex = UtilesListado.obtenerRowIndex(request);
@@ -68,7 +68,7 @@ public final class CommandProcesoListado extends Command {
                 long rowIndexFin = UtilesListado.obtenerRowIndexFin(rowIndex, rowsPage, rowCount);
 
                 // BD > Lista de Procesos
-                List<Proceso> procesos = dalProceso.paginar(rowIndex, rowsPage);
+                List<Proceso> procesos = dllProceso.paginar(rowIndex, rowsPage);
 
                 // Inyecta Datos Listado > JSP
                 request.setAttribute("procesos", procesos);

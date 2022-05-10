@@ -18,7 +18,7 @@ package org.japo.java.libraries;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
-import org.japo.java.dal.DALPermisoPerfil;
+import org.japo.java.dll.DLLPermisoPerfil;
 import org.japo.java.entities.PermisoPerfil;
 
 /**
@@ -42,7 +42,7 @@ public final class UtilesPermisoPerfil {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DALPermisoPerfil dalPermiso = new DALPermisoPerfil(config);
+        DLLPermisoPerfil dalPermiso = new DLLPermisoPerfil(config);
 
         // Request > Id Permiso Perfil
         int id = obtenerIdRequest(request);

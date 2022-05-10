@@ -19,7 +19,7 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
-import org.japo.java.dal.DALUsuario;
+import org.japo.java.dll.DLLUsuario;
 import org.japo.java.entities.Usuario;
 import org.japo.java.libraries.UtilesUsuario;
 
@@ -50,7 +50,7 @@ public final class CommandUsuarioProfile extends Command {
                 request.setAttribute("usuario", usuario);
             } else if (op.equals("proceso")) {
                 // Capas de Datos
-                DALUsuario dalUsuario = new DALUsuario(config);
+                DLLUsuario dalUsuario = new DLLUsuario(config);
 
                 // Request > Parámetros
                 String user = UtilesUsuario.obtenerUserRequest(request);
