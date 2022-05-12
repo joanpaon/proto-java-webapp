@@ -47,9 +47,9 @@ public final class CommandPermisoUsuarioInsercion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DLLPermisoUsuario dalPermiso = new DLLPermisoUsuario(config);
-                DLLProceso dalProceso = new DLLProceso(config);
-                DLLUsuario dalUsuario = new DLLUsuario(config);
+                DLLPermisoUsuario dllPermiso = new DLLPermisoUsuario(config);
+                DLLProceso dllProceso = new DLLProceso(config);
+                DLLUsuario dllUsuario = new DLLUsuario(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");
@@ -57,10 +57,10 @@ public final class CommandPermisoUsuarioInsercion extends Command {
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
                     // BD > Lista de Procesos
-                    List<Proceso> procesos = dalProceso.listar();
+                    List<Proceso> procesos = dllProceso.listar();
 
                     // BD > Lista de Usuarios
-                    List<Usuario> usuarios = dalUsuario.listarDev();
+                    List<Usuario> usuarios = dllUsuario.listarDev();
 
                     // Inyecta Datos > JSP
                     request.setAttribute("procesos", procesos);
@@ -75,7 +75,7 @@ public final class CommandPermisoUsuarioInsercion extends Command {
                     PermisoUsuario permiso = new PermisoUsuario(0, usuario, "", proceso, "", info);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalPermiso.insertar(permiso);
+                    boolean checkOK = dllPermiso.insertar(permiso);
 
                     // Validar Operación
                     if (checkOK) {

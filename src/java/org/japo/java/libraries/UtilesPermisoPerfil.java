@@ -42,13 +42,13 @@ public final class UtilesPermisoPerfil {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DLLPermisoPerfil dalPermiso = new DLLPermisoPerfil(config);
+        DLLPermisoPerfil dllPermiso = new DLLPermisoPerfil(config);
 
         // Request > Id Permiso Perfil
         int id = obtenerIdRequest(request);
 
         // Retorno: Permiso Perfil
-        return dalPermiso.consultar(id);
+        return dllPermiso.consultar(id);
     }
 
     public static final int obtenerIdRequest(

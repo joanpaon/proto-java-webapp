@@ -48,9 +48,9 @@ public final class CommandPermisoUsuarioModificacion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DLLPermisoUsuario dalPermiso = new DLLPermisoUsuario(config);
-                DLLProceso dalProceso = new DLLProceso(config);
-                DLLUsuario dalUsuario = new DLLUsuario(config);
+                DLLPermisoUsuario dllPermiso = new DLLPermisoUsuario(config);
+                DLLProceso dllProceso = new DLLProceso(config);
+                DLLUsuario dllUsuario = new DLLUsuario(config);
 
                 // request > ID Operación
                 String op = request.getParameter("op");
@@ -61,10 +61,10 @@ public final class CommandPermisoUsuarioModificacion extends Command {
                     PermisoUsuario permiso = UtilesPermisoUsuario.consultarPermisoUsuarioIdRequest(config, request);
 
                     // BD > Lista de Procesos
-                    List<Proceso> procesos = dalProceso.listar();
+                    List<Proceso> procesos = dllProceso.listar();
 
                     // BD > Lista de Usuarios            
-                    List<Usuario> usuarios = dalUsuario.listarDev();
+                    List<Usuario> usuarios = dllUsuario.listarDev();
 
                     // Inyectar Datos > JSP
                     request.setAttribute("permiso", permiso);
@@ -81,7 +81,7 @@ public final class CommandPermisoUsuarioModificacion extends Command {
                     PermisoUsuario permiso = new PermisoUsuario(id, usuario, "", proceso, "", info);
 
                     // Entidad > Modificación Registro BD
-                    boolean checkOK = dalPermiso.modificar(permiso);
+                    boolean checkOK = dllPermiso.modificar(permiso);
 
                     // Validar Operación
                     if (checkOK) {

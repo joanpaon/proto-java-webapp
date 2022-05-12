@@ -19,8 +19,8 @@ import org.japo.java.bll.commands.Command;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import org.japo.java.bll.commands.usuario.CommandUsuarioValidation;
-import org.japo.java.dll.DLLPerfil;
 import org.japo.java.entities.Perfil;
+import org.japo.java.libraries.UtilesPerfil;
 
 /**
  *
@@ -39,15 +39,9 @@ public final class CommandPerfilConsulta extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
-                // Capas de Datos
-                DLLPerfil dalPerfil = new DLLPerfil(config);
-
-                // Request > ID Perfil
-                int id = Integer.parseInt(request.getParameter("id"));
-
-                // ID Perfil > Perfil
-                Perfil perfil = dalPerfil.consultar(id);
+            if (validator.validarAccesoDevel(request.getSession(false))) {
+                // Request + ID Perfil + BD > Perfil
+                Perfil perfil = UtilesPerfil.consultarPerfilIdRequest(config, request);
 
                 // Inyecta Datos > JSP
                 request.setAttribute("perfil", perfil);

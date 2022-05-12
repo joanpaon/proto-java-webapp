@@ -48,7 +48,9 @@ public final class UtilesEstaticos {
         servirRecurso(fichero, response);
     }
 
-    private static File obtenerRecurso(ServletConfig config, HttpServletRequest request) {
+    private static File obtenerRecurso(
+            ServletConfig config, 
+            HttpServletRequest request) {
         // Config > Views Path
         String base = config.getServletContext().getInitParameter("ruta-estatica");
 
@@ -68,7 +70,9 @@ public final class UtilesEstaticos {
         return new File(ruta);
     }
 
-    private static File obtenerRecursoSeguro(ServletConfig config, HttpServletRequest request) {
+    private static File obtenerRecursoSeguro(
+            ServletConfig config, 
+            HttpServletRequest request) {
         // Config > Views Path
         String base = config.getServletContext().getInitParameter("ruta-estatica");
 

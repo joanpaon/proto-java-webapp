@@ -27,7 +27,9 @@ public final class UtilesListado {
     private UtilesListado() {
     }
 
-    public static final long obtenerRowIndex(HttpServletRequest request) throws IOException {
+    public static final long obtenerRowIndex(
+            HttpServletRequest request) 
+            throws IOException {
         // Referencia
         long rowIndex;
 
@@ -46,7 +48,9 @@ public final class UtilesListado {
         return rowIndex;
     }
 
-    public static final int obtenerRowsPage(HttpServletRequest request) throws IOException {
+    public static final int obtenerRowsPage(
+            HttpServletRequest request) 
+            throws IOException {
         // Referencia
         int rowsPage;
 

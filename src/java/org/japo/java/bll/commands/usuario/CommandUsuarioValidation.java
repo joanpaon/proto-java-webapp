@@ -34,7 +34,7 @@ import org.japo.java.libraries.UtilesPerfil;
 public final class CommandUsuarioValidation {
 
     // Sesión 
-    private final HttpSession sesion;
+//    private final HttpSession sesion;
 
     // Capas de Datos
     private final DLLPermisoPerfil dalPermisoPerfil;
@@ -42,7 +42,7 @@ public final class CommandUsuarioValidation {
     private final DLLProceso dalProceso;
 
     public CommandUsuarioValidation(ServletConfig config, HttpSession sesion) {
-        this.sesion = sesion;
+//        this.sesion = sesion;
 
         dalPermisoPerfil = new DLLPermisoPerfil(config);
         dalPermisoUsuario = new DLLPermisoUsuario(config);
@@ -89,7 +89,7 @@ public final class CommandUsuarioValidation {
         return checkOK;
     }
 
-    public final boolean validarAccesoDev(HttpSession sesion) {
+    public final boolean validarAccesoDevel(HttpSession sesion) {
         // Semáforo
         boolean checkOK;
 

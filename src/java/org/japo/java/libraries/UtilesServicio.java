@@ -85,7 +85,8 @@ public final class UtilesServicio {
         return svc;
     }
 
-    private static String obtenerNombreServicio(String svcName) throws ServletException {
+    private static String obtenerNombreServicio(String svcName) 
+            throws ServletException {
         // Subpaquete
         String sub;
 

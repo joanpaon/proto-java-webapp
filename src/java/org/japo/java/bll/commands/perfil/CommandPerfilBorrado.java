@@ -40,9 +40,9 @@ public final class CommandPerfilBorrado extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
-                DLLPerfil dalPerfil = new DLLPerfil(config);
+                DLLPerfil dllPerfil = new DLLPerfil(config);
 
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -53,13 +53,13 @@ public final class CommandPerfilBorrado extends Command {
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
                     // ID Entidad + BD > Entidad
-                    Perfil perfil = dalPerfil.consultar(id);
+                    Perfil perfil = dllPerfil.consultar(id);
 
                     // Inyecta Datos > JSP
                     request.setAttribute("perfil", perfil);
                 } else if (op.equals("proceso")) {
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalPerfil.borrar(id);
+                    boolean checkOK = dllPerfil.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {

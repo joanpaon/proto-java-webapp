@@ -40,7 +40,7 @@ public final class CommandPerfilInsercion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
                 DLLPerfil dalPerfil = new DLLPerfil(config);
 

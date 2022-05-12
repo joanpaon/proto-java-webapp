@@ -41,9 +41,9 @@ public final class CommandPerfilModificacion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
-                DLLPerfil perfilDAL = new DLLPerfil(config);
+                DLLPerfil dllPerfil = new DLLPerfil(config);
 
                 // request > Operación
                 String op = request.getParameter("op");
@@ -65,7 +65,7 @@ public final class CommandPerfilModificacion extends Command {
                     Perfil perfil = new Perfil(id, nombre, info);
 
                     // Ejecutar Operación
-                    boolean checkOK = perfilDAL.modificar(perfil);
+                    boolean checkOK = dllPerfil.modificar(perfil);
 
                     // Validar Operación
                     if (checkOK) {

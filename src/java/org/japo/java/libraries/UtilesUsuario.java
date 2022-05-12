@@ -173,17 +173,17 @@ public final class UtilesUsuario {
         Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
         // Capas de Datos
-        DLLUsuario dalUsuario = new DLLUsuario(config);
+        DLLUsuario dllUsuario = new DLLUsuario(config);
 
         // Determinar Perfil Usuario
         switch (usuario.getPerfil()) {
             case UtilesPerfil.DEVEL_CODE:
                 // BD > Lista de Usuarios
-                usuarios = dalUsuario.listarDev();
+                usuarios = dllUsuario.listarDev();
                 break;
             case UtilesPerfil.ADMIN_CODE:
                 // BD > Lista de Usuarios
-                usuarios = dalUsuario.listarDev();
+                usuarios = dllUsuario.listarDev();
                 break;
             case UtilesPerfil.BASIC_CODE:
             default:
@@ -201,13 +201,13 @@ public final class UtilesUsuario {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DLLUsuario dalUsuario = new DLLUsuario(config);
+        DLLUsuario dllUsuario = new DLLUsuario(config);
 
         // Request > Id de Usuario
         int id = obtenerIdRequest(request);
 
         // Retorno: Usuario
-        return dalUsuario.consultar(id);
+        return dllUsuario.consultar(id);
     }
 
     /*
@@ -223,13 +223,13 @@ public final class UtilesUsuario {
             ServletConfig config,
             HttpServletRequest request) {
         // Capas de Negocio
-        DLLUsuario dalUsuario = new DLLUsuario(config);
+        DLLUsuario dllUsuario = new DLLUsuario(config);
 
         // Request > Nombre de Usuario
         String user = request.getParameter("user");
 
         // Nombre de Usuario + BD > Usuario
-        Usuario usuario = dalUsuario.consultar(user);
+        Usuario usuario = dllUsuario.consultar(user);
 
         // Request > Contraseña de Usuario
         String pass = request.getParameter("pass");

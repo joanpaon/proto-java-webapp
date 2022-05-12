@@ -42,7 +42,7 @@ public final class CommandProcesoListado extends Command {
                     config, request.getSession(false));
 
             // Validar Acceso Comando
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
                 DLLProceso dllProceso = new DLLProceso(config);
 

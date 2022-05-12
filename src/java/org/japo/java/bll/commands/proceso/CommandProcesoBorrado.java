@@ -40,9 +40,9 @@ public final class CommandProcesoBorrado extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
-                DLLProceso dalProceso = new DLLProceso(config);
+                DLLProceso dllProceso = new DLLProceso(config);
 
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -53,13 +53,13 @@ public final class CommandProcesoBorrado extends Command {
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
                     // ID Entidad + BD > Entidad
-                    Proceso proceso = dalProceso.consultar(id);
+                    Proceso proceso = dllProceso.consultar(id);
 
                     // Enlaza Datos > JSP
                     request.setAttribute("proceso", proceso);
                 } else if (op.equals("proceso")) {
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalProceso.borrar(id);
+                    boolean checkOK = dllProceso.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {

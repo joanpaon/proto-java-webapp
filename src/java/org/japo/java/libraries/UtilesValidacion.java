@@ -87,10 +87,10 @@ public final class UtilesValidacion {
         textoActual = textoActual.equals("") ? textoCampoVacio : textoActual;
 
         // Valida el Dato
-        boolean validacionOK = UtilesFecha.validarFecha(textoActual);
+        boolean testOK = UtilesFecha.validarFecha(textoActual);
 
         // Señala la validación
-        if (validacionOK) {
+        if (testOK) {
             // Señalar Contenido Correcto
             txfActual.setForeground(Color.BLACK);
         } else {
@@ -99,7 +99,7 @@ public final class UtilesValidacion {
         }
 
         // Resultado de la validación
-        return validacionOK;
+        return testOK;
     }
 
     // Campo de texto + ExpReg + Texto campo vacío

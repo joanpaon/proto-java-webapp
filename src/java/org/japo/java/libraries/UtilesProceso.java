@@ -44,13 +44,13 @@ public final class UtilesProceso {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DLLProceso dalProceso = new DLLProceso(config);
+        DLLProceso dllProceso = new DLLProceso(config);
 
         // Request > Id de Proceso
         int id = obtenerIdRequest(request);
 
         // Retorno: Proceso
-        return dalProceso.consultar(id);
+        return dllProceso.consultar(id);
     }
 
     public static final int obtenerIdRequest(

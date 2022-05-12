@@ -46,13 +46,13 @@ public final class UtilesPermisoUsuario {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DLLPermisoUsuario dalPermiso = new DLLPermisoUsuario(config);
+        DLLPermisoUsuario dllPermiso = new DLLPermisoUsuario(config);
 
         // Request > Id Permiso Usuario
         int id = obtenerIdRequest(request);
 
         // Retorno: Permiso Usuario
-        return dalPermiso.consultar(id);
+        return dllPermiso.consultar(id);
     }
 
     public static final int obtenerIdRequest(

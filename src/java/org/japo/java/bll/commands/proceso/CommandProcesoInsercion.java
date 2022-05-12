@@ -41,9 +41,9 @@ public final class CommandProcesoInsercion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
-                DLLProceso dalProceso = new DLLProceso(config);
+                DLLProceso dllProceso = new DLLProceso(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");
@@ -60,7 +60,7 @@ public final class CommandProcesoInsercion extends Command {
                     Proceso proceso = new Proceso(UtilesProceso.DEF_ID, nombre, info);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalProceso.insertar(proceso);
+                    boolean checkOK = dllProceso.insertar(proceso);
 
                     // Validar Operación
                     if (checkOK) {

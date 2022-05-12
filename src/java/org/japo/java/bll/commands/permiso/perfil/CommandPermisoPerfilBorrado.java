@@ -40,7 +40,7 @@ public final class CommandPermisoPerfilBorrado extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
                 DLLPermisoPerfil dalPermiso = new DLLPermisoPerfil(config);
 

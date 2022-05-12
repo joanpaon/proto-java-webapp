@@ -45,11 +45,11 @@ public final class CommandPermisoPerfilInsercion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
-                DLLPerfil dalPerfil = new DLLPerfil(config);
-                DLLPermisoPerfil dalPermiso = new DLLPermisoPerfil(config);
-                DLLProceso dalProceso = new DLLProceso(config);
+                DLLPerfil dllPerfil = new DLLPerfil(config);
+                DLLPermisoPerfil dllPermiso = new DLLPermisoPerfil(config);
+                DLLProceso dllProceso = new DLLProceso(config);
 
                 // Obtener Operación
                 String op = request.getParameter("op");
@@ -57,10 +57,10 @@ public final class CommandPermisoPerfilInsercion extends Command {
                 // Formulario Captura Datos
                 if (op == null || op.equals("captura")) {
                     // BD > Lista de Procesos
-                    List<Proceso> procesos = dalProceso.listar();
+                    List<Proceso> procesos = dllProceso.listar();
 
                     // BD > Lista de Perfiles
-                    List<Perfil> perfiles = dalPerfil.listar();
+                    List<Perfil> perfiles = dllPerfil.listar();
 
                     // Inyecta Datos > JSP
                     request.setAttribute("procesos", procesos);
@@ -75,7 +75,7 @@ public final class CommandPermisoPerfilInsercion extends Command {
                     PermisoPerfil permiso = new PermisoPerfil(0, perfil, "", proceso, "", info);
 
                     // Entidad > Inserción BD - true | false
-                    boolean checkOK = dalPermiso.insertar(permiso);
+                    boolean checkOK = dllPermiso.insertar(permiso);
 
                     // Validar Operación
                     if (checkOK) {

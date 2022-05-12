@@ -31,7 +31,8 @@ public final class UtilesServlet {
     private UtilesServlet() {
     }
 
-    public static final DataSource obtenerDataSource(String bd) throws NamingException {
+    public static final DataSource obtenerDataSource(String bd) 
+            throws NamingException {
         // Contexto Inicial Nombrado JNDI
         Context iniCtx = new InitialContext();
 

@@ -127,22 +127,22 @@ public final class UtilesPerfil {
         Usuario usuario = (Usuario) sesion.getAttribute("usuario");
 
         // Capas de Datos
-        DLLPerfil dalPerfil = new DLLPerfil(config);
+        DLLPerfil dllPerfil = new DLLPerfil(config);
 
         // Determinar Perfil Usuario
         switch (usuario.getPerfil()) {
             case DEVEL_CODE:
                 // BD > Lista de Pefiles
-                perfiles = dalPerfil.listar();
+                perfiles = dllPerfil.listar();
                 break;
             case ADMIN_CODE:
                 // BD > Lista de Pefiles
-                perfiles = dalPerfil.listar();
+                perfiles = dllPerfil.listar();
                 break;
             case BASIC_CODE:
             default:
                 // Usuario Actual (Únicamente) > Lista de Usuarios
-                Perfil perfil = dalPerfil.consultar(usuario.getPerfil());
+                Perfil perfil = dllPerfil.consultar(usuario.getPerfil());
                 perfiles = new ArrayList<>();
                 perfiles.add(perfil);
         }
@@ -156,13 +156,13 @@ public final class UtilesPerfil {
             HttpServletRequest request)
             throws IOException {
         // Capas de Negocio
-        DLLPerfil dalPerfil = new DLLPerfil(config);
+        DLLPerfil dllPerfil = new DLLPerfil(config);
 
         // Request > Id Perfil
         int id = obtenerIdRequest(request);
 
         // Retorno: Perfil
-        return dalPerfil.consultar(id);
+        return dllPerfil.consultar(id);
     }
 
     public static final boolean validarId(int id) {

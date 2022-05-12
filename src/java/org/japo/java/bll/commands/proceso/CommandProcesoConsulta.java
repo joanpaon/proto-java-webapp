@@ -39,7 +39,7 @@ public final class CommandProcesoConsulta extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
                 DLLProceso dalProceso = new DLLProceso(config);
 

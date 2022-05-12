@@ -42,7 +42,7 @@ public final class CommandUsuarioModificacion extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DLLUsuario dalUsuario = new DLLUsuario(config);
+                DLLUsuario dllUsuario = new DLLUsuario(config);
 
                 // request > Operación
                 String op = request.getParameter("op");
@@ -66,7 +66,7 @@ public final class CommandUsuarioModificacion extends Command {
                     Usuario usuario = new Usuario(id, user, pass, avatar, perfil, "");
 
                     // Validar Operación
-                    if (dalUsuario.modificar(usuario)) {
+                    if (dllUsuario.modificar(usuario)) {
                         out = "controller?cmd=usuario-listado";
                     } else {
                         out = "message/operacion-cancelada";

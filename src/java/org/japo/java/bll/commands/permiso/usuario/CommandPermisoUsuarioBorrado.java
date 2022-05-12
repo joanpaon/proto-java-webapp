@@ -42,7 +42,7 @@ public final class CommandPermisoUsuarioBorrado extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DLLPermisoUsuario dalPermiso = new DLLPermisoUsuario(config);
+                DLLPermisoUsuario dllPermiso = new DLLPermisoUsuario(config);
 
                 // URL > ID Objeto
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -53,13 +53,13 @@ public final class CommandPermisoUsuarioBorrado extends Command {
                 // ID Entidad + BD > JSP Modificación
                 if (op == null || op.equals("captura")) {
                     // ID Entidad + BD > Entidad
-                    PermisoUsuario permiso = dalPermiso.consultar(id);
+                    PermisoUsuario permiso = dllPermiso.consultar(id);
 
                     // Enlaza Datos > JSP
                     request.setAttribute("permiso", permiso);
                 } else if (op.equals("proceso")) {
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalPermiso.borrar(id);
+                    boolean checkOK = dllPermiso.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {

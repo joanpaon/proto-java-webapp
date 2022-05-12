@@ -42,7 +42,7 @@ public final class CommandUsuarioBorrado extends Command {
 
             if (validator.validarAccesoAdmin(request.getSession(false))) {
                 // Capas de Datos
-                DLLUsuario dalUsuario = new DLLUsuario(config);
+                DLLUsuario dllUsuario = new DLLUsuario(config);
 
                 // request > ID Operación
                 String op = request.getParameter("op");
@@ -59,7 +59,7 @@ public final class CommandUsuarioBorrado extends Command {
                     int id = UtilesUsuario.obtenerIdRequest(request);
                     
                     // ID > Registro Borrado - true | false
-                    boolean checkOK = dalUsuario.borrar(id);
+                    boolean checkOK = dllUsuario.borrar(id);
 
                     // Validar Operación
                     if (checkOK) {

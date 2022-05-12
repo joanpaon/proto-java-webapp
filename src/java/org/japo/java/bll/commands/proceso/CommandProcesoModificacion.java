@@ -41,9 +41,9 @@ public final class CommandProcesoModificacion extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
-                DLLProceso dalProceso = new DLLProceso(config);
+                DLLProceso dllProceso = new DLLProceso(config);
 
                 // request > Operación
                 String op = request.getParameter("op");
@@ -65,7 +65,7 @@ public final class CommandProcesoModificacion extends Command {
                     Proceso proceso = new Proceso(id, nombre, info);
 
                     // Ejecutar Operación
-                    boolean checkOK = dalProceso.modificar(proceso);
+                    boolean checkOK = dllProceso.modificar(proceso);
 
                     // Validar Operación
                     if (checkOK) {

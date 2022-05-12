@@ -41,7 +41,7 @@ public final class CommandPerfilListado extends Command {
             CommandUsuarioValidation validator = new CommandUsuarioValidation(
                     config, request.getSession(false));
 
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
                 DLLPerfil dllPerfil = new DLLPerfil(config);
 

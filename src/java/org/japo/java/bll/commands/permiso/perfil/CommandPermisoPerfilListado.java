@@ -42,7 +42,7 @@ public final class CommandPermisoPerfilListado extends Command {
                     config, request.getSession(false));
 
             // Validar Acceso Comando
-            if (validator.validarAccesoDev(request.getSession(false))) {
+            if (validator.validarAccesoDevel(request.getSession(false))) {
                 // Capas de Datos
                 DLLPermisoPerfil dllPermiso = new DLLPermisoPerfil(config);
 
